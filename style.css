@@ -78,7 +78,7 @@
 }
 
 .boton-enlace {
-    background-color: #00e054;
+    background-color: #85cf10;
     color: #14181c;
     padding: 10px 20px;
     text-decoration: none;
@@ -89,5 +89,79 @@
 }
 
 .boton-enlace:hover {
-    background-color: #00b040;
+    background-color:#2c3440;
 }
+
+body {
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+.pagina-login{
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color:#14181c;
+    color: lightgreen;
+    align-items: center;
+}
+
+.login-contenedor {
+    width: min(100% - 32px,500px);
+}
+
+.login-descripcion{
+    text-align: left;
+    color:green;
+}
+
+.login-marca{
+    color: green;
+}
+
+.login-panel {
+    padding: 48px;
+    background-color:#2c3440;
+    border: 1px solid #445566;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.login-panel .form-group {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.login-panel label{
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.login-panel input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-panel .form-group:last-of-type {
+    margin-bottom: 18px;
+}
+
+/*Para celu*/
+
+@media (max-width: 600px) {
+    .login-panel .form-group {
+        display: block;
+    }
+
+    .login-panel label {
+        margin-bottom: 8px;
+        text-align: left;
+    }
+}
+
