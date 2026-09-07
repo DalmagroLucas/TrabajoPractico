@@ -1,0 +1,93 @@
+.grid-resenas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.tarjeta-resena {
+    background-color: #2c3440;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
+    border: 1px solid #445566;
+}
+
+.tarjeta-resena:hover {
+    transform: translateY(-5px);
+    border-color: #00e054;
+}
+
+.tarjeta-imagen {
+    width: 100%;
+    height: 250px; /* Define la altura máxima/fija del contenedor */
+    background-color: #14181c; /* Fondo oscuro por si la imagen es vertical y deja espacios laterales */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.tarjeta-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* ¡CLAVE! Muestra la imagen entera sin recortar nada */
+}
+
+.tarjeta-contenido {
+    padding: 20px;
+}
+
+.tarjeta-titulo {
+    color: #ffffff;
+    margin: 0 0 5px 0;
+    font-size: 1.3em;
+}
+
+.tarjeta-juego {
+    color: #899aa9;
+    margin: 0 0 15px 0;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tarjeta-puntuacion {
+    color: #00e054;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.tarjeta-opinion {
+    color: #ccddee;
+    font-style: italic;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.tarjeta-tags {
+    color: #899aa9;
+    font-size: 0.85em;
+    background-color: #14181c;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.boton-enlace {
+    background-color: #00e054;
+    color: #14181c;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.boton-enlace:hover {
+    background-color: #00b040;
+}
