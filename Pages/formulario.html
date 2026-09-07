@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENX</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <a href="ultimas_reseñas.html">Ver Reseñas</a>
+        <a href="formulario.html">Nueva Reseña</a>
+    </header>
+    <div class="form-container">
+        <h2>Nueva Reseña</h2>
+        <form id="formulario-juego">
+            <div class="form-group">
+                <label for="titulo-resena">Título de la reseña:</label>
+                <input type="text" id="titulo-resena" name="titulo-resena" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nombre-juego">Nombre del juego:</label>
+                <input type="text" id="nombre-juego" name="nombre-juego" required>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="imagen-juego">Imagen del juego:</label>
+                <input type="file" id="imagen-juego" name="imagen-juego" accept="image/*" required>
+            </div>
+
+            <div class="form-group">
+                <label for="opinion">Opinión:</label>
+                <textarea id="opinion" name="opinion"required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="calificacion">Calificación (1 a 5):</label>
+                <input type="number" id="calificacion" name="calificacion" min="1" max="5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="palabras-claves">Tag / Etiquetas:</label>
+                <input type="text" id="palabras-claves" name="palabras-claves" required>
+            </div>
+
+            <button type="submit">Guardar Reseña</button>
+
+        </form>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
