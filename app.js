@@ -1,6 +1,9 @@
 // Seleccionamos el formulario por su ID
 const formulario = document.getElementById('formulario-juego');
 
+// Variables globales para los tags
+let tagsSeleccionados = [];
+
 // Nos aseguramos de que el formulario exista en la página actual para evitar errores[cite: 1, 2]
 if (formulario) {
     formulario.addEventListener('submit', function(evento) {
@@ -12,7 +15,11 @@ if (formulario) {
         const nombreJuego = document.getElementById('nombre-juego').value;
         const opinion = document.getElementById('opinion').value;
         const calificacion = document.getElementById('calificacion').value;
-        const palabrasClaves = document.getElementById('palabras-claves').value;
+        
+        // Si hay tags en la lista interactiva los unimos, o leemos directamente el texto
+        const palabrasClaves = tagsSeleccionados.length > 0 
+            ? tagsSeleccionados.join(', ') 
+            : document.getElementById('tag-input').value;
 
         // Capturamos la imagen subida[cite: 2]
         const inputImagen = document.getElementById('imagen-juego');
@@ -45,6 +52,21 @@ if (formulario) {
 
                 // Limpiamos el formulario y notificamos al usuario[cite: 1]
                 formulario.reset();
+                
+                // Limpiamos los tags de pantalla y reseteamos las estrellas
+                tagsSeleccionados = [];
+                renderizarTags();
+                actualizarEstrellasCalificacion(5);
+                
+                // Reseteamos la vista previa de la imagen
+                const previewImg = document.getElementById('imagen-preview');
+                const placeholder = document.getElementById('preview-placeholder');
+                if (previewImg && placeholder) {
+                    previewImg.src = '';
+                    previewImg.classList.add('oculto');
+                    placeholder.classList.remove('oculto');
+                }
+
                 alert('¡Reseña guardada con éxito!');
             };
 
@@ -131,9 +153,183 @@ function mostrarResenas() {
 }
 
 
+// ==========================================================================
+// CARGA DE ARCHIVOS JSON Y FUNCIONES DE CONTROL
+// ==========================================================================
+
+// CAMBIO REALIZADO: Carga ajustada a la carpeta Json/tags.json
+function cargarTagsJSON() {
+    const datalistTags = document.getElementById('opciones-tags');
+    if (!datalistTags) return;
+
+    fetch('../Json/tags.json')
+        .then(respuesta => respuesta.json())
+        .then(tags => {
+            datalistTags.innerHTML = '';
+            tags.forEach(tag => {
+                const opcion = document.createElement('option');
+                opcion.value = tag;
+                datalistTags.appendChild(opcion);
+            });
+        })
+        .catch(err => {
+            // Intento secundario si la página se ejecuta desde la raíz
+            fetch('Json/tags.json')
+                .then(r => r.json())
+                .then(tags => {
+                    datalistTags.innerHTML = '';
+                    tags.forEach(t => {
+                        const o = document.createElement('option');
+                        o.value = t;
+                        datalistTags.appendChild(o);
+                    });
+                })
+                .catch(e => console.log('Sugerencia: Usa Live Server para cargar los archivos JSON.', e));
+        });
+}
+
+// CAMBIO REALIZADO: Carga ajustada a la carpeta Json/juegos.json
+function cargarJuegosJSON() {
+    const datalistJuegos = document.getElementById('opciones-juegos');
+    if (!datalistJuegos) return;
+
+    fetch('../Json/juegos.json')
+        .then(respuesta => respuesta.json())
+        .then(juegos => {
+            datalistJuegos.innerHTML = '';
+            juegos.forEach(juego => {
+                const opcion = document.createElement('option');
+                opcion.value = juego;
+                datalistJuegos.appendChild(opcion);
+            });
+        })
+        .catch(err => {
+            fetch('Json/juegos.json')
+                .then(r => r.json())
+                .then(juegos => {
+                    datalistJuegos.innerHTML = '';
+                    juegos.forEach(j => {
+                        const o = document.createElement('option');
+                        o.value = j;
+                        datalistJuegos.appendChild(o);
+                    });
+                })
+                .catch(e => console.log('Sugerencia: Usa Live Server para cargar los archivos JSON.', e));
+        });
+}
+
+function agregarTag(valor) {
+    const tagTexto = valor.trim();
+    if (tagTexto && !tagsSeleccionados.includes(tagTexto)) {
+        tagsSeleccionados.push(tagTexto);
+        renderizarTags();
+    }
+}
+
+function eliminarTag(tagTexto) {
+    tagsSeleccionados = tagsSeleccionados.filter(t => t !== tagTexto);
+    renderizarTags();
+}
+
+function renderizarTags() {
+    const contenedor = document.getElementById('contenedor-tags');
+    if (!contenedor) return;
+
+    contenedor.innerHTML = '';
+    tagsSeleccionados.forEach(tag => {
+        const badge = document.createElement('span');
+        badge.classList.add('tag-badge');
+        badge.innerHTML = `${tag} <span class="btn-borrar-tag" onclick="eliminarTag('${tag}')">&times;</span>`;
+        contenedor.appendChild(badge);
+    });
+}
+
+// CAMBIO REALIZADO: Función para iluminar las estrellas según la selección
+function actualizarEstrellasCalificacion(valor) {
+    const estrellas = document.querySelectorAll('.estrella-item');
+    const inputCalificacion = document.getElementById('calificacion');
+
+    if (inputCalificacion) inputCalificacion.value = valor || "";
+
+    estrellas.forEach(estrella => {
+        const val = parseInt(estrella.getAttribute('data-valor'));
+        if (valor > 0 && val <= valor) {
+            estrella.classList.add('activa');
+        } else {
+            estrella.classList.remove('activa');
+        }
+    });
+}
+
+// Inicialización de los eventos del formulario
+function inicializarFormulario() {
+    cargarTagsJSON();
+    cargarJuegosJSON();
+
+    // 1. Estrellas inician en 0 (vacías)
+    actualizarEstrellasCalificacion(0);
+
+    const inputTag = document.getElementById('tag-input');
+    if (inputTag) {
+        // Al seleccionar una opción del datalist
+        inputTag.addEventListener('change', () => {
+            if (inputTag.value.trim() !== '') {
+                agregarTag(inputTag.value);
+                inputTag.value = '';
+            }
+        });
+
+        // Al presionar Enter dentro del campo de tags
+        inputTag.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (inputTag.value.trim() !== '') {
+                    agregarTag(inputTag.value);
+                    inputTag.value = '';
+                }
+            }
+        });
+    }
+
+    // Interacción al hacer clic en las estrellas
+    const estrellasContenedor = document.getElementById('estrellas-calificacion');
+    if (estrellasContenedor) {
+        estrellasContenedor.addEventListener('click', function(e) {
+            if (e.target.classList.contains('estrella-item')) {
+                const valor = parseInt(e.target.getAttribute('data-valor'));
+                actualizarEstrellasCalificacion(valor);
+            }
+        });
+    }
+
+    // Previsualización de imagen
+    const inputImagen = document.getElementById('imagen-juego');
+    const previewImg = document.getElementById('imagen-preview');
+    const placeholder = document.getElementById('preview-placeholder');
+
+    if (inputImagen && previewImg && placeholder) {
+        inputImagen.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('oculto');
+                    placeholder.classList.add('oculto');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+}
+
+
+
 // ==========================================
-// 4. INICIALIZACIÓN
+// 4. INICIALIZACIÓN GENERAL
 // ==========================================
 
-// Ejecutamos la función de mostrar reseñas apenas la estructura del DOM esté lista[cite: 3]
-document.addEventListener('DOMContentLoaded', mostrarResenas);
+document.addEventListener('DOMContentLoaded', () => {
+    mostrarResenas();
+    inicializarFormulario();
+});

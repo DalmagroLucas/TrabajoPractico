@@ -21,8 +21,8 @@
 
 .tarjeta-imagen {
     width: 100%;
-    height: 250px; /* Define la altura máxima/fija del contenedor */
-    background-color: #14181c; /* Fondo oscuro por si la imagen es vertical y deja espacios laterales */
+    height: 250px;
+    background-color: #14181c;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,7 +34,7 @@
     max-height: 100%;
     width: auto;
     height: auto;
-    object-fit: contain; /* ¡CLAVE! Muestra la imagen entera sin recortar nada */
+    object-fit: contain;
 }
 
 .tarjeta-contenido {
@@ -94,6 +94,9 @@
 
 body {
     font-family: "Trebuchet MS", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
 }
 
 .pagina-login{
@@ -152,8 +155,6 @@ body {
     margin-bottom: 18px;
 }
 
-/*Para celu*/
-
 @media (max-width: 600px) {
     .login-panel .form-group {
         display: block;
@@ -165,3 +166,229 @@ body {
     }
 }
 
+
+/* ==========================================================================
+   LAYOUT DEL FORMULARIO Y ESTILOS
+   ========================================================================== */
+
+.barra-navegacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #000000;
+}
+
+.logo-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icono {
+    font-size: 1.8rem;
+}
+
+.logo-texto {
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 1.4rem;
+    transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+    opacity: 0.7;
+}
+
+.contenedor-principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.tarjeta-formulario {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    padding: 35px 40px;
+    width: 100%;
+    max-width: 750px;
+}
+
+.filas-formulario {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+}
+
+.grupo-form {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.grupo-form label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #000000;
+}
+
+.grupo-form input[type="text"],
+.grupo-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px solid #000000;
+    border-radius: 0px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    outline: none;
+}
+
+.grupo-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* CAMBIO REALIZADO: Estilos corregidos para la previsualización de la imagen */
+.caja-subir-imagen {
+    width: 100%;
+    height: 250px;
+    border: 1.5px solid #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    background-color: #ffffff;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.caja-subir-imagen input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.preview-placeholder {
+    color: #666;
+    font-weight: bold;
+    text-align: center;
+    z-index: 1;
+}
+
+.caja-subir-imagen img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #f8f8f8;
+    z-index: 1;
+}
+
+.oculto {
+    display: none !important;
+}
+
+/* CAMBIO REALIZADO: Estilos del selector de Estrellas (★ ★ ★ ★ ★) */
+.grupo-calificacion {
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.estrellas-calificacion {
+    display: flex;
+    gap: 12px;
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.estrella-item {
+    color: #ccc;
+    transition: color 0.2s, transform 0.1s;
+}
+
+.estrella-item.activa {
+    color: #000000;
+    transform: scale(1.15);
+}
+
+.contenedor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.tag-badge {
+    background-color: #e0e0e0;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tag-badge .btn-borrar-tag {
+    cursor: pointer;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.fotor-formulario {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.boton-publicar {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1.5px solid #000000;
+    border-radius: 25px;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.boton-publicar:hover {
+    background-color: #f0f0f0;
+}
+
+@media (max-width: 680px) {
+    .filas-formulario {
+        grid-template-columns: 1fr;
+    }
+    
+    .barra-navegacion {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
