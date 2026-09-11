@@ -1,55 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENX</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>GENX - Crear Reseña</title>
+    <!-- CAMBIO REALIZADO: Se ajustó la ruta al CSS saliendo de /Pages/ con ../style.css -->
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <header>
-        <a href="ultimas_reseñas.html">Ver Reseñas</a>
-        <a href="formulario.html">Nueva Reseña</a>
+
+    <header class="barra-navegacion">
+        <div class="logo-contenedor">
+            <span class="logo-icono">🙂</span>
+            <span class="logo-texto">GENX</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Inicio</a>
+            <a href="ultimas_reseñas.html">Recientes</a>
+            <a href="#">Filtrar</a>
+            <a href="formulario.html" class="activo">Crear</a>
+        </nav>
     </header>
-    <div class="form-container">
-        <h2>Nueva Reseña</h2>
-        <form id="formulario-juego">
-            <div class="form-group">
-                <label for="titulo-resena">Título de la reseña:</label>
-                <input type="text" id="titulo-resena" name="titulo-resena" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="nombre-juego">Nombre del juego:</label>
-                <input type="text" id="nombre-juego" name="nombre-juego" required>
-            </div>
 
-            
-            <div class="form-group">
-                <label for="imagen-juego">Imagen del juego:</label>
-                <input type="file" id="imagen-juego" name="imagen-juego" accept="image/*" required>
-            </div>
+    <main class="contenedor-principal">
+        <div class="tarjeta-formulario">
+            <form id="formulario-juego">
+                
+                <div class="filas-formulario">
+                    
+                    <!-- COLUMNA IZQUIERDA: Caja de Imagen y Tags -->
+                    <div class="columna-izquierda">
+                        
+                        <!-- CAMBIO REALIZADO: Estructura corregida para que la imagen se aprecie sin bloqueos -->
+                        <div class="caja-subir-imagen" id="caja-imagen">
+                            <input type="file" id="imagen-juego" name="imagen-juego" accept="image/*" required>
+                            <div class="preview-placeholder" id="preview-placeholder">
+                                <span>+ Subir Imagen</span>
+                            </div>
+                            <img id="imagen-preview" src="" alt="Vista previa" class="oculto">
+                        </div>
 
-            <div class="form-group">
-                <label for="opinion">Opinión:</label>
-                <textarea id="opinion" name="opinion"required></textarea>
-            </div>
+                        <div class="grupo-form">
+                            <label for="tag-input">Tags</label>
+                            <input type="text" id="tag-input" list="opciones-tags" placeholder="Escribe o selecciona tag..." autocomplete="off">
+                            <datalist id="opciones-tags"></datalist>
+                            <div id="contenedor-tags" class="contenedor-tags"></div>
+                        </div>
 
-            <div class="form-group">
-                <label for="calificacion">Calificación (1 a 5):</label>
-                <input type="number" id="calificacion" name="calificacion" min="1" max="5" required>
-            </div>
+                    </div>
 
-            <div class="form-group">
-                <label for="palabras-claves">Tag / Etiquetas:</label>
-                <input type="text" id="palabras-claves" name="palabras-claves" required>
-            </div>
+                    <!-- COLUMNA DERECHA: Reseña, Juego, Opinión y Estrellas -->
+                    <div class="columna-derecha">
+                        
+                        <div class="grupo-form">
+                            <label for="titulo-resena">Nombre reseña</label>
+                            <input type="text" id="titulo-resena" name="titulo-resena" required>
+                        </div>
 
-            <button type="submit">Guardar Reseña</button>
+                        <div class="grupo-form">
+                            <label for="nombre-juego">Nombre de juego</label>
+                            <input type="text" id="nombre-juego" name="nombre-juego" list="opciones-juegos" autocomplete="off" required>
+                            <datalist id="opciones-juegos"></datalist>
+                        </div>
 
-        </form>
-    </div>
+                        <div class="grupo-form">
+                            <label for="opinion">Opinion</label>
+                            <textarea id="opinion" name="opinion" rows="4" required></textarea>
+                        </div>
 
-    <script src="/app.js"></script>
+                        <!-- CAMBIO REALIZADO: Calificación por Estrellas (★ ★ ★ ★ ★) que se rellenan con un clic -->
+                        <div class="grupo-form grupo-calificacion">
+                            <label>Calificación</label>
+                            <div class="estrellas-calificacion" id="estrellas-calificacion">
+                                <span class="estrella-item" data-valor="1">★</span>
+                                <span class="estrella-item" data-valor="2">★</span>
+                                <span class="estrella-item" data-valor="3">★</span>
+                                <span class="estrella-item" data-valor="4">★</span>
+                                <span class="estrella-item" data-valor="5">★</span>
+                            </div>
+                            <!-- value="" para que inicie sin estrellas marcadas -->
+                            <input type="hidden" id="calificacion" name="calificacion" value="" required>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="fotor-formulario">
+                    <button type="submit" class="boton-publicar">Publicar</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- CAMBIO REALIZADO: Se ajustó la ruta al archivo app.js saliendo de /Pages/ con ../app.js -->
+    <script src="../app.js"></script>
 </body>
 </html>
