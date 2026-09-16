@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="pagina-login">
+    <main class="login-contenedor">
+        <section class="login-panel">
+            <p class="login-marca">Página de reseñas</p>
+
+            <h1>Inicio de sesión</h1>
+
+            <p class="login-descripcion">
+                Ingresa para compartir tus reseñas:
+            </p>
+
+            <form id="formulario-login">
+                <div class="form-group">
+                    <label for="usuario">Usuario:</label>
+
+                    <input 
+                        type="text"
+                        id="usuario"
+                        name="usuario"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">Contraseña:</label>
+
+                    <input 
+                        type="password"
+                        id="contrasena"
+                        name="contrasena"
+                        required
+                    >
+                </div>
+
+                <p id="mensaje-login" class="mensaje-login"></p>
+
+                <button type="submit" class="boton-login">Iniciar sesión</button>
+            </form>
+        </section>
+    </main>
+
+    <button id="boton-tema-flotante" class="boton-tema-flotante" title="Cambiar a modo claro/oscuro">Claro</button>
+
+    <script src="/app.js"></script>
+
+</body>
+</html>
