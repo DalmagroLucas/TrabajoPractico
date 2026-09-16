@@ -621,16 +621,16 @@ input[type="text"]:focus, select:focus {
 
 /* Caja para subir la imagen de portada */
 .caja-subir-imagen {
-    background: #0f111a !important;
-    border: 2px dashed #2d324d !important;
-    border-radius: 16px !important;
-    color: #a0aec0 !important;
-    transition: border-color 0.2s, background 0.2s !important;
+    background: #14181c !important;
+    border: 1px solid #445566 !important;
+    border-radius: 0px !important;
+    color: #899aa9 !important;
+    transition: none !important;
 }
 
 .caja-subir-imagen:hover {
-    border-color: #00f2fe !important;
-    background: #121522 !important;
+    border-color: #445566 !important;
+    background: #14181c !important;
 }
 
 /* Estrellas de calificación */
@@ -767,4 +767,277 @@ input[type="text"]:focus, select:focus {
 
 .tag-item button:hover, .tag button:hover, #contenedor-tags button:hover {
     color: #ff5252 !important; /* Rojo suave solo al pasar el cursor sobre la X para borrar */
+}
+
+/* =========================================================
+   PÁGINA JUEGOS (INICIO): TARJETAS CON ESTILO MÁS NATURAL
+   ========================================================= */
+
+.pagina-juegos .tarjeta-resena:hover {
+    transform: translateY(-3px);
+    border-color: #3a415f;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
+}
+
+.pagina-juegos .tarjeta-resena:hover .tarjeta-imagen img {
+    transform: none;
+}
+
+/* =========================================================
+   BOTÓN PARA CAMBIAR TEMA OSCURO / CLARO
+   ========================================================= */
+
+.boton-tema {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid #3a415f;
+    color: #a0aec0;
+    font-size: 0.72rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.boton-tema:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+    border-color: #00f2fe;
+    transform: scale(1.05);
+}
+
+.boton-tema-flotante {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    padding: 8px 16px;
+    font-size: 0.72rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #e2e8f0;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 50;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.boton-tema-flotante:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================================
+   MODO CLARO (LIGHT MODE)
+   ========================================================= */
+
+body.modo-claro {
+    background-color: #f2f4f8;
+    color: #1a1f36;
+}
+
+body.modo-claro h1,
+body.modo-claro h2,
+body.modo-claro h3 {
+    color: #111827;
+    text-shadow: none;
+}
+
+body.modo-claro h4,
+body.modo-claro .tarjeta-titulo {
+    color: #111827;
+}
+
+/* Barra de navegación */
+body.modo-claro .barra-navegacion {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e5ec;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+body.modo-claro .nav-links a {
+    color: #4b5563;
+}
+
+body.modo-claro .nav-links a:hover,
+body.modo-claro .nav-links a.activo {
+    color: #0284c7;
+    text-shadow: none;
+}
+
+body.modo-claro .logo-texto,
+body.modo-claro .logo-icono {
+    color: #111827;
+}
+
+body.modo-claro .boton-tema-flotante {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: #cbd5e1;
+}
+
+/* Tarjetas de reseñas y juegos */
+body.modo-claro .tarjeta-resena {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+body.modo-claro .tarjeta-resena:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+body.modo-claro .tarjeta-imagen {
+    background-color: #f1f5f9;
+}
+
+body.modo-claro .tarjeta-imagen::after {
+    background: linear-gradient(to top, #ffffff, transparent);
+}
+
+body.modo-claro .tarjeta-juego {
+    color: #0284c7;
+}
+
+body.modo-claro .tarjeta-puntuacion {
+    background: rgba(0, 140, 69, 0.1);
+    color: #0a7d3c;
+    border-color: rgba(0, 140, 69, 0.3);
+}
+
+body.modo-claro .tarjeta-opinion,
+body.modo-claro .contenedor-principal p {
+    color: #475569;
+}
+
+body.modo-claro .tarjeta-tags {
+    color: #db2777;
+    background: rgba(219, 39, 119, 0.08);
+}
+
+/* Página de juegos: hover sin azul */
+body.modo-claro .pagina-juegos .tarjeta-resena:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+}
+
+/* Inputs y selects */
+body.modo-claro input[type="text"],
+body.modo-claro select {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+}
+
+body.modo-claro input[type="text"]:focus,
+body.modo-claro select:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.35) !important;
+}
+
+/* Formulario */
+body.modo-claro .tarjeta-formulario {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.modo-claro .tarjeta-formulario label,
+body.modo-claro .tarjeta-formulario h1,
+body.modo-claro .tarjeta-formulario p {
+    color: #1f2937 !important;
+}
+
+body.modo-claro .tarjeta-formulario input[type="text"],
+body.modo-claro .tarjeta-formulario textarea {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: none !important;
+}
+
+body.modo-claro .caja-subir-imagen {
+    background: #f5f5f5 !important;
+    border: 1px solid #b0b0b0 !important;
+    border-radius: 0px !important;
+    color: #666666 !important;
+}
+
+body.modo-claro .caja-subir-imagen:hover {
+    border-color: #b0b0b0 !important;
+    background: #f5f5f5 !important;
+}
+
+/* Tags del formulario */
+body.modo-claro #contenedor-tags span,
+body.modo-claro #contenedor-tags div {
+    background-color: #eef2f7 !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: none !important;
+}
+
+body.modo-claro #contenedor-tags span:hover {
+    border-color: #10b981 !important;
+    color: #111827 !important;
+}
+
+/* Página de inicio de sesión */
+body.modo-claro.pagina-login {
+    background-color: #eef2f7;
+}
+
+body.modo-claro .login-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+body.modo-claro .login-panel h1 {
+    color: #111827;
+}
+
+body.modo-claro .login-marca {
+    color: #16a34a;
+}
+
+body.modo-claro .login-descripcion {
+    color: #374151;
+}
+
+body.modo-claro .login-panel input {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* Botón "Dejar reseña" siempre igual sin importar el tema */
+.boton-enlace {
+    background: none !important;
+    color: #a0aec0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    text-decoration: underline !important;
+    text-transform: none !important;
+    transition: none !important;
+    font-size: 0.9rem !important;
+}
+
+.boton-enlace:hover {
+    background: none !important;
+    color: #ffffff !important;
+}
+
+body.modo-claro .boton-enlace {
+    color: #475569 !important;
+}
+
+body.modo-claro .boton-enlace:hover {
+    color: #111827 !important;
 }

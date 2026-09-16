@@ -50,7 +50,7 @@ if (formulario) {
                 // Convertimos a JSON y guardamos la lista actualizada en el localStorage[cite: 1, 2]
                 localStorage.setItem('misResenas', JSON.stringify(resenasGuardadas));
 
-                // Limpiamos el formulario y notificamos al usuario[cite: 1]
+                // Limpiamos el formulario y notificamos al usuario
                 formulario.reset();
                 
                 // Limpiamos los tags de pantalla y reseteamos las estrellas
@@ -199,7 +199,7 @@ function cargarJuegosJSON() {
             datalistJuegos.innerHTML = '';
             juegos.forEach(juego => {
                 const opcion = document.createElement('option');
-                opcion.value = juego;
+                opcion.value = juego.nombre;
                 datalistJuegos.appendChild(opcion);
             });
         })
@@ -210,7 +210,7 @@ function cargarJuegosJSON() {
                     datalistJuegos.innerHTML = '';
                     juegos.forEach(j => {
                         const o = document.createElement('option');
-                        o.value = j;
+                        o.value = j.nombre;
                         datalistJuegos.appendChild(o);
                     });
                 })
@@ -265,6 +265,14 @@ function actualizarEstrellasCalificacion(valor) {
 function inicializarFormulario() {
     cargarTagsJSON();
     cargarJuegosJSON();
+
+    // Pre-cargar el juego elegido desde inicio.html (parámetro ?juego=)
+    const paramsInicio = new URLSearchParams(window.location.search);
+    const juegoDesdeInicio = paramsInicio.get('juego');
+    if (juegoDesdeInicio) {
+        const inputNombreJuego = document.getElementById('nombre-juego');
+        if (inputNombreJuego) inputNombreJuego.value = juegoDesdeInicio;
+    }
 
     // 1. Estrellas inician en 0 (vacías)
     actualizarEstrellasCalificacion(0);
@@ -574,3 +582,105 @@ function cargarPaginaFiltrar() {
 }
 
 document.addEventListener('DOMContentLoaded', cargarPaginaFiltrar);
+
+
+
+//Inicio de la pagina
+
+function cargarPaginaInicio() {
+    const contenedor = document.getElementById('contenedor-juegos');
+    if (!contenedor) return;
+
+    // Imagen de respaldo por si la portada aún no existe en la carpeta Img
+    const imagenPorDefecto = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250"><rect width="100%" height="100%" fill="#14181c"/></svg>'
+    );
+
+    // Cargamos el archivo JSON que tiene la lista completa de juegos
+    fetch('../Json/juegos.json')
+        .then(respuesta => respuesta.json())
+        .then(juegos => {
+            // Limpiamos el contenedor para evitar duplicados al refrescar
+            contenedor.innerHTML = '';
+
+            // Recorremos la lista de juegos y creamos una tarjeta por cada uno
+            juegos.forEach(juego => {
+                const tarjeta = document.createElement('div');
+                tarjeta.classList.add('tarjeta-resena');
+
+                tarjeta.innerHTML = `
+                    <div class="tarjeta-imagen">
+                        <img src="${juego.imagen}" alt="Portada de ${juego.nombre}">
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">${juego.nombre}</h3>
+                        <p class="tarjeta-opinion">${juego.descripcion}</p>
+                        <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}">Dejar reseña</a>
+                    </div>
+                `;
+
+                // Si la imagen no existe todavía, mostramos la imagen de respaldo
+                const img = tarjeta.querySelector('.tarjeta-imagen img');
+                img.onerror = function() {
+                    this.onerror = null;
+                    this.src = imagenPorDefecto;
+                };
+
+                contenedor.appendChild(tarjeta);
+            });
+        })
+        .catch(err => {
+            // Si el JSON no se puede cargar, avisamos al usuario (usar Live Server)
+            contenedor.innerHTML = '<h3 style="color: #899aa9; text-align: center; grid-column: 1 / -1;">No se pudieron cargar los juegos. Abre la página con Live Server.</h3>';
+        });
+}
+
+document.addEventListener('DOMContentLoaded', cargarPaginaInicio);
+
+//Modo oscuro o claro
+
+
+function aplicarTema(tema) {
+    // Agregamos o quitamos la clase que activa el modo claro
+    if (tema === 'claro') {
+        document.body.classList.add('modo-claro');
+    } else {
+        document.body.classList.remove('modo-claro');
+    }
+
+    // Actualizamos los textos de los botones (muestran el modo al que se pasa al hacer click)
+    const texto = tema === 'claro' ? 'Oscuro' : 'Claro';
+    const botonNav = document.getElementById('boton-tema');
+    const botonFlotante = document.getElementById('boton-tema-flotante');
+    if (botonNav) botonNav.textContent = texto;
+    if (botonFlotante) botonFlotante.textContent = texto;
+
+    // Guardamos la preferencia para que se mantenga entre páginas
+    localStorage.setItem('tema', tema);
+}
+
+function inicializarTema() {
+    // Aplicamos el tema guardado, u oscuro si es la primera vez
+    const temaGuardado = localStorage.getItem('tema') || 'oscuro';
+    aplicarTema(temaGuardado);
+
+    // Botón de la barra de navegación
+    const botonNav = document.getElementById('boton-tema');
+    if (botonNav) {
+        botonNav.addEventListener('click', () => {
+            const nuevoTema = document.body.classList.contains('modo-claro') ? 'oscuro' : 'claro';
+            aplicarTema(nuevoTema);
+        });
+    }
+
+    // Botón flotante de la página de inicio de sesión
+    const botonFlotante = document.getElementById('boton-tema-flotante');
+    if (botonFlotante) {
+        botonFlotante.addEventListener('click', () => {
+            const nuevoTema = document.body.classList.contains('modo-claro') ? 'oscuro' : 'claro';
+            aplicarTema(nuevoTema);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', inicializarTema);
