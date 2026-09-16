@@ -392,3 +392,379 @@ body {
         gap: 15px;
     }
 }
+
+/* =========================================================
+   ESTILO GAMING DARK MODE GENERAL
+   ========================================================= */
+
+body {
+    background-color: #0f111a; /* Fondo oscuro espacial */
+    color: #e2e8f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezados y títulos */
+h1, h2, h3 {
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* BARRA DE NAVEGACIÓN */
+.barra-navegacion {
+    background: #161926;
+    border-bottom: 1px solid #2a2e45;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-links a {
+    color: #a0aec0;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 600;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.activo {
+    color: #00f2fe;
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+}
+
+/* INPUTS Y SELECTS DE FILTROS */
+input[type="text"], select {
+    background-color: #1a1d2e !important;
+    color: #ffffff !important;
+    border: 1px solid #323752 !important;
+    border-radius: 12px !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #7928ca !important;
+    box-shadow: 0 0 10px rgba(121, 40, 202, 0.4) !important;
+}
+
+/* =========================================================
+   NUEVAS TARJETAS DE RESEÑA (DISEÑO MODERNO Y SUAVE)
+   ========================================================= */
+
+.grid-resenas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
+
+.tarjeta-resena {
+    background: linear-gradient(145deg, #181b29, #121420);
+    border: 1px solid #2d324d;
+    border-radius: 18px; /* Bordes suaves */
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Efecto hover flotante con luz neón */
+.tarjeta-resena:hover {
+    transform: translateY(-7px);
+    border-color: #00f2fe;
+    box-shadow: 0 15px 30px rgba(0, 242, 254, 0.15);
+}
+
+/* PORTADA DE LA IMAGEN CON DEGRADADO */
+.tarjeta-imagen {
+    width: 100%;
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tarjeta-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.tarjeta-resena:hover .tarjeta-imagen img {
+    transform: scale(1.06);
+}
+
+/* Sombra oscura sobre la imagen para legibilidad */
+.tarjeta-imagen::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, #181b29, transparent);
+}
+
+/* CONTENIDO DE LA TARJETA */
+.tarjeta-contenido {
+    padding: 18px;
+}
+
+.tarjeta-titulo {
+    font-size: 1.25rem;
+    margin: 0 0 4px 0;
+    color: #fff;
+    font-weight: 700;
+}
+
+.tarjeta-juego {
+    font-size: 0.85rem;
+    color: #00f2fe;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 10px 0;
+}
+
+.tarjeta-puntuacion {
+    display: inline-block;
+    background: rgba(0, 230, 118, 0.15);
+    color: #00e676;
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+.tarjeta-opinion {
+    color: #a0aec0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.tarjeta-tags {
+    font-size: 0.8rem;
+    color: #ff007f;
+    background: rgba(255, 0, 127, 0.1);
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* BOTÓN ELIMINAR FLOTANTE */
+.boton-eliminar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.boton-eliminar:hover {
+    background: #ff3366;
+    transform: scale(1.1);
+}
+
+/* =========================================================
+   REDISEÑO DE FORMULARIO DE RESEÑA (SOLO CSS)
+   ========================================================= */
+
+/* Fondo de la tarjeta del formulario */
+.tarjeta-formulario {
+    background: #161926 !important;
+    border: 1px solid #2d324d !important;
+    border-radius: 20px !important;
+    padding: 35px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Color de los textos y labels */
+.tarjeta-formulario label,
+.tarjeta-formulario h1,
+.tarjeta-formulario p {
+    color: #e2e8f0 !important;
+}
+
+/* Campos de texto y área de opinión */
+.tarjeta-formulario input[type="text"],
+.tarjeta-formulario textarea {
+    background-color: #0f111a !important;
+    color: #ffffff !important;
+    border: 1.5px solid #2d324d !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-size: 0.95rem !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+/* Resplandor celeste al hacer foco en los campos */
+.tarjeta-formulario input[type="text"]:focus,
+.tarjeta-formulario textarea:focus {
+    border-color: #00f2fe !important;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3) !important;
+}
+
+/* Caja para subir la imagen de portada */
+.caja-subir-imagen {
+    background: #0f111a !important;
+    border: 2px dashed #2d324d !important;
+    border-radius: 16px !important;
+    color: #a0aec0 !important;
+    transition: border-color 0.2s, background 0.2s !important;
+}
+
+.caja-subir-imagen:hover {
+    border-color: #00f2fe !important;
+    background: #121522 !important;
+}
+
+/* Estrellas de calificación */
+.estrellas-calificacion {
+    color: #4a5568 !important;
+}
+
+.estrella-item:hover,
+.estrella-item.activa {
+    color: #ffc107 !important;
+    text-shadow: 0 0 8px rgba(255, 193, 7, 0.6) !important;
+}
+
+/* Botón Publicar con degradado neón */
+.boton-publicar {
+    background: linear-gradient(135deg, #00f2fe, #4facfe) !important;
+    color: #0f111a !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 14px 28px !important;
+    font-size: 1.05rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.boton-publicar:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5) !important;
+}
+
+/* =========================================================
+   ESTILOS MEJORADOS PARA LAS TAGS / ETIQUETAS
+   ========================================================= */
+
+/* Contenedor que agrupa las tags creadas */
+#contenedor-tags, .contenedor-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+}
+
+/* Cada píldora / etiqueta individual */
+.tag-item, .tag, #contenedor-tags span {
+    background: rgba(255, 0, 127, 0.12) !important;
+    color: #ff3399 !important;
+    border: 1px solid rgba(255, 0, 127, 0.35) !important;
+    border-radius: 20px !important;
+    padding: 6px 14px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Efecto hover sobre la etiqueta */
+.tag-item:hover, .tag:hover, #contenedor-tags span:hover {
+    background: rgba(255, 0, 127, 0.22) !important;
+    border-color: #ff007f !important;
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Botón de cierre (la "x" para eliminar tag) */
+.tag-item button, .tag button, #contenedor-tags span button, #contenedor-tags .btn-cerrar {
+    background: transparent !important;
+    border: none !important;
+    color: #ff66b2 !important;
+    font-weight: bold !important;
+    font-size: 1rem !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin-left: 2px !important;
+    cursor: pointer !important;
+    transition: color 0.2s, transform 0.2s !important;
+}
+
+/* Hover en la "x" */
+.tag-item button:hover, .tag button:hover, #contenedor-tags span button:hover {
+    color: #ffffff !important;
+    transform: scale(1.3) !important;
+}
+
+/* =========================================================
+   ESTILOS REVISADOS PARA LAS TAGS (ESTILO DARK MATTE)
+   ========================================================= */
+
+/* Contenedor de etiquetas */
+#contenedor-tags, .contenedor-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+}
+
+/* Píldora individual en gris oscuro mate con borde sutil */
+.tag-item, .tag, #contenedor-tags span, #contenedor-tags div {
+    background-color: #1f2436 !important;
+    color: #e2e8f0 !important;
+    border: 1px solid #363c56 !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4) !important;
+}
+
+/* Efecto hover discreto */
+.tag-item:hover, .tag:hover, #contenedor-tags span:hover {
+    border-color: #00e676 !important;
+    color: #ffffff !important;
+}
+
+/* Botón de cierre (x) integrado */
+.tag-item button, .tag button, #contenedor-tags button, #contenedor-tags span span {
+    background: transparent !important;
+    border: none !important;
+    color: #a0aec0 !important;
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    transition: color 0.2s !important;
+}
+
+.tag-item button:hover, .tag button:hover, #contenedor-tags button:hover {
+    color: #ff5252 !important; /* Rojo suave solo al pasar el cursor sobre la X para borrar */
+}
