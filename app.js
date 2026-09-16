@@ -333,3 +333,244 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarResenas();
     inicializarFormulario();
 });
+ 
+function inicializarPaginaFiltrar() {
+    const inputTexto = document.getElementById('buscador-texto');
+    const selectJuego = document.getElementById('filtro-juego-select');
+    const selectTag = document.getElementById('filtro-tag-select');
+    const selectCalificacion = document.getElementById('filtro-calificacion');
+    const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+    const contenedor = document.getElementById('contenedor-resenas');
+
+    if (!contenedor || !inputTexto) return;
+
+    // Cargar opciones en el select de Juegos
+    if (selectJuego && selectJuego.options.length <= 1) {
+        LISTA_JUEGOS.forEach(juego => {
+            const op = document.createElement('option');
+            op.value = juego;
+            op.textContent = juego;
+            selectJuego.appendChild(op);
+        });
+    }
+
+    // Cargar opciones en el select de Tags
+    if (selectTag && selectTag.options.length <= 1) {
+        LISTA_TAGS.forEach(tag => {
+            const op = document.createElement('option');
+            op.value = tag;
+            op.textContent = tag;
+            selectTag.appendChild(op);
+        });
+    }
+
+    // Función de filtrado flexible
+    function aplicarFiltros() {
+        const textoTitulo = inputTexto.value.toLowerCase().trim();
+        const juegoElegido = selectJuego ? selectJuego.value.toLowerCase().trim() : '';
+        const tagElegido = selectTag ? selectTag.value.toLowerCase().trim() : '';
+        const calificacionElegida = selectCalificacion ? selectCalificacion.value : '';
+
+        const resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+
+        const filtradas = resenasGuardadas.filter(resena => {
+            // 1. Título
+            const coincideTitulo = textoTitulo === '' || 
+                (resena.titulo || '').toLowerCase().includes(textoTitulo);
+
+            // 2. Juego (Usamos .includes para evitar fallos si hay espacios extra)
+            const coincideJuego = juegoElegido === '' || 
+                (resena.juego || '').toLowerCase().includes(juegoElegido) ||
+                juegoElegido.includes((resena.juego || '').toLowerCase());
+
+            // 3. Tag (Busca si la tag elegida está dentro del texto de tags)
+            const coincideTag = tagElegido === '' || 
+                (resena.tags || '').toLowerCase().includes(tagElegido);
+
+            // 4. Calificación
+            const coincideCalificacion = calificacionElegida === '' || 
+                String(resena.calificacion) === String(calificacionElegida);
+
+            return coincideTitulo && coincideJuego && coincideTag && coincideCalificacion;
+        });
+
+        renderizarTarjetas(filtradas, contenedor);
+    }
+
+    // Eventos de escucha
+    inputTexto.addEventListener('input', aplicarFiltros);
+    if (selectJuego) selectJuego.addEventListener('change', aplicarFiltros);
+    if (selectTag) selectTag.addEventListener('change', aplicarFiltros);
+    if (selectCalificacion) selectCalificacion.addEventListener('change', aplicarFiltros);
+
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener('click', () => {
+            inputTexto.value = '';
+            if (selectJuego) selectJuego.value = '';
+            if (selectTag) selectTag.value = '';
+            if (selectCalificacion) selectCalificacion.value = '';
+            aplicarFiltros();
+        });
+    }
+
+    // Ejecución inicial
+    aplicarFiltros();
+}
+
+// LISTAS INTEGRADAS
+const LISTA_TAGS = [
+    "Acción", "Aventura", "RPG", "JRPG", "Singleplayer", "Multijugador",
+    "Cooperativo", "Plataformas", "Metroidvania", "Estrategia", "Terror",
+    "Supervivencia", "Indie", "Shooter", "FPS", "TPS", "Puzzle", "Simulación",
+    "Deportes", "Carreras", "Lucha", "Roguelike", "Roguelite", "Mundo Abierto",
+    "Hack and Slash", "Stealth", "Soulslike", "Novela Visual", "Música/Ritmo",
+    "Sandbox", "Táctico", "Casual", "Battle Royale"
+];
+
+const LISTA_JUEGOS = [
+    "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom",
+    "Elden Ring", "God of War", "God of War Ragnarök", "Red Dead Redemption 2",
+    "The Witcher 3: Wild Hunt", "Hollow Knight", "Minecraft", "Grand Theft Auto V",
+    "Cyberpunk 2077", "Dark Souls III", "Bloodborne", "Sekiro: Shadows Die Twice",
+    "Baldur's Gate 3", "Super Mario Odyssey", "Super Mario Bros. Wonder", "Persona 5 Royal",
+    "Final Fantasy VII Remake", "Final Fantasy XVI", "Resident Evil 4 Remake",
+    "Resident Evil Village", "Silent Hill 2", "Hades", "Hades II", "Celeste",
+    "Stardew Valley", "Terraria", "Portal 2", "Half-Life 2", "Doom Eternal",
+    "Overwatch 2", "Counter-Strike 2", "Valorant", "League of Legends", "Dota 2",
+    "World of Warcraft", "Fortnite", "Apex Legends", "Call of Duty: Warzone",
+    "Fallout 4", "Skyrim (The Elder Scrolls V)", "Monster Hunter: World",
+    "Monster Hunter Rise", "Death Stranding", "Ghost of Tsushima", "The Last of Us Part I",
+    "The Last of Us Part II", "Horizon Zero Dawn", "Horizon Forbidden West",
+    "Spider-Man Remastered", "Spider-Man 2", "Cuphead", "Undertale", "Dead Cells",
+    "Slay the Spire", "Outer Wilds", "Disco Elysium", "Sea of Thieves", "It Takes Two",
+    "Left 4 Dead 2", "Payday 2", "Subnautica", "No Man's Sky", "Starfield",
+    "Palworld", "Helldivers 2", "Black Myth: Wukong"
+];
+
+function cargarPaginaFiltrar() {
+    const inputTexto = document.getElementById('buscador-texto');
+    const selectJuego = document.getElementById('filtro-juego-select');
+    const selectTag = document.getElementById('filtro-tag-select');
+    const selectCalificacion = document.getElementById('filtro-calificacion');
+    const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+    const contenedor = document.getElementById('contenedor-resenas');
+
+    if (!contenedor || !inputTexto) return;
+
+    // Llenar select de Juegos
+    if (selectJuego) {
+        selectJuego.innerHTML = '<option value="">Todos los juegos</option>';
+        LISTA_JUEGOS.forEach(juego => {
+            const op = document.createElement('option');
+            op.value = juego;
+            op.textContent = juego;
+            selectJuego.appendChild(op);
+        });
+    }
+
+    // Llenar select de Tags
+    if (selectTag) {
+        selectTag.innerHTML = '<option value="">Todos los tags</option>';
+        LISTA_TAGS.forEach(tag => {
+            const op = document.createElement('option');
+            op.value = tag;
+            op.textContent = tag;
+            selectTag.appendChild(op);
+        });
+    }
+
+    // Lógica de filtrado
+    function aplicarFiltros() {
+        const textoBusqueda = inputTexto.value.toLowerCase().trim();
+        const juegoElegido = selectJuego ? selectJuego.value.toLowerCase().trim() : '';
+        const tagElegido = selectTag ? selectTag.value.toLowerCase().trim() : '';
+        const calificacionElegida = selectCalificacion ? selectCalificacion.value : '';
+
+        const resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+
+        const filtradas = resenasGuardadas.filter(resena => {
+            // 1. Título
+            const coincideTexto = textoBusqueda === '' || 
+                (resena.titulo || '').toLowerCase().includes(textoBusqueda);
+
+            // 2. Juego
+            const coincideJuego = juegoElegido === '' || 
+                (resena.juego || '').toLowerCase().includes(juegoElegido);
+
+            // 3. Tag (Filtra de verdad si la tag seleccionada está dentro de los tags de la reseña)
+            const coincideTag = tagElegido === '' || 
+                (resena.tags || '').toLowerCase().includes(tagElegido);
+
+            // 4. Calificación
+            const coincideCalificacion = calificacionElegida === '' || 
+                String(resena.calificacion) === String(calificacionElegida);
+
+            return coincideTexto && coincideJuego && coincideTag && coincideCalificacion;
+        });
+
+        // Renderizado de las tarjetas abajo
+        contenedor.innerHTML = '';
+
+        if (filtradas.length === 0) {
+            contenedor.innerHTML = `
+                <h3 style="text-align: center; grid-column: 1 / -1; color: #888; font-weight: normal; margin-top: 30px; width: 100%;">
+                    No se encontraron reseñas con esos filtros.
+                </h3>`;
+            return;
+        }
+
+        filtradas.forEach(resena => {
+            const tarjeta = document.createElement('div');
+            tarjeta.classList.add('tarjeta-resena');
+
+            tarjeta.innerHTML = `
+                <button class="boton-eliminar" title="Eliminar reseña">🗑️</button>
+                <div class="tarjeta-imagen">
+                    <img src="${resena.imagen || '../placeholder.png'}" alt="Portada de ${resena.juego}">
+                </div>
+                <div class="tarjeta-contenido">
+                    <h3 class="tarjeta-titulo">${resena.titulo}</h3>
+                    <h4 class="tarjeta-juego">${resena.juego}</h4>
+                    <div class="tarjeta-puntuacion">★ ${resena.calificacion} / 5</div>
+                    <p class="tarjeta-opinion">${resena.opinion}</p>
+                    ${resena.tags ? `<div class="tarjeta-tags">🏷️ ${resena.tags}</div>` : ''}
+                </div>
+            `;
+
+            const btnEliminar = tarjeta.querySelector('.boton-eliminar');
+            if (btnEliminar) {
+                btnEliminar.addEventListener('click', () => {
+                    if (confirm(`¿Eliminar la reseña "${resena.titulo}"?`)) {
+                        let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                        resenas = resenas.filter(r => r.id !== resena.id);
+                        localStorage.setItem('misResenas', JSON.stringify(resenas));
+                        aplicarFiltros();
+                    }
+                });
+            }
+
+            contenedor.appendChild(tarjeta);
+        });
+    }
+
+    // Eventos
+    inputTexto.addEventListener('input', aplicarFiltros);
+    if (selectJuego) selectJuego.addEventListener('change', aplicarFiltros);
+    if (selectTag) selectTag.addEventListener('change', aplicarFiltros);
+    if (selectCalificacion) selectCalificacion.addEventListener('change', aplicarFiltros);
+
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener('click', () => {
+            inputTexto.value = '';
+            if (selectJuego) selectJuego.value = '';
+            if (selectTag) selectTag.value = '';
+            if (selectCalificacion) selectCalificacion.value = '';
+            aplicarFiltros();
+        });
+    }
+
+    // Render inicial
+    aplicarFiltros();
+}
+
+document.addEventListener('DOMContentLoaded', cargarPaginaFiltrar);
