@@ -73,9 +73,184 @@ if (formulario) {
             // Leemos el archivo para disparar el lector.onload
             lector.readAsDataURL(archivoImagen);
         }
+        const usuarioActivo = obtenerUsuarioLogueado();
+
+        if (!usuarioActivo) {
+            alert('Debes iniciar sesión para publicar una reseña.');
+            window.location.href = 'inicio_sesion.html';
+            return;
+        }
+
+        const nuevaResena = {
+            id: Date.now(),
+            usuarioId: usuarioActivo.id, // Foreign Key del usuario
+            titulo: tituloResena,
+            juego: nombreJuego,
+            opinion: opinion,
+            calificacion: calificacion,
+            tags: palabrasClaves,
+            imagen: e.target.result
+        };
     });
 }
 
+
+
+function inicializarUsuarios() {
+    // Si no existen usuarios en localStorage, cargamos los del JSON precargado
+    if (!localStorage.getItem('usuarios')) {
+        fetch('../Json/usuarios.json')
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem('usuarios', JSON.stringify(data));
+            })
+            .catch(() => {
+                // Si falla la ruta por carpetas, intentar desde raíz
+                fetch('Json/usuarios.json')
+                    .then(res => res.json())
+                    .then(data => localStorage.setItem('usuarios', JSON.stringify(data)))
+                    .catch(e => console.log('Usa Live Server para cargar JSON de usuarios.', e));
+            });
+    }
+}
+
+// ==========================================
+// VALIDACIÓN Y REGISTRO DE USUARIO
+// ==========================================
+
+function inicializarFormularioRegistro() {
+    const formRegistro = document.getElementById('formulario-registro');
+    if (!formRegistro) return;
+
+    formRegistro.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const usuarioInput = document.getElementById('reg-usuario').value.trim();
+        const passInput = document.getElementById('reg-contrasena').value;
+        const confirmPassInput = document.getElementById('reg-confirmar-contrasena').value;
+        const mensaje = document.getElementById('mensaje-registro');
+
+        if (mensaje) mensaje.textContent = '';
+
+        // 1. Validar nombre de usuario (mínimo 5 caracteres, solo letras y números)
+        const regexUsuario = /^[a-zA-Z0-9]{5,}$/;
+        if (!regexUsuario.test(usuarioInput)) {
+            const textoError = 'Nombre de usuario inválido. Debe tener al menos 5 caracteres (solo letras y números, sin símbolos).';
+            if (mensaje) mensaje.textContent = textoError;
+            alert(textoError);
+            return;
+        }
+
+        // 2. Validar contraseña (mínimo 8 caracteres, al menos 1 letra y 1 número)
+        const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+        if (!regexPassword.test(passInput)) {
+            const textoError = 'Contraseña inválida. Debe tener al menos 8 caracteres, incluyendo al menos una letra y un número.';
+            if (mensaje) mensaje.textContent = textoError;
+            alert(textoError);
+            return;
+        }
+
+        // 3. Confirmar que las contraseñas coincidan
+        if (passInput !== confirmPassInput) {
+            const textoError = 'Las contraseñas no coinciden.';
+            if (mensaje) mensaje.textContent = textoError;
+            alert(textoError);
+            return;
+        }
+
+        // 4. Verificar si el usuario ya existe en el localStorage
+        let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const usuarioExiste = listaUsuarios.some(u => u.usuario.toLowerCase() === usuarioInput.toLowerCase());
+
+        if (usuarioExiste) {
+            const textoError = 'El nombre de usuario ya está registrado. Por favor, elige otro.';
+            if (mensaje) mensaje.textContent = textoError;
+            alert(textoError);
+            return;
+        }
+
+        // 5. Crear el objeto del nuevo usuario
+        const nuevoUsuario = {
+            id: Date.now(), // ID único basado en el tiempo actual
+            usuario: usuarioInput,
+            contrasena: passInput
+        };
+
+        // Guardar el nuevo usuario en la lista de usuarios
+        listaUsuarios.push(nuevoUsuario);
+        localStorage.setItem('usuarios', JSON.stringify(listaUsuarios));
+
+        // 6. AUTO-LOGIN: Guardamos la sesión activa inmediatamente
+        const sesion = {
+            id: nuevoUsuario.id,
+            usuario: nuevoUsuario.usuario
+        };
+        localStorage.setItem('usuarioLogueado', JSON.stringify(sesion));
+
+        alert(`¡Cuenta creada con éxito! Bienvenido/a, ${nuevoUsuario.usuario}.`);
+
+        // 7. Redirigir directamente al inicio (Home)
+        window.location.href = 'inicio.html';
+    });
+}
+
+function inicializarFormularioLogin() {
+    const formLogin = document.getElementById('formulario-login');
+    if (!formLogin) return;
+
+    formLogin.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const usuarioInput = document.getElementById('usuario').value.trim();
+        const passInput = document.getElementById('contrasena').value;
+        const mensaje = document.getElementById('mensaje-login');
+
+        // Traemos la lista completa de usuarios registrados desde localStorage
+        let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+        // Buscamos si existe un usuario que coincida tanto en nombre como en contraseña
+        const usuarioEncontrado = listaUsuarios.find(
+            u => u.usuario.toLowerCase() === usuarioInput.toLowerCase() && u.contrasena === passInput
+        );
+
+        if (usuarioEncontrado) {
+            // SI COINCIDEN:
+            // 1. Guardamos los datos del usuario en la sesión activa
+            const sesion = {
+                id: usuarioEncontrado.id,
+                usuario: usuarioEncontrado.usuario
+            };
+            localStorage.setItem('usuarioLogueado', JSON.stringify(sesion));
+
+            alert(`¡Inicio de sesión exitoso! Bienvenido/a, ${usuarioEncontrado.usuario}.`);
+
+            // 2. Lo mandamos al Home iniciado sesión
+            window.location.href = 'inicio.html';
+
+        } else {
+            // NO COINCIDEN:
+            // 1. Limpiamos / reseteamos los campos del formulario
+            formLogin.reset();
+
+            // 2. Mostramos el mensaje de error
+            const errorTexto = 'Los datos ingresados no coinciden con ninguna cuenta registrada.';
+            if (mensaje) {
+                mensaje.textContent = errorTexto;
+                mensaje.style.color = '#e53e3e';
+            }
+            alert(errorTexto);
+        }
+    });
+}
+
+function obtenerUsuarioLogueado() {
+    return JSON.parse(localStorage.getItem('usuarioLogueado')) || null;
+}
+
+function cerrarSesion() {
+    localStorage.removeItem('usuarioLogueado');
+    window.location.href = 'inicio_sesion.html';
+}
 
 // ==========================================
 // 2. ELIMINAR UNA RESEÑA DEL LOCALSTORAGE
@@ -682,5 +857,19 @@ function inicializarTema() {
         });
     }
 }
+document.addEventListener('DOMContentLoaded', () => {
+    // Carga de usuarios precargados
+    if (typeof inicializarUsuarios === 'function') {
+        inicializarUsuarios();
+    }
 
+    // Inicialización de formularios de registro y login
+    inicializarFormularioRegistro();
+    inicializarFormularioLogin();
+
+    // Resto de inicializaciones
+    mostrarResenas();
+    inicializarFormulario();
+    inicializarTema();
+});
 document.addEventListener('DOMContentLoaded', inicializarTema);
