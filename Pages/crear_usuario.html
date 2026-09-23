@@ -6,8 +6,8 @@
     <title>GENX - Crear Usuario</title>
     <link rel="stylesheet" href="../style.css">
 </head>
-<body class="pagina-login">
-
+<body>
+    <!-- Barra superior -->
     <header class="barra-navegacion">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -15,7 +15,7 @@
         </div>
         <nav class="nav-links">
             <a href="inicio.html">Inicio</a>
-            <a href="filtrar.html">Filtrar</a>
+            <a href="resenas.html">Reseñas</a>
             <a href="formulario.html">Crear</a>
             <a href="crear_usuario.html">Registrate</a>
             <a href="inicio_sesion.html">Inicia Sesion</a>
@@ -23,19 +23,16 @@
         </nav>
     </header>
 
+    
     <main class="login-contenedor">
         <section class="login-panel">
             <h1>Crear Cuenta</h1>
-            <p class="login-descripcion">Regístrate para poder publicar reseñas y comentar.</p>
-
             <form id="formulario-registro">
                 <div class="form-group">
                     <label for="reg-usuario">Nombre de usuario:</label>
-                    <input 
-                        type="text" 
+                    <input
                         id="reg-usuario" 
-                        name="usuario" 
-                        placeholder="Mínimo 5 caracteres (solo letras y números)" 
+                        name="usuario"
                         required
                     >
                 </div>
@@ -45,8 +42,7 @@
                     <input 
                         type="password" 
                         id="reg-contrasena" 
-                        name="contrasena" 
-                        placeholder="Mínimo 8 caracteres, 1 letra y 1 número" 
+                        name="contrasena"
                         required
                     >
                 </div>
@@ -56,13 +52,12 @@
                     <input 
                         type="password" 
                         id="reg-confirmar-contrasena" 
-                        name="confirmar-contrasena" 
-                        placeholder="Repite tu contraseña" 
+                        name="confirmar-contrasena"
                         required
                     >
                 </div>
 
-                <p id="mensaje-registro" class="mensaje-error" style="color: red; margin-bottom: 10px;"></p>
+                <p id="mensaje-registro" class="mj-er"></p>
 
                 <button type="submit" class="boton-login">Crear Usuario</button>
             </form>

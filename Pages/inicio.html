@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-
-    
+    <!--Barra superior-->
     <header class="barra-navegacion">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -16,7 +15,7 @@
         </div>
         <nav class="nav-links">
             <a href="inicio.html">Inicio</a>
-            <a href="filtrar.html">Filtrar</a>
+            <a href="resenas.html">Reseñas</a>
             <a href="formulario.html">Crear</a>
             <a href="crear_usuario.html">Registrate</a>
             <a href="inicio_sesion.html">Inicia Sesion</a>
@@ -24,19 +23,13 @@
         </nav>
     </header>
 
-    
-    <main class="contenedor-principal" style="max-width: 1100px; margin: 40px auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center;">
-        
-       
-        <h1 style="text-align: center; margin-bottom: 10px; font-size: 2.2rem; width: 100%;">Todos los Juegos</h1>
-        <p style="text-align: center; color: #a0aec0; margin: 0 0 20px 0; width: 100%;">Elegí un juego y deja tu reseña 🎮</p>
-
-        
-        <div id="contenedor-juegos" class="grid-resenas pagina-juegos" style="width: 100%;"></div>
-
+    <!--Pagina de inicio-->
+    <main class="contenedor-principal mn-pg" >  
+        <h1 class="tt-pg">Todos los Juegos</h1>
+        <!--cada juego-->
+        <div id="contenedor-juegos" class="grid-resenas"></div>
     </main>
 
-    <!-- SCRIPT DESDE LA RAÍZ -->
     <script src="../app.js"></script>
 </body>
 </html>
