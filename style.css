@@ -4,7 +4,7 @@
 }
 
 /*Mensaje que se muestra en el caso que no haya reseñas*/
-.sin-resenas{
+.sin-contenido{
     color: #899aa9; text-align: center; grid-column: 1 / -1;
 }
 

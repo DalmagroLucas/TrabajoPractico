@@ -4,21 +4,22 @@ const formulario = document.getElementById('formulario-juego');
 let tagsSeleccionados = [];
 //Este if se encarga unicamente de el envio del formulario
 if (formulario) {
-    const usuarioActivo = obtenerUsuarioLogueado();
-    if (!usuarioActivo) {
-            alert('Tenes que iniciar sesion antes de publicar');
-            window.location.href = 'inicio_sesion.html';
-            return;
-    }
     formulario.addEventListener('submit', function(evento) { //ocurre unicamente si se envia un formulario
         //evita que se envie el formulario
         evento.preventDefault(); 
+        const usuarioActivo = obtenerUsuarioLogueado();
+        if (!usuarioActivo) { //revisa que el usuario haya iniciado sesion antes de subir una reseña
+            alert('Tenes que iniciar sesion antes de publicar');
+            window.location.href = 'inicio_sesion.html';
+            return;
+        }
         //se guardan los datos del formulario
         const tituloResena = document.getElementById('titulo-resena').value;
         const nombreJuego = document.getElementById('nombre-juego').value;
         const opinion = document.getElementById('opinion').value;
         const calificacion = document.getElementById('calificacion').value;
         //si los tags estan separados por una , los une, sino los usa como los mando el usuario
+        
         const palabrasClaves = tagsSeleccionados.length > 0 
             ? tagsSeleccionados.join(', ') 
             : document.getElementById('tag-input').value;
@@ -224,7 +225,7 @@ function mostrarResenas() {
 
     //mensaje que se muestra si no hay reseñas
     if (resenasGuardadas.length === 0) {
-        contenedor.innerHTML = '<h3 class="sin-resenas">No hay reseñas, puede ser por un error, estamos trabajando para resolverlo</h3>';
+        contenedor.innerHTML = '<h3 class="sin-contenido">No hay reseñas, puede ser por un error, estamos trabajando para resolverlo</h3>';
         return;
     }
 
@@ -363,7 +364,7 @@ function actualizarEstrellasCalificacion(valor) {
     });
 }
 
-//Crea el formulario que despues se va a enviar
+//CREA EL FORMULARIO QUE DESPUES SE VA A ENVIAR Y HACE QUE SE PUEDAN HACER COSAS COMO VER LA IMAGEN QUE SE ELIGIO
 function inicializarFormulario() {
     cargarTagsJSON();
     cargarJuegosJSON();
@@ -434,128 +435,12 @@ function inicializarFormulario() {
 
 
 
-// ==========================================
-// 4. INICIALIZACIÓN GENERAL
-// ==========================================
-
 document.addEventListener('DOMContentLoaded', () => {
     mostrarResenas();
     inicializarFormulario();
 });
- 
-function inicializarPaginaFiltrar() {
-    const inputTexto = document.getElementById('buscador-texto');
-    const selectJuego = document.getElementById('filtro-juego');
-    const selectTag = document.getElementById('filtro-tag');
-    const selectCalificacion = document.getElementById('filtro-calificacion');
-    const btnLimpiar = document.getElementById('btn-limpiar');
-    const contenedor = document.getElementById('contenedor-resenas');
 
-    if (!contenedor || !inputTexto) return;
-
-    // Cargar opciones en el select de Juegos
-    if (selectJuego && selectJuego.options.length <= 1) {
-        LISTA_JUEGOS.forEach(juego => {
-            const op = document.createElement('option');
-            op.value = juego;
-            op.textContent = juego;
-            selectJuego.appendChild(op);
-        });
-    }
-
-    // Cargar opciones en el select de Tags
-    if (selectTag && selectTag.options.length <= 1) {
-        LISTA_TAGS.forEach(tag => {
-            const op = document.createElement('option');
-            op.value = tag;
-            op.textContent = tag;
-            selectTag.appendChild(op);
-        });
-    }
-
-    // Función de filtrado flexible
-    function aplicarFiltros() {
-        const textoTitulo = inputTexto.value.toLowerCase().trim();
-        const juegoElegido = selectJuego ? selectJuego.value.toLowerCase().trim() : '';
-        const tagElegido = selectTag ? selectTag.value.toLowerCase().trim() : '';
-        const calificacionElegida = selectCalificacion ? selectCalificacion.value : '';
-
-        const resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
-
-        const filtradas = resenasGuardadas.filter(resena => {
-            // 1. Título
-            const coincideTitulo = textoTitulo === '' || 
-                (resena.titulo || '').toLowerCase().includes(textoTitulo);
-
-            // 2. Juego (Usamos .includes para evitar fallos si hay espacios extra)
-            const coincideJuego = juegoElegido === '' || 
-                (resena.juego || '').toLowerCase().includes(juegoElegido) ||
-                juegoElegido.includes((resena.juego || '').toLowerCase());
-
-            // 3. Tag (Busca si la tag elegida está dentro del texto de tags)
-            const coincideTag = tagElegido === '' || 
-                (resena.tags || '').toLowerCase().includes(tagElegido);
-
-            // 4. Calificación
-            const coincideCalificacion = calificacionElegida === '' || 
-                String(resena.calificacion) === String(calificacionElegida);
-
-            return coincideTitulo && coincideJuego && coincideTag && coincideCalificacion;
-        });
-
-        renderizarTarjetas(filtradas, contenedor);
-    }
-
-    // Eventos de escucha
-    inputTexto.addEventListener('input', aplicarFiltros);
-    if (selectJuego) selectJuego.addEventListener('change', aplicarFiltros);
-    if (selectTag) selectTag.addEventListener('change', aplicarFiltros);
-    if (selectCalificacion) selectCalificacion.addEventListener('change', aplicarFiltros);
-
-    if (btnLimpiar) {
-        btnLimpiar.addEventListener('click', () => {
-            inputTexto.value = '';
-            if (selectJuego) selectJuego.value = '';
-            if (selectTag) selectTag.value = '';
-            if (selectCalificacion) selectCalificacion.value = '';
-            aplicarFiltros();
-        });
-    }
-
-    // Ejecución inicial
-    aplicarFiltros();
-}
-
-// LISTAS INTEGRADAS
-const LISTA_TAGS = [
-    "Acción", "Aventura", "RPG", "JRPG", "Singleplayer", "Multijugador",
-    "Cooperativo", "Plataformas", "Metroidvania", "Estrategia", "Terror",
-    "Supervivencia", "Indie", "Shooter", "FPS", "TPS", "Puzzle", "Simulación",
-    "Deportes", "Carreras", "Lucha", "Roguelike", "Roguelite", "Mundo Abierto",
-    "Hack and Slash", "Stealth", "Soulslike", "Novela Visual", "Música/Ritmo",
-    "Sandbox", "Táctico", "Casual", "Battle Royale"
-];
-
-const LISTA_JUEGOS = [
-    "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom",
-    "Elden Ring", "God of War", "God of War Ragnarök", "Red Dead Redemption 2",
-    "The Witcher 3: Wild Hunt", "Hollow Knight", "Minecraft", "Grand Theft Auto V",
-    "Cyberpunk 2077", "Dark Souls III", "Bloodborne", "Sekiro: Shadows Die Twice",
-    "Baldur's Gate 3", "Super Mario Odyssey", "Super Mario Bros. Wonder", "Persona 5 Royal",
-    "Final Fantasy VII Remake", "Final Fantasy XVI", "Resident Evil 4 Remake",
-    "Resident Evil Village", "Silent Hill 2", "Hades", "Hades II", "Celeste",
-    "Stardew Valley", "Terraria", "Portal 2", "Half-Life 2", "Doom Eternal",
-    "Overwatch 2", "Counter-Strike 2", "Valorant", "League of Legends", "Dota 2",
-    "World of Warcraft", "Fortnite", "Apex Legends", "Call of Duty: Warzone",
-    "Fallout 4", "Skyrim (The Elder Scrolls V)", "Monster Hunter: World",
-    "Monster Hunter Rise", "Death Stranding", "Ghost of Tsushima", "The Last of Us Part I",
-    "The Last of Us Part II", "Horizon Zero Dawn", "Horizon Forbidden West",
-    "Spider-Man Remastered", "Spider-Man 2", "Cuphead", "Undertale", "Dead Cells",
-    "Slay the Spire", "Outer Wilds", "Disco Elysium", "Sea of Thieves", "It Takes Two",
-    "Left 4 Dead 2", "Payday 2", "Subnautica", "No Man's Sky", "Starfield",
-    "Palworld", "Helldivers 2", "Black Myth: Wukong"
-];
-
+//FUNCIONAMIENTO PARCIAL DE LA PAGINA DE CARGA DE RESEÑAS
 function cargarPaginaFiltrar() {
     const inputTexto = document.getElementById('buscador-texto');
     const selectJuego = document.getElementById('filtro-juego');
@@ -564,9 +449,9 @@ function cargarPaginaFiltrar() {
     const btnLimpiar = document.getElementById('btn-limpiar');
     const contenedor = document.getElementById('contenedor-resenas');
 
-    if (!contenedor || !inputTexto) return;
+    if (!contenedor || !inputTexto) return; //revisa que existan las 6 cosas de la pagina
 
-    // Llenar select de Juegos
+    //Rellena con los juegos pre cargados
     if (selectJuego) {
         selectJuego.innerHTML = '<option value="">Todos los juegos</option>';
         LISTA_JUEGOS.forEach(juego => {
@@ -577,7 +462,7 @@ function cargarPaginaFiltrar() {
         });
     }
 
-    // Llenar select de Tags
+    //Rellena con las tags precargadas
     if (selectTag) {
         selectTag.innerHTML = '<option value="">Todos los tags</option>';
         LISTA_TAGS.forEach(tag => {
@@ -588,7 +473,7 @@ function cargarPaginaFiltrar() {
         });
     }
 
-    // Lógica de filtrado
+    //Lógica de filtrado
     function aplicarFiltros() {
         const textoBusqueda = inputTexto.value.toLowerCase().trim();
         const juegoElegido = selectJuego ? selectJuego.value.toLowerCase().trim() : '';
@@ -598,32 +483,32 @@ function cargarPaginaFiltrar() {
         const resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
 
         const filtradas = resenasGuardadas.filter(resena => {
-            // 1. Título
+            //Filtra por nombre
             const coincideTexto = textoBusqueda === '' || 
                 (resena.titulo || '').toLowerCase().includes(textoBusqueda);
 
-            // 2. Juego
+            //Filtra por juego
             const coincideJuego = juegoElegido === '' || 
                 (resena.juego || '').toLowerCase().includes(juegoElegido);
 
-            // 3. Tag (Filtra de verdad si la tag seleccionada está dentro de los tags de la reseña)
+            //Filtra por tags
             const coincideTag = tagElegido === '' || 
                 (resena.tags || '').toLowerCase().includes(tagElegido);
 
-            // 4. Calificación
+            //Filtra por estrellas
             const coincideCalificacion = calificacionElegida === '' || 
                 String(resena.calificacion) === String(calificacionElegida);
 
             return coincideTexto && coincideJuego && coincideTag && coincideCalificacion;
         });
 
-        // Renderizado de las tarjetas abajo
+        //muestra las tarjetas filtradas
         contenedor.innerHTML = '';
-
+        //si no hay reseñas con dicho filtro
         if (filtradas.length === 0) {
             contenedor.innerHTML = `
-                <h3 style="text-align: center; grid-column: 1 / -1; color: #888; font-weight: normal; margin-top: 30px; width: 100%;">
-                    No se encontraron reseñas con esos filtros.
+                <h3 class="sin-contenido">
+                    No hay reseñas con los filtros puestos
                 </h3>`;
             return;
         }
@@ -633,41 +518,28 @@ function cargarPaginaFiltrar() {
             tarjeta.classList.add('tarjeta-resena');
 
             tarjeta.innerHTML = `
-                <button class="boton-eliminar" title="Eliminar reseña">🗑️</button>
                 <div class="tarjeta-imagen">
-                    <img src="${resena.imagen || '../placeholder.png'}" alt="Portada de ${resena.juego}">
+                    <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
                 </div>
                 <div class="tarjeta-contenido">
                     <h3 class="tarjeta-titulo">${resena.titulo}</h3>
                     <h4 class="tarjeta-juego">${resena.juego}</h4>
-                    <div class="tarjeta-puntuacion">★ ${resena.calificacion} / 5</div>
+                    <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
                     <p class="tarjeta-opinion">${resena.opinion}</p>
-                    ${resena.tags ? `<div class="tarjeta-tags">🏷️ ${resena.tags}</div>` : ''}
+                    ${resena.tags ? `<div class="tarjeta-tags">${resena.tags}</div>` : ''}
                 </div>
             `;
-
-            const btnEliminar = tarjeta.querySelector('.boton-eliminar');
-            if (btnEliminar) {
-                btnEliminar.addEventListener('click', () => {
-                    if (confirm(`¿Eliminar la reseña "${resena.titulo}"?`)) {
-                        let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
-                        resenas = resenas.filter(r => r.id !== resena.id);
-                        localStorage.setItem('misResenas', JSON.stringify(resenas));
-                        aplicarFiltros();
-                    }
-                });
-            }
-
             contenedor.appendChild(tarjeta);
         });
     }
 
-    // Eventos
+    //Aplicar los filtros
     inputTexto.addEventListener('input', aplicarFiltros);
     if (selectJuego) selectJuego.addEventListener('change', aplicarFiltros);
     if (selectTag) selectTag.addEventListener('change', aplicarFiltros);
     if (selectCalificacion) selectCalificacion.addEventListener('change', aplicarFiltros);
 
+    //limpia los filtros
     if (btnLimpiar) {
         btnLimpiar.addEventListener('click', () => {
             inputTexto.value = '';
@@ -686,25 +558,20 @@ document.addEventListener('DOMContentLoaded', cargarPaginaFiltrar);
 
 
 
-//Inicio de la pagina
-
+//CARGA PARCIALMENTE LA PAGINA DE INICIO Y SUS TARJETAS
 function cargarPaginaInicio() {
     const contenedor = document.getElementById('contenedor-juegos');
     if (!contenedor) return;
+    const imagenPorDefecto = "/Img/gameover.jpg"//Imagen default para los juegos que no le cargamos las imagenes
 
-    // Imagen de respaldo por si la portada aún no existe en la carpeta Img
-    const imagenPorDefecto = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250"><rect width="100%" height="100%" fill="#14181c"/></svg>'
-    );
-
-    // Cargamos el archivo JSON que tiene la lista completa de juegos
+    //Se cargan los juegos del archivo json con sus datos
     fetch('../Json/juegos.json')
         .then(respuesta => respuesta.json())
         .then(juegos => {
-            // Limpiamos el contenedor para evitar duplicados al refrescar
+            //Limpiamos el contenedor para evitar duplicados al refrescar
             contenedor.innerHTML = '';
 
-            // Recorremos la lista de juegos y creamos una tarjeta por cada uno
+            //crea una tarjeta para cada juego
             juegos.forEach(juego => {
                 const tarjeta = document.createElement('div');
                 tarjeta.classList.add('tarjeta-resena');
@@ -716,11 +583,11 @@ function cargarPaginaInicio() {
                     <div class="tarjeta-contenido">
                         <h3 class="tarjeta-titulo">${juego.nombre}</h3>
                         <p class="tarjeta-opinion">${juego.descripcion}</p>
-                        <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}">Dejar reseña</a>
+                        <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}"> Opinar </a>
                     </div>
                 `;
 
-                // Si la imagen no existe todavía, mostramos la imagen de respaldo
+                //Por si no hay imagen, mostramos la de respaldo
                 const img = tarjeta.querySelector('.tarjeta-imagen img');
                 img.onerror = function() {
                     this.onerror = null;
@@ -731,41 +598,40 @@ function cargarPaginaInicio() {
             });
         })
         .catch(err => {
-            // Si el JSON no se puede cargar, avisamos al usuario (usar Live Server)
-            contenedor.innerHTML = '<h3 style="color: #899aa9; text-align: center; grid-column: 1 / -1;">No se pudieron cargar los juegos. Abre la página con Live Server.</h3>';
+            //Si no se pudo cargar el json
+            contenedor.innerHTML = '<h3 class="sin-contenido">Hubo un error cargando el json de juegos, revisen porfavor</h3>';
         });
 }
 
 document.addEventListener('DOMContentLoaded', cargarPaginaInicio);
 
-//Modo oscuro o claro
-
-
+//CAMBIA EL MODO
 function aplicarTema(tema) {
-    // Agregamos o quitamos la clase que activa el modo claro
+    //saca o agrega la clase modo-claro, depende de cual este
     if (tema === 'claro') {
         document.body.classList.add('modo-claro');
     } else {
         document.body.classList.remove('modo-claro');
     }
 
-    // Actualizamos los textos de los botones (muestran el modo al que se pasa al hacer click)
+    //cambia lo que dice el boton
     const texto = tema === 'claro' ? 'Oscuro' : 'Claro';
     const botonNav = document.getElementById('boton-tema');
     const botonFlotante = document.getElementById('boton-tema-flotante');
     if (botonNav) botonNav.textContent = texto;
     if (botonFlotante) botonFlotante.textContent = texto;
 
-    // Guardamos la preferencia para que se mantenga entre páginas
+    //hacemos que se guarde para cuando cambiemos de pagina
     localStorage.setItem('tema', tema);
 }
 
+//APLICA LO ELEGIDO EN LA FUNCION ANTERIOR
 function inicializarTema() {
-    // Aplicamos el tema guardado, u oscuro si es la primera vez
+    //se pone oscuro o el tema elegido
     const temaGuardado = localStorage.getItem('tema') || 'oscuro';
     aplicarTema(temaGuardado);
 
-    // Botón de la barra de navegación
+    //el funcionamiento de la barra de arriba
     const botonNav = document.getElementById('boton-tema');
     if (botonNav) {
         botonNav.addEventListener('click', () => {
@@ -773,8 +639,6 @@ function inicializarTema() {
             aplicarTema(nuevoTema);
         });
     }
-
-    // Botón flotante de la página de inicio de sesión
     const botonFlotante = document.getElementById('boton-tema-flotante');
     if (botonFlotante) {
         botonFlotante.addEventListener('click', () => {
@@ -783,17 +647,19 @@ function inicializarTema() {
         });
     }
 }
+
+//se encarga de que el juego de las paginas funcione correctamente
 document.addEventListener('DOMContentLoaded', () => {
-    // Carga de usuarios precargados
+    //carga los usuarios precargados
     if (typeof inicializarUsuarios === 'function') {
         inicializarUsuarios();
     }
 
-    // Inicialización de formularios de registro y login
+    //inicializa los formularios
     inicializarFormularioRegistro();
     inicializarFormularioLogin();
 
-    // Resto de inicializaciones
+    //inicializa lo demas
     mostrarResenas();
     inicializarFormulario();
     inicializarTema();
