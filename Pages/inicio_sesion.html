@@ -3,26 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de sesión</title>
+    <title>GENX - Inicio de sesión</title>
     <link rel="stylesheet" href="../style.css">
 </head>
-<body class="pagina-login">
+<body>
+    <!-- Barra superior -->
+    <header class="barra-navegacion">
+        <div class="logo-contenedor">
+            <span class="logo-icono">🎮</span>
+            <span class="logo-texto">GENX</span>
+        </div>
+        <nav class="nav-links">
+            <a href="inicio.html">Inicio</a>
+            <a href="resenas.html">Reseñas</a>
+            <a href="formulario.html">Crear</a>
+            <a href="crear_usuario.html">Registrate</a>
+            <a href="inicio_sesion.html">Inicia Sesion</a>
+            <button id="boton-tema" class="boton-tema" title="Cambiar a modo claro/oscuro">Claro</button>
+        </nav>
+    </header>
+
     <main class="login-contenedor">
         <section class="login-panel">
-            <p class="login-marca">Página de reseñas</p>
 
             <h1>Inicio de sesión</h1>
-
-            <p class="login-descripcion">
-                Ingresa para compartir tus reseñas:
-            </p>
-
             <form id="formulario-login">
                 <div class="form-group">
                     <label for="usuario">Usuario:</label>
-
-                    <input 
-                        type="text"
+                    <input
                         id="usuario"
                         name="usuario"
                         required
@@ -31,7 +39,6 @@
 
                 <div class="form-group">
                     <label for="contrasena">Contraseña:</label>
-
                     <input 
                         type="password"
                         id="contrasena"
@@ -40,7 +47,7 @@
                     >
                 </div>
 
-                <p id="mensaje-login" class="mensaje-login"></p>
+                <p id="mensaje-login" class="mj-er"></p>
 
                 <button type="submit" class="boton-login">Iniciar sesión</button>
             </form>

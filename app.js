@@ -1,38 +1,38 @@
-// Seleccionamos el formulario por su ID
+//guardamos en formulario un formulario a traves de la id
 const formulario = document.getElementById('formulario-juego');
-
-// Variables globales para los tags
+// Crea el array de los tags que se van a utilizar
 let tagsSeleccionados = [];
-
-// Nos aseguramos de que el formulario exista en la página actual para evitar errores[cite: 1, 2]
+//Este if se encarga unicamente de el envio del formulario
 if (formulario) {
-    formulario.addEventListener('submit', function(evento) {
-        // Evitamos que la página se recargue por defecto al enviar[cite: 1]
+    const usuarioActivo = obtenerUsuarioLogueado();
+    if (!usuarioActivo) {
+            alert('Tenes que iniciar sesion antes de publicar');
+            window.location.href = 'inicio_sesion.html';
+            return;
+    }
+    formulario.addEventListener('submit', function(evento) { //ocurre unicamente si se envia un formulario
+        //evita que se envie el formulario
         evento.preventDefault(); 
-
-        // Capturamos los valores de los campos de texto y número[cite: 1, 2]
+        //se guardan los datos del formulario
         const tituloResena = document.getElementById('titulo-resena').value;
         const nombreJuego = document.getElementById('nombre-juego').value;
         const opinion = document.getElementById('opinion').value;
         const calificacion = document.getElementById('calificacion').value;
-        
-        // Si hay tags en la lista interactiva los unimos, o leemos directamente el texto
+        //si los tags estan separados por una , los une, sino los usa como los mando el usuario
         const palabrasClaves = tagsSeleccionados.length > 0 
             ? tagsSeleccionados.join(', ') 
             : document.getElementById('tag-input').value;
-
-        // Capturamos la imagen subida[cite: 2]
+        //trae los archivos enviados
         const inputImagen = document.getElementById('imagen-juego');
+        //agarra el archivo que especificamente queremos
         const archivoImagen = inputImagen.files[0];
-
-        if (archivoImagen) {
-            // FileReader convierte el archivo de imagen a un texto en formato Base64[cite: 2]
-            const lector = new FileReader();
-
-            lector.onload = function(e) {
-                // Creamos el objeto con toda la información de la reseña[cite: 1, 2]
+        if (archivoImagen) {//solamente se ejecuta si hay imagen
+            const lector = new FileReader(); //funcion para leer archivos
+            lector.onload = function(e) { //esta funcion tiene una demora
+                //Creamos la nueva reseña con todos los datos ingresados
                 const nuevaResena = {
-                    id: Date.now(), // Identificador único basado en el tiempo[cite: 1]
+                    id: Date.now(), //La id de la reseña va a ser la fecha de realizacion
+                    usuarioId: usuarioActivo.id,
                     titulo: tituloResena,
                     juego: nombreJuego,
                     opinion: opinion,
@@ -40,20 +40,15 @@ if (formulario) {
                     tags: palabrasClaves,
                     imagen: e.target.result // La imagen convertida a texto
                 };
-
-                // Recuperamos las reseñas guardadas anteriormente o iniciamos una lista vacía [][cite: 1]
+                //trae a la variable reseñas guardadas, las reseñas guardadas (valga la redundancia) o un null si es q esta vacio
                 let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
-
-                // Agregamos la nueva reseña a la lista[cite: 1]
+                //Guarda la nueva reseña
                 resenasGuardadas.push(nuevaResena);
-
-                // Convertimos a JSON y guardamos la lista actualizada en el localStorage[cite: 1, 2]
+                //las re-convertimos en un json y se guarda
                 localStorage.setItem('misResenas', JSON.stringify(resenasGuardadas));
-
-                // Limpiamos el formulario y notificamos al usuario
+                //se limpia el formulario
                 formulario.reset();
-                
-                // Limpiamos los tags de pantalla y reseteamos las estrellas
+                //se limpian los tags y se actualizan las estrellas
                 tagsSeleccionados = [];
                 renderizarTags();
                 actualizarEstrellasCalificacion(5);
@@ -66,42 +61,26 @@ if (formulario) {
                     previewImg.classList.add('oculto');
                     placeholder.classList.remove('oculto');
                 }
-
-                alert('¡Reseña guardada con éxito!');
+                alert('Reseña subida');
+                window.location.href = 'resenas.html';
             };
 
             // Leemos el archivo para disparar el lector.onload
             lector.readAsDataURL(archivoImagen);
-        }
-        const usuarioActivo = obtenerUsuarioLogueado();
-
-        if (!usuarioActivo) {
-            alert('Debes iniciar sesión para publicar una reseña.');
-            window.location.href = 'inicio_sesion.html';
-            return;
-        }
-
-        const nuevaResena = {
-            id: Date.now(),
-            usuarioId: usuarioActivo.id, // Foreign Key del usuario
-            titulo: tituloResena,
-            juego: nombreJuego,
-            opinion: opinion,
-            calificacion: calificacion,
-            tags: palabrasClaves,
-            imagen: e.target.result
-        };
+        } 
     });
 }
 
 
+//COSAS A CAMBIAR: EL ORDEN DE LAS COSAS PARECIERA ESTA MAL, DEBERIA REVISAR DE ANTEMANO SI EL USUARIO ES ACTIVO
 
+//PRECARGA LOS USUARIOS SI NO HAY NINGUN USUARIO CARGADO
 function inicializarUsuarios() {
-    // Si no existen usuarios en localStorage, cargamos los del JSON precargado
+    // si no hay usuarios cargados, utilizamos los del json
     if (!localStorage.getItem('usuarios')) {
-        fetch('../Json/usuarios.json')
-            .then(res => res.json())
-            .then(data => {
+        fetch('../Json/usuarios.json')//trae el json
+            .then(res => res.json()) //convierte las respuestas en datos
+            .then(data => { //guarda en el local storage los del json
                 localStorage.setItem('usuarios', JSON.stringify(data));
             })
             .catch(() => {
@@ -109,18 +88,15 @@ function inicializarUsuarios() {
                 fetch('Json/usuarios.json')
                     .then(res => res.json())
                     .then(data => localStorage.setItem('usuarios', JSON.stringify(data)))
-                    .catch(e => console.log('Usa Live Server para cargar JSON de usuarios.', e));
+                    .catch(e => console.log('No se pudieron cargar los usuarios, revisen que falló', e));
             });
     }
 }
 
-// ==========================================
-// VALIDACIÓN Y REGISTRO DE USUARIO
-// ==========================================
-
+//CARGAR A UN NUEVO USUARIO
 function inicializarFormularioRegistro() {
     const formRegistro = document.getElementById('formulario-registro');
-    if (!formRegistro) return;
+    if (!formRegistro) return; 
 
     formRegistro.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -132,113 +108,99 @@ function inicializarFormularioRegistro() {
 
         if (mensaje) mensaje.textContent = '';
 
-        // 1. Validar nombre de usuario (mínimo 5 caracteres, solo letras y números)
+        //valida que le nombre de usuario sea minimamente 5 letras y que acepta letras y numeros
         const regexUsuario = /^[a-zA-Z0-9]{5,}$/;
         if (!regexUsuario.test(usuarioInput)) {
-            const textoError = 'Nombre de usuario inválido. Debe tener al menos 5 caracteres (solo letras y números, sin símbolos).';
+            const textoError = 'El nombre de usuario tiene que tener minimamente 5 letras y/o numeros';
             if (mensaje) mensaje.textContent = textoError;
-            alert(textoError);
             return;
         }
 
-        // 2. Validar contraseña (mínimo 8 caracteres, al menos 1 letra y 1 número)
+        //valida que la contraseña sea minimo 8 letras y que tenga que tener minimamente una letra y un numero
         const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
         if (!regexPassword.test(passInput)) {
-            const textoError = 'Contraseña inválida. Debe tener al menos 8 caracteres, incluyendo al menos una letra y un número.';
+            const textoError = 'La contraseña tiene que tener minimamente 8 letras y/o numeros. si o si tiene que llevar una letra y un numero';
             if (mensaje) mensaje.textContent = textoError;
-            alert(textoError);
             return;
         }
 
-        // 3. Confirmar que las contraseñas coincidan
+        //valida que las dos contraseñas sean iguales
         if (passInput !== confirmPassInput) {
-            const textoError = 'Las contraseñas no coinciden.';
+            const textoError = 'Las contraseñas tienen que ser iguales';
             if (mensaje) mensaje.textContent = textoError;
-            alert(textoError);
             return;
         }
 
-        // 4. Verificar si el usuario ya existe en el localStorage
-        let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        const usuarioExiste = listaUsuarios.some(u => u.usuario.toLowerCase() === usuarioInput.toLowerCase());
-
+        //valida que no sea un usuario existente
+        let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || []; //trae los usuarios registrados
+        const usuarioExiste = listaUsuarios.some(u => u.usuario.toLowerCase() === usuarioInput.toLowerCase()); //revisa usuario por usuario a ver si alguno coincide
         if (usuarioExiste) {
-            const textoError = 'El nombre de usuario ya está registrado. Por favor, elige otro.';
+            const textoError = 'El nombre esta en uso, usa otro';
             if (mensaje) mensaje.textContent = textoError;
-            alert(textoError);
             return;
         }
 
-        // 5. Crear el objeto del nuevo usuario
+        //Si no salto ningun error, crea al nuevo usuario
         const nuevoUsuario = {
-            id: Date.now(), // ID único basado en el tiempo actual
+            id: Date.now(), // Igual q las reseñas, la id es la fecha actual
             usuario: usuarioInput,
             contrasena: passInput
         };
 
-        // Guardar el nuevo usuario en la lista de usuarios
+        //Se guarda el nuevo usuario en la lista de usuarios
         listaUsuarios.push(nuevoUsuario);
-        localStorage.setItem('usuarios', JSON.stringify(listaUsuarios));
+        localStorage.setItem('usuarios', JSON.stringify(listaUsuarios)); 
 
-        // 6. AUTO-LOGIN: Guardamos la sesión activa inmediatamente
+        //se autoinicia sesion
         const sesion = {
             id: nuevoUsuario.id,
             usuario: nuevoUsuario.usuario
         };
         localStorage.setItem('usuarioLogueado', JSON.stringify(sesion));
 
-        alert(`¡Cuenta creada con éxito! Bienvenido/a, ${nuevoUsuario.usuario}.`);
+        alert(`Se creo la cuenta`);
 
-        // 7. Redirigir directamente al inicio (Home)
+        //Devuelve al inicio
         window.location.href = 'inicio.html';
     });
 }
 
+
+//FUNCION QUE INICIA SESION
 function inicializarFormularioLogin() {
     const formLogin = document.getElementById('formulario-login');
     if (!formLogin) return;
 
     formLogin.addEventListener('submit', function(e) {
         e.preventDefault();
-
         const usuarioInput = document.getElementById('usuario').value.trim();
         const passInput = document.getElementById('contrasena').value;
         const mensaje = document.getElementById('mensaje-login');
 
-        // Traemos la lista completa de usuarios registrados desde localStorage
         let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-        // Buscamos si existe un usuario que coincida tanto en nombre como en contraseña
         const usuarioEncontrado = listaUsuarios.find(
             u => u.usuario.toLowerCase() === usuarioInput.toLowerCase() && u.contrasena === passInput
         );
 
         if (usuarioEncontrado) {
-            // SI COINCIDEN:
-            // 1. Guardamos los datos del usuario en la sesión activa
+            //se guardan los datos como la sesion actual
             const sesion = {
                 id: usuarioEncontrado.id,
                 usuario: usuarioEncontrado.usuario
             };
             localStorage.setItem('usuarioLogueado', JSON.stringify(sesion));
+            alert(`Sesion iniciada`);
 
-            alert(`¡Inicio de sesión exitoso! Bienvenido/a, ${usuarioEncontrado.usuario}.`);
-
-            // 2. Lo mandamos al Home iniciado sesión
+            //devuelve al home
             window.location.href = 'inicio.html';
 
         } else {
-            // NO COINCIDEN:
-            // 1. Limpiamos / reseteamos los campos del formulario
+            //Sino se reinicia el formulario y tiramos error
             formLogin.reset();
-
-            // 2. Mostramos el mensaje de error
-            const errorTexto = 'Los datos ingresados no coinciden con ninguna cuenta registrada.';
+            const errorTexto = 'Nombre de usuario o contraseña incorrectos';
             if (mensaje) {
                 mensaje.textContent = errorTexto;
-                mensaje.style.color = '#e53e3e';
             }
-            alert(errorTexto);
         }
     });
 }
@@ -252,87 +214,49 @@ function cerrarSesion() {
     window.location.href = 'inicio_sesion.html';
 }
 
-// ==========================================
-// 2. ELIMINAR UNA RESEÑA DEL LOCALSTORAGE
-// ==========================================
-
-function eliminarResena(id) {
-    // 1. Traemos la lista actual de reseñas[cite: 1, 2]
-    let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
-
-    // 2. Filtramos la lista, conservando todas las reseñas EXCEPTO la que coincide con el ID a borrar
-    resenasGuardadas = resenasGuardadas.filter(resena => resena.id !== id);
-
-    // 3. Sobreescribimos el localStorage con la nueva lista filtrada[cite: 1, 2]
-    localStorage.setItem('misResenas', JSON.stringify(resenasGuardadas));
-
-    // 4. Volvemos a renderizar las reseñas en pantalla para refrescar la vista
-    mostrarResenas();
-}
-
-
-// ==========================================
-// 3. MOSTRAR LAS RESEÑAS (Página: ultimas_resenas.html)
-// ==========================================
-
+//FUNCION QUE MUESTRA LA TARJETA
 function mostrarResenas() {
     const contenedor = document.getElementById('contenedor-resenas');
-    
-    // Si no estamos en la página que tiene el contenedor de reseñas, detenemos la función
     if (!contenedor) return;
 
-    // Leemos los datos del localStorage[cite: 1, 2]
+    //Se guarda las reseñas cargadas
     let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
 
-    // Si no hay reseñas guardadas, mostramos un mensaje amigable
+    //mensaje que se muestra si no hay reseñas
     if (resenasGuardadas.length === 0) {
-        contenedor.innerHTML = '<h3 style="color: #899aa9; text-align: center; grid-column: 1 / -1;">Aún no hay reseñas. ¡Sé el primero en escribir una!</h3>';
+        contenedor.innerHTML = '<h3 class="sin-resenas">No hay reseñas, puede ser por un error, estamos trabajando para resolverlo</h3>';
         return;
     }
 
-    // Limpiamos el contenedor para evitar duplicados al refrescar
+    //limpieza de contenedores para evitar duplicaciones
     contenedor.innerHTML = '';
 
-    // Recorremos la lista de reseñas y creamos las tarjetas dinámicamente
+    //Creacion de "tarjetas" de cada uno de las reseñas
     resenasGuardadas.forEach(function(resena) {
-        const tarjeta = document.createElement('div');
-        tarjeta.classList.add('tarjeta-resena');
+        const tarjeta = document.createElement('div'); //crea un div que vendria a ser cada tarjeta
+        tarjeta.classList.add('tarjeta-resena'); //le pone el estilo de tarjeta resena
 
         tarjeta.innerHTML = `
-            <!-- Botón del tachito de basura arriba a la derecha -->
-            <button class="boton-eliminar" title="Eliminar reseña">🗑️</button>
-            
             <div class="tarjeta-imagen">
                 <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
             </div>
             <div class="tarjeta-contenido">
                 <h3 class="tarjeta-titulo">${resena.titulo}</h3>
                 <h4 class="tarjeta-juego">${resena.juego}</h4>
-                <div class="tarjeta-puntuacion">⭐ ${resena.calificacion} / 5</div>
+                <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
                 <p class="tarjeta-opinion">"${resena.opinion}"</p>
-                <div class="tarjeta-tags">🏷️ ${resena.tags}</div>
+                <div class="tarjeta-tags">${resena.tags}</div>
             </div>
         `;
-
-        // Asignamos el evento de eliminación al botón de esta tarjeta en particular
-        const btnEliminar = tarjeta.querySelector('.boton-eliminar');
-        btnEliminar.addEventListener('click', function() {
-            if (confirm(`¿Estás seguro de que deseas eliminar la reseña de "${resena.juego}"?`)) {
-                eliminarResena(resena.id);
-            }
-        });
-
-        // Insertamos la tarjeta creada en el contenedor
+        //se agrega cada tarjeta al contenedor padre para poder mostrar las tarjetas
         contenedor.appendChild(tarjeta);
     });
 }
+//CAMBIOS: SACAR LA OPCION DE ELIMINAR UNA RESEÑA Y TRATAR DE QUE EL HTML QUEDE EN EL HTML
 
 
-// ==========================================================================
-// CARGA DE ARCHIVOS JSON Y FUNCIONES DE CONTROL
-// ==========================================================================
 
-// CAMBIO REALIZADO: Carga ajustada a la carpeta Json/tags.json
+//CARGA LOS TAGS DEL JSON
 function cargarTagsJSON() {
     const datalistTags = document.getElementById('opciones-tags');
     if (!datalistTags) return;
@@ -348,7 +272,6 @@ function cargarTagsJSON() {
             });
         })
         .catch(err => {
-            // Intento secundario si la página se ejecuta desde la raíz
             fetch('Json/tags.json')
                 .then(r => r.json())
                 .then(tags => {
@@ -359,11 +282,11 @@ function cargarTagsJSON() {
                         datalistTags.appendChild(o);
                     });
                 })
-                .catch(e => console.log('Sugerencia: Usa Live Server para cargar los archivos JSON.', e));
+                .catch(e => console.log('hubo un error cargando los tags, revisen que paso', e));
         });
 }
 
-// CAMBIO REALIZADO: Carga ajustada a la carpeta Json/juegos.json
+//CARGA LOS JUEGOS DEL JSON
 function cargarJuegosJSON() {
     const datalistJuegos = document.getElementById('opciones-juegos');
     if (!datalistJuegos) return;
@@ -389,10 +312,12 @@ function cargarJuegosJSON() {
                         datalistJuegos.appendChild(o);
                     });
                 })
-                .catch(e => console.log('Sugerencia: Usa Live Server para cargar los archivos JSON.', e));
+                .catch(e => console.log('hubo un error cargando los juegos, revisen que paso', e));
         });
 }
 
+
+//AGREGA LOS TAGS
 function agregarTag(valor) {
     const tagTexto = valor.trim();
     if (tagTexto && !tagsSeleccionados.includes(tagTexto)) {
@@ -401,11 +326,13 @@ function agregarTag(valor) {
     }
 }
 
+//ELIMINA LOS TAGS
 function eliminarTag(tagTexto) {
     tagsSeleccionados = tagsSeleccionados.filter(t => t !== tagTexto);
     renderizarTags();
 }
 
+//MUESTRA LOS TAGS
 function renderizarTags() {
     const contenedor = document.getElementById('contenedor-tags');
     if (!contenedor) return;
@@ -419,7 +346,7 @@ function renderizarTags() {
     });
 }
 
-// CAMBIO REALIZADO: Función para iluminar las estrellas según la selección
+//CAMBIA LAS ESTRELLAS SEGUN LAS QUE SE ELIJAN
 function actualizarEstrellasCalificacion(valor) {
     const estrellas = document.querySelectorAll('.estrella-item');
     const inputCalificacion = document.getElementById('calificacion');
@@ -436,12 +363,11 @@ function actualizarEstrellasCalificacion(valor) {
     });
 }
 
-// Inicialización de los eventos del formulario
+//Crea el formulario que despues se va a enviar
 function inicializarFormulario() {
     cargarTagsJSON();
     cargarJuegosJSON();
 
-    // Pre-cargar el juego elegido desde inicio.html (parámetro ?juego=)
     const paramsInicio = new URLSearchParams(window.location.search);
     const juegoDesdeInicio = paramsInicio.get('juego');
     if (juegoDesdeInicio) {
@@ -449,7 +375,7 @@ function inicializarFormulario() {
         if (inputNombreJuego) inputNombreJuego.value = juegoDesdeInicio;
     }
 
-    // 1. Estrellas inician en 0 (vacías)
+    
     actualizarEstrellasCalificacion(0);
 
     const inputTag = document.getElementById('tag-input');
@@ -519,10 +445,10 @@ document.addEventListener('DOMContentLoaded', () => {
  
 function inicializarPaginaFiltrar() {
     const inputTexto = document.getElementById('buscador-texto');
-    const selectJuego = document.getElementById('filtro-juego-select');
-    const selectTag = document.getElementById('filtro-tag-select');
+    const selectJuego = document.getElementById('filtro-juego');
+    const selectTag = document.getElementById('filtro-tag');
     const selectCalificacion = document.getElementById('filtro-calificacion');
-    const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+    const btnLimpiar = document.getElementById('btn-limpiar');
     const contenedor = document.getElementById('contenedor-resenas');
 
     if (!contenedor || !inputTexto) return;
@@ -632,10 +558,10 @@ const LISTA_JUEGOS = [
 
 function cargarPaginaFiltrar() {
     const inputTexto = document.getElementById('buscador-texto');
-    const selectJuego = document.getElementById('filtro-juego-select');
-    const selectTag = document.getElementById('filtro-tag-select');
+    const selectJuego = document.getElementById('filtro-juego');
+    const selectTag = document.getElementById('filtro-tag');
     const selectCalificacion = document.getElementById('filtro-calificacion');
-    const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+    const btnLimpiar = document.getElementById('btn-limpiar');
     const contenedor = document.getElementById('contenedor-resenas');
 
     if (!contenedor || !inputTexto) return;
@@ -872,4 +798,3 @@ document.addEventListener('DOMContentLoaded', () => {
     inicializarFormulario();
     inicializarTema();
 });
-document.addEventListener('DOMContentLoaded', inicializarTema);

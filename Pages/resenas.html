@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENX - Reseñas</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <!--Barra superior-->
+    <header class="barra-navegacion">
+        <div class="logo-contenedor">
+            <span class="logo-icono">🎮</span>
+            <span class="logo-texto">GENX</span>
+        </div>
+        <nav class="nav-links">
+            <a href="inicio.html">Inicio</a>
+            <a href="resenas.html">Reseñas</a>
+            <a href="formulario.html">Crear</a>
+            <a href="crear_usuario.html">Registrate</a>
+            <a href="inicio_sesion.html">Inicia Sesion</a>
+            <button id="boton-tema" class="boton-tema" title="Cambiar a modo claro/oscuro">Claro</button>
+        </nav>
+    </header>
+
+    <!--pagina principal de reseña-->
+    <main class="contenedor-principal mn-pg" >
+        
+        <!--titulo de reseña-->
+        <h1 class="tt-pg">Ver las ultimas reseñas</h1>
+
+        <!--contenedor de filtros-->
+        <div class="contenedor-filtros" id="barra-filtros">
+            <!--filtro por titulo de reseña-->
+            <input 
+                type="text" 
+                id="buscador-texto" 
+                placeholder="titulo de reseña" >
+            <!--filtro por juego-->
+            <select id="filtro-juego">
+                <option value="">Todos los juegos</option>
+            </select>
+            <!--filtro por tags-->
+            <select id="filtro-tag">
+                <option value="">Todos los tags</option>
+            </select>
+
+            <!--filtro por estreñas-->
+            <select id="filtro-calificacion">
+                <option value="">Todas las estrellas</option>
+                <option value="5">★ 5 - Excelente</option>
+                <option value="4">★ 4 - Muy buena</option>
+                <option value="3">★ 3 - Buena</option>
+                <option value="2">★ 2 - Regular</option>
+                <option value="1">★ 1 - Mala</option>
+            </select>
+
+            <!-- boton que limpia los filtros -->
+            <button id="btn-limpiar">
+                Limpiar
+            </button>
+        </div>
+
+        <!-- contenedor de cada reseña-->
+        <div id="contenedor-resenas" class="grid-resenas"></div>
+    </main>
+    
+    <script src="../app.js"></script>
+</body>
+</html>
