@@ -8,26 +8,27 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-
-    <header class="barra-navegacion">
+    <!-- Barra superior -->
+    <header class="stl-header">
         <div class="logo-contenedor">
-            <span class="logo-icono">🙂</span>
+            <span class="logo-icono">🎮</span>
             <span class="logo-texto">GENX</span>
         </div>
         <nav class="nav-links">
-            <a href="#">Inicio</a>
-            <a href="ultimas_reseñas.html">Recientes</a>
-            <a href="#">Filtrar</a>
-            <a href="formulario.html" class="activo">Crear</a>
+            <a href="inicio.html">Inicio</a>
+            <a href="resenas.html">Reseñas</a>
+            <a href="formulario.html">Crear</a>
+            <a href="crear_usuario.html">Registrate</a>
+            <a href="inicio_sesion.html">Inicia Sesion</a>
+            <button id="boton-tema" class="boton-tema" title="boton que cambia de claro a oscuro o viceversa">Claro</button>
         </nav>
     </header>
 
+    <!--Pagina para crear una reseña-->
     <main class="contenedor-principal">
         <div class="tarjeta-formulario">
             <form id="formulario-juego">
-                
                 <div class="filas-formulario">
-                    
                     <!-- COLUMNA IZQUIERDA: Caja de Imagen y Tags -->
                     <div class="columna-izquierda">
                         
@@ -35,7 +36,7 @@
                         <div class="caja-subir-imagen" id="caja-imagen">
                             <input type="file" id="imagen-juego" name="imagen-juego" accept="image/*" required>
                             <div class="preview-placeholder" id="preview-placeholder">
-                                <span>+ Subir Imagen</span>
+                                <span>Subir Imagen</span>
                             </div>
                             <img id="imagen-preview" src="" alt="Vista previa" class="oculto">
                         </div>
@@ -44,7 +45,7 @@
                             <label for="tag-input">Tags</label>
                             <input type="text" id="tag-input" list="opciones-tags" placeholder="Escribe o selecciona tag..." autocomplete="off">
                             <datalist id="opciones-tags"></datalist>
-                            <div id="contenedor-tags" class="contenedor-tags"></div>
+                            <div id="contenedor-tags"></div>
                         </div>
 
                     </div>

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "usuario": "gamer123",
+    "contrasena": "Clave1234"
+  },
+  {
+    "id": 2,
+    "usuario": "pixelArt",
+    "contrasena": "Zelda2026"
+  },
+  {
+    "id": 3,
+    "usuario": "reviewerX",
+    "contrasena": "MasterPass1"
+  }
+]

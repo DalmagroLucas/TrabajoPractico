@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENX - Inicio de sesión</title>
+    <title>GENX - Crear Usuario</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -23,38 +23,51 @@
         </nav>
     </header>
 
+    
     <main class="login-contenedor">
         <section class="login-panel">
-
-            <h1>Inicio de sesión</h1>
-            <form id="formulario-login">
+            <h1>Crear Cuenta</h1>
+            <form id="formulario-registro">
                 <div class="form-group">
-                    <label for="usuario">Usuario:</label>
+                    <label for="reg-usuario">Nombre de usuario:</label>
                     <input
-                        id="usuario"
+                        id="reg-usuario" 
                         name="usuario"
                         required
                     >
                 </div>
 
                 <div class="form-group">
-                    <label for="contrasena">Contraseña:</label>
+                    <label for="reg-contrasena">Contraseña:</label>
                     <input 
-                        type="password"
-                        id="contrasena"
+                        type="password" 
+                        id="reg-contrasena" 
                         name="contrasena"
                         required
                     >
                 </div>
 
-                <p id="mensaje-login" class="mj-er"></p>
+                <div class="form-group">
+                    <label for="reg-confirmar-contrasena">Confirmar contraseña:</label>
+                    <input 
+                        type="password" 
+                        id="reg-confirmar-contrasena" 
+                        name="confirmar-contrasena"
+                        required
+                    >
+                </div>
 
-                <button type="submit" class="boton-login">Iniciar sesión</button>
+                <p id="mensaje-registro" class="mj-er"></p>
+
+                <button type="submit" class="boton-login">Crear Usuario</button>
             </form>
+
+            <p style="margin-top: 15px; text-align: center;">
+                ¿Ya tienes una cuenta? <a href="inicio_sesion.html">Inicia sesión aquí</a>
+            </p>
         </section>
     </main>
-    
-    <script src="/app.js"></script>
 
+    <script src="../app.js"></script>
 </body>
 </html>
