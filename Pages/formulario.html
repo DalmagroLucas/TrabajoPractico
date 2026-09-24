@@ -17,10 +17,18 @@
         <nav class="nav-links">
             <a href="inicio.html">Inicio</a>
             <a href="resenas.html">Reseñas</a>
-            <a href="formulario.html">Crear</a>
-            <a href="crear_usuario.html">Registrate</a>
-            <a href="inicio_sesion.html">Inicia Sesion</a>
-            <button id="boton-tema" class="boton-tema" title="boton que cambia de claro a oscuro o viceversa">Claro</button>
+
+            <!--Solo se muestra si esta logueado-->
+            <a href="formulario.html" class="link-login">Crear</a>
+            <a href="perfil.html" class="link-login">Perfil</a>
+            <button id="btn-logout" class="boton-tema">Cerrar Sesión</button>
+
+            <!--Solo se muestra si no esta logueado-->
+            <a href="crear_usuario.html" class="link-nologin">Registrate</a>
+            <a href="inicio_sesion.html" class="link-nologin">Inicia Sesion</a>
+
+            <!--Se muestra en cualquier caso, igual que losa dso de arriba-->
+            <button id="boton-tema" class="boton-tema" title="Cambiar a modo claro/oscuro">Claro</button>
         </nav>
     </header>
 

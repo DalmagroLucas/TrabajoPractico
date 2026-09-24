@@ -180,7 +180,7 @@ function inicializarFormularioLogin() {
 
         let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
         const usuarioEncontrado = listaUsuarios.find(
-            u => u.usuario.toLowerCase() === usuarioInput.toLowerCase() && u.contrasena === passInput
+            u => u.usuario === usuarioInput && u.contrasena === passInput
         );
 
         if (usuarioEncontrado) {
@@ -212,7 +212,8 @@ function obtenerUsuarioLogueado() {
 
 function cerrarSesion() {
     localStorage.removeItem('usuarioLogueado');
-    window.location.href = 'inicio_sesion.html';
+    actualizarHeader()
+    window.location.href = 'inicio.html';
 }
 
 //FUNCION QUE MUESTRA LA TARJETA
@@ -681,9 +682,33 @@ function inicializarTema() {
     }
 }
 
+
+//FUNCION QUE ACTUALIZA EL HEADER SI SE INICIA SESION O SE CIERRA
+function actualizarHeader(){
+    const linkNoLogin = document.querySelectorAll(".link-nologin")
+    const linkLogin = document.querySelectorAll(".link-login")
+    const botonlo = document.getElementById("btn-logout")
+
+    const usuarioLogueado = obtenerUsuarioLogueado();
+    if (usuarioLogueado){
+        botonlo.style.display = "inline";
+        linkNoLogin.forEach(link => link.style.display = 'none' );
+        linkLogin.forEach(link => link.style.display = 'inline' );
+    }
+    else{
+        botonlo.style.display = "none";
+        linkNoLogin.forEach(link => link.style.display = 'inline' );
+        linkLogin.forEach(link => link.style.display = 'none' );
+    }
+}
+
 //se encarga de que el juego de las paginas funcione correctamente
 document.addEventListener('DOMContentLoaded', () => {
     //carga los usuarios precargados
+    const botonLogOut = document.getElementById("btn-logout")   
+    if (botonLogOut) {
+        botonLogOut.addEventListener("click", cerrarSesion);
+    } 
     if (typeof inicializarUsuarios === 'function') {
         inicializarUsuarios();
     }
@@ -696,4 +721,5 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarResenas();
     inicializarFormulario();
     inicializarTema();
+    actualizarHeader();
 });
