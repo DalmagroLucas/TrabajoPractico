@@ -47,23 +47,35 @@
 
                 <div class="form-group">
                     <label for="reg-contrasena">Contraseña:</label>
-                    <input 
-                        type="password" 
-                        id="reg-contrasena" 
-                        name="contrasena"
-                        required
-                    >
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input 
+                            type="password" 
+                            id="reg-contrasena" 
+                            name="contrasena"
+                            required
+                            style="width: 100%; padding-right: 35px;"
+                        >
+                        <button type="button" id="btn-ver-reg-contrasena" style="position: absolute; right: 5px; background: none; border: none; cursor: pointer; font-size: 1.2em;" title="Mostrar/Ocultar contraseña">
+                        👁️
+                        </button>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="reg-confirmar-contrasena">Confirmar contraseña:</label>
-                    <input 
-                        type="password" 
-                        id="reg-confirmar-contrasena" 
-                        name="confirmar-contrasena"
-                        required
-                    >
-                </div>
+<div class="form-group">
+    <label for="reg-confirmar-contrasena">Confirmar contraseña:</label>
+    <div style="position: relative; display: flex; align-items: center;">
+        <input 
+            type="password" 
+            id="reg-confirmar-contrasena" 
+            name="confirmar-contrasena"
+            required
+            style="width: 100%; padding-right: 35px;"
+        >
+        <button type="button" id="btn-ver-reg-confirmar" style="position: absolute; right: 5px; background: none; border: none; cursor: pointer; font-size: 1.2em;" title="Mostrar/Ocultar contraseña">
+        👁️
+        </button>
+    </div>
+</div>
 
                 <p id="mensaje-registro" class="mj-er"></p>
 

@@ -900,3 +900,34 @@ if (inputContrasena && btnVerContrasena) {
         }
     });
 }
+
+const inputRegContrasena = document.getElementById('reg-contrasena');
+const btnVerRegContrasena = document.getElementById('btn-ver-reg-contrasena');
+
+if (inputRegContrasena && btnVerRegContrasena) {
+    btnVerRegContrasena.addEventListener('click', function() {
+        if (inputRegContrasena.type === 'password') {
+            inputRegContrasena.type = 'text';
+            btnVerRegContrasena.textContent = '🔒';
+        } else {
+            inputRegContrasena.type = 'password';
+            btnVerRegContrasena.textContent = '👁️';
+        }
+    });
+}
+
+
+const inputRegConfirmar = document.getElementById('reg-confirmar-contrasena');
+const btnVerRegConfirmar = document.getElementById('btn-ver-reg-confirmar');
+
+if (inputRegConfirmar && btnVerRegConfirmar) {
+    btnVerRegConfirmar.addEventListener('click', function() {
+        if (inputRegConfirmar.type === 'password') {
+            inputRegConfirmar.type = 'text';
+            btnVerRegConfirmar.textContent = '🔒';
+        } else {
+            inputRegConfirmar.type = 'password';
+            btnVerRegConfirmar.textContent = '👁️';
+        }
+    });
+}
