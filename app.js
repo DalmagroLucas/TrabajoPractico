@@ -439,6 +439,39 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarResenas();
     inicializarFormulario();
 });
+ 
+
+
+//Juegos y tags precargados
+const LISTA_TAGS = [
+    "Acción", "Aventura", "RPG", "JRPG", "Singleplayer", "Multijugador",
+    "Cooperativo", "Plataformas", "Metroidvania", "Estrategia", "Terror",
+    "Supervivencia", "Indie", "Shooter", "FPS", "TPS", "Puzzle", "Simulación",
+    "Deportes", "Carreras", "Lucha", "Roguelike", "Roguelite", "Mundo Abierto",
+    "Hack and Slash", "Stealth", "Soulslike", "Novela Visual", "Música/Ritmo",
+    "Sandbox", "Táctico", "Casual", "Battle Royale"
+];
+
+const LISTA_JUEGOS = [
+    "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom",
+    "Elden Ring", "God of War", "God of War Ragnarök", "Red Dead Redemption 2",
+    "The Witcher 3: Wild Hunt", "Hollow Knight", "Minecraft", "Grand Theft Auto V",
+    "Cyberpunk 2077", "Dark Souls III", "Bloodborne", "Sekiro: Shadows Die Twice",
+    "Baldur's Gate 3", "Super Mario Odyssey", "Super Mario Bros. Wonder", "Persona 5 Royal",
+    "Final Fantasy VII Remake", "Final Fantasy XVI", "Resident Evil 4 Remake",
+    "Resident Evil Village", "Silent Hill 2", "Hades", "Hades II", "Celeste",
+    "Stardew Valley", "Terraria", "Portal 2", "Half-Life 2", "Doom Eternal",
+    "Overwatch 2", "Counter-Strike 2", "Valorant", "League of Legends", "Dota 2",
+    "World of Warcraft", "Fortnite", "Apex Legends", "Call of Duty: Warzone",
+    "Fallout 4", "Skyrim (The Elder Scrolls V)", "Monster Hunter: World",
+    "Monster Hunter Rise", "Death Stranding", "Ghost of Tsushima", "The Last of Us Part I",
+    "The Last of Us Part II", "Horizon Zero Dawn", "Horizon Forbidden West",
+    "Spider-Man Remastered", "Spider-Man 2", "Cuphead", "Undertale", "Dead Cells",
+    "Slay the Spire", "Outer Wilds", "Disco Elysium", "Sea of Thieves", "It Takes Two",
+    "Left 4 Dead 2", "Payday 2", "Subnautica", "No Man's Sky", "Starfield",
+    "Palworld", "Helldivers 2", "Black Myth: Wukong"
+];
+
 
 //FUNCIONAMIENTO PARCIAL DE LA PAGINA DE CARGA DE RESEÑAS
 function cargarPaginaFiltrar() {
