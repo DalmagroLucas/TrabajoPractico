@@ -648,7 +648,7 @@ function aplicarTema(tema) {
     }
 
     //cambia lo que dice el boton
-    const texto = tema === 'claro' ? 'Oscuro' : 'Claro';
+    const texto = tema === 'claro' ? 'Claro' : 'Oscuro';
     const botonNav = document.getElementById('boton-tema');
     const botonFlotante = document.getElementById('boton-tema-flotante');
     if (botonNav) botonNav.textContent = texto;
