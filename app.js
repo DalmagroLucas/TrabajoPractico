@@ -180,7 +180,7 @@ function inicializarFormularioLogin() {
 
         let listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
         const usuarioEncontrado = listaUsuarios.find(
-            u => u.usuario.toLowerCase() === usuarioInput.toLowerCase() && u.contrasena === passInput
+            u => u.usuario === usuarioInput && u.contrasena === passInput
         );
 
         if (usuarioEncontrado) {
@@ -212,7 +212,8 @@ function obtenerUsuarioLogueado() {
 
 function cerrarSesion() {
     localStorage.removeItem('usuarioLogueado');
-    window.location.href = 'inicio_sesion.html';
+    actualizarHeader()
+    window.location.href = 'inicio.html';
 }
 
 //FUNCION QUE MUESTRA LA TARJETA
@@ -518,7 +519,7 @@ function cargarPaginaFiltrar() {
         const filtradas = resenasGuardadas.filter(resena => {
             //Filtra por nombre
             const coincideTexto = textoBusqueda === '' || 
-                (resena.titulo || '').toLowerCase().includes(textoBusqueda);
+                (resena.titulo || '').toLowerCase().split(' ').includes(textoBusqueda);
 
             //Filtra por juego
             const coincideJuego = juegoElegido === '' || 
@@ -615,7 +616,7 @@ function cargarPaginaInicio() {
                     </div>
                     <div class="tarjeta-contenido">
                         <h3 class="tarjeta-titulo">${juego.nombre}</h3>
-                        <p class="tarjeta-opinion">${juego.descripcion}</p>
+                        <p class="tarjeta-descripcion">${juego.descripcion}</p>
                         <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}"> Opinar </a>
                     </div>
                 `;
@@ -648,7 +649,7 @@ function aplicarTema(tema) {
     }
 
     //cambia lo que dice el boton
-    const texto = tema === 'claro' ? 'Oscuro' : 'Claro';
+    const texto = tema === 'claro' ? 'Claro' : 'Oscuro';
     const botonNav = document.getElementById('boton-tema');
     const botonFlotante = document.getElementById('boton-tema-flotante');
     if (botonNav) botonNav.textContent = texto;
@@ -681,9 +682,33 @@ function inicializarTema() {
     }
 }
 
+
+//FUNCION QUE ACTUALIZA EL HEADER SI SE INICIA SESION O SE CIERRA
+function actualizarHeader(){
+    const linkNoLogin = document.querySelectorAll(".link-nologin")
+    const linkLogin = document.querySelectorAll(".link-login")
+    const botonlo = document.getElementById("btn-logout")
+
+    const usuarioLogueado = obtenerUsuarioLogueado();
+    if (usuarioLogueado){
+        botonlo.style.display = "inline";
+        linkNoLogin.forEach(link => link.style.display = 'none' );
+        linkLogin.forEach(link => link.style.display = 'inline' );
+    }
+    else{
+        botonlo.style.display = "none";
+        linkNoLogin.forEach(link => link.style.display = 'inline' );
+        linkLogin.forEach(link => link.style.display = 'none' );
+    }
+}
+
 //se encarga de que el juego de las paginas funcione correctamente
 document.addEventListener('DOMContentLoaded', () => {
     //carga los usuarios precargados
+    const botonLogOut = document.getElementById("btn-logout")   
+    if (botonLogOut) {
+        botonLogOut.addEventListener("click", cerrarSesion);
+    } 
     if (typeof inicializarUsuarios === 'function') {
         inicializarUsuarios();
     }
@@ -696,4 +721,5 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarResenas();
     inicializarFormulario();
     inicializarTema();
+    actualizarHeader();
 });
