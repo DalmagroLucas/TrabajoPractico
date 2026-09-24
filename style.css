@@ -1,373 +1,76 @@
-/* =========================================================
-   TEMA ORIGINAL O OSCURO
-   ========================================================= */
+/*COLOR ORIGINAL O OSCURO*/
 
-/*Caracteristicas del body, afectan a todas las paginas*/
-body {
-    font-family: "Trebuchet MS", sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #0f111a; 
-    color: #e2e8f0;
-}
+/* ---------- General ---------- */
+    body {
+        font-family: "Trebuchet MS", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #0f111a; 
+        color: #e2e8f0;
+    }
 
-/* ---------- Inicio ---------- */
+    /*Estilo del header*/
+    .stl-header {
+        background: #161926;
+        border-bottom: 1px solid #2a2e45;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
 
+    /*Contiene el logo y el nombre de la pagina*/
+    .logo-contenedor {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
+    /*Se le ajusta el tamaño */
+    .logo-icono {
+        font-size: 1.8rem;
+    }
 
-/*Valores predeterminados para la familia H*/
-h1, h2, h3 {
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
+    /*Texto del nomrbe de la pagina*/
+    .logo-texto {
+        font-weight: 900;
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+    }
 
-/*Lo que se muestra si no hay reseñas o juegos en la pantalla de INICIO y RESEÑAS */
-.sin-contenido{
-    color: #899aa9; text-align: center; grid-column: 1 / -1;
-}
+    /*Contenedor de los botones de navegacion*/
+    .nav-links {
+        display: flex;
+        gap: 30px;
+    }
 
-/*Estilo del main principal de la pagina de INICIO y de RESEÑAS*/
-.mn-pg {
-    max-width: 1100px; 
-    margin: 40px auto; 
-    flex-direction: column; 
-}
+    /*Estilo de los botones de navegacion */
+    .nav-links a {
+        color: #a0aec0;
+        text-decoration: none;
+        margin-left: 20px;
+        font-weight: 600;
+        font-size: 1.4rem;
+        transition: color 0.2s, text-shadow 0.2s;
+    }
 
-/*Estilo que suma cosas a las paginas de INICIO, RESEÑAS y CREAR*/
-.contenedor-principal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-}
+    /*reacion de los botones cuando les pasamos el mouse*/
+    .nav-links a:hover, .nav-links a.activo {
+        opacity: 0.7;
+        color: #00f2fe;
+        text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+    }
 
-/* Estilo del titulo de INICIO y RESEÑAS */
-.tt-pg{
-    text-align: center; 
-    margin-bottom: 30px; 
-    font-size: 2.2rem; 
-    width: 100%;    
-}
+    /*Valores predeterminados para la familia H*/
+    h1, h2, h3 {
+        color: #ffffff;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
 
-/* LAYOUT DEL FORMULARIO Y ESTILOS: Estilos base de la barra de navegación */
-.barra-navegacion {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #000000;
-}
-
-/* Redefinición de la barra de navegación para el tema oscuro */
-.barra-navegacion {
-    background: #161926;
-    border-bottom: 1px solid #2a2e45;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-/* Contenedor del logo principal */
-.logo-contenedor {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Icono del logo */
-.logo-icono {
-    font-size: 1.8rem;
-}
-
-/* Texto del logo principal */
-.logo-texto {
-    font-weight: 900;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-}
-
-/* Contenedor de enlaces en la barra de navegación */
-.nav-links {
-    display: flex;
-    gap: 30px;
-}
-
-/* Estilos base de los enlaces de navegación */
-.nav-links a {
-    text-decoration: none;
-    color: #000000;
-    font-size: 1.4rem;
-    transition: opacity 0.2s;
-}
-
-/* Estilos para los enlaces de navegación en tema oscuro */
-.nav-links a {
-    color: #a0aec0;
-    text-decoration: none;
-    margin-left: 20px;
-    font-weight: 600;
-    transition: color 0.2s, text-shadow 0.2s;
-}
-
-/* Hover base de los enlaces de navegación */
-.nav-links a:hover {
-    opacity: 0.7;
-}
-
-/* Efecto hover iluminado para enlaces en tema oscuro */
-.nav-links a:hover, .nav-links a.activo {
-    color: #00f2fe;
-    text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
-}
-
-/* Grilla general donde se renderizan las reseñas y juegos */
-.grid-resenas {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
-
-/* Animaciones flotantes de las reseñas y los juegos */
-.grid-resenas .tarjeta-resena:hover {
-    transform: translateY(-3px);
-    border-color: #3a415f;
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
-}
-
-/* Evita que se escale erróneamente la imagen al hacer hover en la grilla */
-.grid-resenas .tarjeta-resena:hover .tarjeta-imagen img {
-    transform: none;
-}
-
-/* Estructura base de las tarjetas de reseña */
-.tarjeta-resena {
-    background-color: #2c3440;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
-    border: 1px solid #445566;
-}
-
-/* Redefinición de tarjeta de reseña con gradiente oscuro */
-.tarjeta-resena {
-    background: linear-gradient(145deg, #181b29, #121420);
-    border: 1px solid #2d324d;
-    border-radius: 18px; 
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-/* Estilo de las reseñas al hacer hover (borde verde) */
-.tarjeta-resena:hover {
-    transform: translateY(-5px);
-    border-color: #00e054;
-}
-
-/* Efecto hover flotante con luz neón celeste en la tarjeta */
-.tarjeta-resena:hover {
-    transform: translateY(-7px);
-    border-color: #00f2fe;
-    box-shadow: 0 15px 30px rgba(0, 242, 254, 0.15);
-}
-
-/* Contenedor de la imagen de portada de la tarjeta */
-.tarjeta-imagen {
-    width: 100%;
-    height: 250px;
-    background-color: #14181c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* Redefinición del contenedor de imagen con menor altura */
-.tarjeta-imagen {
-    width: 100%;
-    height: 180px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Imagen base dentro de la tarjeta */
-.tarjeta-imagen img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-}
-
-/* Imagen de portada de tarjeta redefinida con transiciones */
-.tarjeta-imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-/* Zoom de la imagen interna de la tarjeta al hacer hover */
-.tarjeta-resena:hover .tarjeta-imagen img {
-    transform: scale(1.06);
-}
-
-/* Sombra oscura sobre la imagen para mejorar legibilidad del texto */
-.tarjeta-imagen::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to top, #181b29, transparent);
-}
-
-/* Contenedor del contenido interno de la tarjeta */
-.tarjeta-contenido {
-    padding: 20px;
-}
-
-/* Redefinición de padding para el contenido interno de tarjeta */
-.tarjeta-contenido {
-    padding: 18px;
-}
-
-/* Titulo base de la tarjeta */
-.tarjeta-titulo {
-    color: #ffffff;
-    margin: 0 0 5px 0;
-    font-size: 1.3em;
-}
-
-/* Redefinición del titulo de la tarjeta */
-.tarjeta-titulo {
-    font-size: 1.25rem;
-    margin: 0 0 4px 0;
-    color: #fff;
-    font-weight: 700;
-}
-
-/* Subtítulo o nombre del juego base en la tarjeta */
-.tarjeta-juego {
-    color: #899aa9;
-    margin: 0 0 15px 0;
-    font-size: 1em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Redefinición del nombre de juego con color neón en la tarjeta */
-.tarjeta-juego {
-    font-size: 0.85rem;
-    color: #00f2fe;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0 0 10px 0;
-}
-
-/* Puntuación base en verde */
-.tarjeta-puntuacion {
-    color: #00e054;
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-bottom: 15px;
-}
-
-/* Puntuación estilo píldora con fondo semitransparente */
-.tarjeta-puntuacion {
-    display: inline-block;
-    background: rgba(0, 230, 118, 0.15);
-    color: #00e676;
-    border: 1px solid rgba(0, 230, 118, 0.3);
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-bottom: 12px;
-}
-
-/* Opinión o descripción de reseña base */
-.tarjeta-opinion {
-    color: #ccddee;
-    font-style: italic;
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-/* Redefinición de opinión para legibilidad en tema oscuro */
-.tarjeta-opinion {
-    color: #a0aec0;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-/* Tags base renderizados en las tarjetas */
-.tarjeta-tags {
-    color: #899aa9;
-    font-size: 0.85em;
-    background-color: #14181c;
-    padding: 8px;
-    border-radius: 4px;
-}
-
-/* Estilo rosado y semitransparente para las etiquetas (tags) en tarjetas */
-.tarjeta-tags {
-    font-size: 0.8rem;
-    color: #ff007f;
-    background: rgba(255, 0, 127, 0.1);
-    padding: 4px 10px;
-    border-radius: 8px;
-    display: inline-block;
-}
-
-/* Botones de acción base estilo botón verde solido */
-.boton-enlace {
-    background-color: #85cf10;
-    color: #14181c;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 4px;
-    text-transform: uppercase;
-    transition: background-color 0.3s;
-}
-
-/* Hover de botón de acción base */
-.boton-enlace:hover {
-    background-color:#2c3440;
-}
-
-/* Redefinición del botón de acción como texto subrayado y minimalista (siempre igual) */
-.boton-enlace {
-    background: none !important;
-    color: #a0aec0 !important;
-    padding: 0 !important;
-    border: none !important;
-    border-radius: 0 !important;
-    text-decoration: underline !important;
-    text-transform: none !important;
-    transition: none !important;
-    font-size: 0.9rem !important;
-}
-
-/* Redefinición hover del botón minimalista */
-.boton-enlace:hover {
-    background: none !important;
-    color: #ffffff !important;
-}
-
-/* Botón base para cambiar el tema en la navegación */
-.boton-tema {
+    /*Estilo del boton q cambia el tema*/
+    .boton-tema {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid #3a415f;
     color: #a0aec0;
@@ -377,150 +80,258 @@ h1, h2, h3 {
     letter-spacing: 0.5px;
     padding: 6px 14px;
     border-radius: 20px;
-    cursor: pointer;
+    cursor:pointer;
     transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
-}
+    }
 
-/* Hover para botón de cambiar tema en la navegación */
-.boton-tema:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #e2e8f0;
-    border-color: #00f2fe;
-    transform: scale(1.05);
-}
+    /*hover del boton*/
+    .boton-tema:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #e2e8f0;
+        border-color: #ffffff;
+        transform: scale(1.05);
+    }
 
-/* Botón fijo y flotante en la pantalla para cambiar el tema */
-.boton-tema-flotante {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    padding: 8px 16px;
-    font-size: 0.72rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #e2e8f0;
-    border-radius: 20px;
-    cursor: pointer;
-    z-index: 50;
-    transition: background 0.2s, transform 0.2s;
-}
+/* ---------- Inicio ---------- */
 
-/* Hover para botón fijo del tema */
-.boton-tema-flotante:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.2);
-}
+    /*Lo que se muestra si no hay reseñas o juegos en la pantalla de INICIO y RESEÑAS */
+    .sin-contenido{
+        color: #899aa9; text-align: center; grid-column: 1 / -1;
+    }
+
+    /*Estilo del main principal de la pagina de INICIO y de RESEÑAS*/
+    .mn-pg {
+        max-width: 1100px; 
+        margin: 40px auto; 
+        flex-direction: column; 
+    }
+
+    /*Estilo que suma cosas a las paginas de INICIO, RESEÑAS y CREAR*/
+    .contenedor-principal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+    }
+
+    /*Estilo del titulo de INICIO y RESEÑAS*/
+    .tt-pg{
+        text-align: center; 
+        margin-bottom: 30px; 
+        font-size: 2.2rem; 
+        width: 100%;    
+    }
 
 
-/* ---------- Resenas ---------- */
+    /*Estilo de las tarjetas en las RESEÑAS y en los juegos del INICIO*/
+    .grid-tarjetas {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
 
-/* Contenedor del menú interactivo de filtros de búsqueda */
-#barra-filtros{
-    display: flex; 
-    flex-direction: row; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 15px; 
-    width: 100%; 
-    max-width: 1000px; 
-    margin-bottom: 40px; 
-    flex-wrap: nowrap;
-}
+    /*Animaciones de cuadno pasas el mouse en una reseña o en un juego*/
+    .grid-tarjetas .tarjeta-resena:hover {
+        transform: translateY(-10px);
+        border-color: #3a415f;
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
+    }
 
-/* Input para filtrar por el titulo o texto específico de la reseña */
-#buscador-texto{
-    flex: 2; 
-    padding: 12px 18px; 
-    border-radius: 25px; 
-    font-size: 0.95rem; 
-    outline: none; 
-}
+    /*Evita que la imagen se modifique al hacer la animacion*/
+    .grid-tarjetas .tarjeta-resena:hover .tarjeta-imagen img {
+        transform: none;
+    }
 
-/* Select interactivo para filtrar resultados por nombre de juego */
-#filtro-juego{
-    flex: 1.5; 
-    padding: 12px 18px; 
-    border-radius: 25px; 
-    font-size: 0.95rem; 
-    cursor: pointer;
-}
+    /*Estilo de las repetidas tarjetas de INICIO y de RESEÑAS*/
+    .tarjeta-resena {
+        background: linear-gradient(145deg, #181b29, #121420);
+        border: 1px solid #2d324d;
+        border-radius: 18px; 
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
 
-/* Select interactivo para filtrar resultados por un tag específico */
-#filtro-tag{
-    flex: 1.5; 
-    padding: 12px 18px; 
-    border-radius: 25px; 
-    font-size: 0.95rem; 
-    outline: none; 
-    cursor: pointer;
-}
+    /*el contenedor de la imagen de las tarjetas*/
+    .tarjeta-imagen {
+        width: 100%;
+        height: 250px;
+        background-color: #14181c;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        align-items: center;
+        overflow: hidden;
+    }
 
-/* Select interactivo para filtrar por puntuación (1 al 5) */
-#filtro-calificacion{
-    flex: 1.2; 
-    padding: 12px 18px; 
-    border-radius: 25px; 
-    font-size: 0.95rem; 
-    outline: none; 
-    cursor: pointer;
-}
+    /*la imagen del contenedor de imagen de la tarjeta jaja*/
+    .tarjeta-imagen img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        transition: transform 0.4s ease;
+    }
 
-/* Botón interactivo que reinicia/limpia todos los filtros actuales */
-#btn-limpiar{
-    padding: 12px 22px; 
-    border: 1.5px solid #000; 
-    border-radius: 25px; 
-    background: #e0e0e0; 
-    font-weight: bold; 
-    cursor: pointer; 
-    white-space: nowrap;
-}
 
-/* Tema oscuro global aplicado a los select e inputs de filtros (Sobrescribe los colores) */
-input[type="text"], select {
-    background-color: #1a1d2e !important;
-    color: #ffffff !important;
-    border: 1px solid #323752 !important;
-    border-radius: 12px !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
+    /*Contenedor de los otros elementos que no son la imagen*/
+    .tarjeta-contenido {
+        padding: 20px;
+    }
 
-/* Efecto focus resplandeciente en filtros de busqueda al interactuar */
-input[type="text"]:focus, select:focus {
-    border-color: #7928ca !important;
-    box-shadow: 0 0 10px rgba(121, 40, 202, 0.4) !important;
-}
 
-/* Boton flotante rojo para eliminar reseñas dinámicas (Creadas por JS) */
-.boton-eliminar {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    color: #fff;
-    cursor: pointer;
-    z-index: 10;
-    transition: background 0.2s, transform 0.2s;
-}
+    /*Titulo de la tarjeta*/
+    .tarjeta-titulo {
+        font-size: 1.25rem;
+        margin: 0 0 4px 0;
+        color: #fff;
+        font-weight: 700;
+    }
 
-/* Hover del boton de eliminar que se activa al pasar el mouse por la equis */
-.boton-eliminar:hover {
-    background: #ff3366;
-    transform: scale(1.1);
-}
+    /*Descripcion de juego en INCIIO*/
+    .tarjeta-descripcion {
+        color: #b2b2b2;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    /*Boton de opinar en la pagina de INICIO*/
+    .boton-enlace {
+        background: none ;
+        font-weight: bold;
+        color: #a0aec0 ;
+        padding: 0 ;
+        border: none ;
+        border-radius: 0 ;
+        text-decoration: underline ;
+        text-transform: none ;
+        transition: none ;
+        font-size: 0.9rem ;
+    }
+    /*Hover del boton*/
+    .boton-enlace:hover {
+        background: none ;
+        color: #ffffff ;
+    }
+/* ---------- Reseñas ---------- */
+
+    /*contenedor de los distintos filtros*/
+    #barra-filtros{
+        display: flex; 
+        flex-direction: row; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 15px; 
+        width: 100%; 
+        max-width: 1000px; 
+        margin-bottom: 40px; 
+        flex-wrap: nowrap;
+    }
+
+    /*filtro por titulo*/
+    #buscador-texto{
+        flex: 2; 
+        padding: 12px 18px; 
+        font-size: 0.95rem; 
+        outline: none; 
+    }
+
+    /*filtro por juego */
+    #filtro-juego{
+        flex: 1.5; 
+        padding: 12px 18px; 
+        font-size: 0.95rem; 
+        cursor: pointer;
+    }
+
+    /*filtro por tag*/
+    #filtro-tag{
+        flex: 1.5; 
+        padding: 12px 18px; 
+        font-size: 0.95rem; 
+        outline: none; 
+        cursor: pointer;
+    }
+
+    /*filtro por clasificacion */
+    #filtro-calificacion{
+        flex: 1.2; 
+        padding: 12px 18px; 
+        font-size: 0.95rem; 
+        outline: none; 
+        cursor: pointer;
+    }
+
+    /*boton de limpieza de filtros*/
+    #btn-limpiar{
+        padding: 12px 22px; 
+        border: 1.5px solid #000;
+        background: #e0e0e0; 
+        border-radius: 25px;
+        font-weight: bold; 
+        cursor: pointer; 
+        white-space: nowrap;
+    }
+
+    /*Se aplica a todos los typo texto y a los selects*/
+    input[type="text"], select {
+        background-color: #1a1d2e;
+        color: #ffffff;
+        border: 1px solid #323752;
+        border-radius: 25px;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /*Titulo de juego en RESEÑA*/
+    .tarjeta-juego {
+        font-size: 0.85rem;
+        color: #a3a2a5;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0 0 10px 0;
+    }
+
+    /*Puntuacion en RESEÑA*/
+    .tarjeta-puntuacion {
+        display: inline-block;
+        background: rgba(187, 192, 55, 0.737);
+        color: #ffffff;
+        border: 1px solid #0000014d;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+    }
+
+    /*Descripcion de RESEÑA*/
+    .tarjeta-opinion {
+        color: #ffffff;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    /*tags de la reseña*/
+    .tarjeta-tags {
+        font-size: 0.8rem;
+        color: #fdfdfd;
+        background: rgba(5, 3, 8, 0.377);;
+        padding: 4px 10px;
+        border-radius: 8px;
+        display: inline-block;
+    }
 
 
 /* ---------- Formulario ---------- */
 
-/* Estilo del panel principal de creación de reseña */
+/*Estilo general del formulario*/
 .tarjeta-formulario {
     background: #161926;
     border: 1px solid #2d324d;
@@ -531,91 +342,63 @@ input[type="text"]:focus, select:focus {
     max-width: 750px;
 }
 
-/* Asegura que los textos de formulario tengan color en dark mode */
-.tarjeta-formulario label,
+/*Estilo de los textos del formulario y los labels en general*/
+label,
 .tarjeta-formulario h1,
 .tarjeta-formulario p {
-    color: #e2e8f0 !important;
+    color: #ffffff;
 }
 
-/* Layout en cuadrícula responsiva del formulario */
+/*ORganizacion de los elmeentos del formulario*/
 .filas-formulario {
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 30px;
 }
 
-/* Adapta la estructura del grid del formulario a dispositivos moviles */
+/*Adaptacion dependiendo del tamaño de la pantalla*/
 @media (max-width: 680px) {
     .filas-formulario {
         grid-template-columns: 1fr;
     }
     
-    .barra-navegacion {
+    .stl-header {
         flex-direction: column;
         gap: 15px;
     }
 }
 
-/* Estilo que agrupa y organiza cada label e input del form */
-.grupo-form {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Tipografía de etiquetas (label) en los campos */
-.grupo-form label {
-    font-size: 0.95rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #000000;
-}
-
-/* Inputs de texto y campo opinion base en modo claro/neutro (pisado luego) */
-.grupo-form input[type="text"],
-.grupo-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1.5px solid #000000;
-    border-radius: 0px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    outline: none;
-}
-
-/* Altura mínima del input Opinion */
+/*Ajustes especificamente para las text areas*/
 .grupo-form textarea {
     resize: vertical;
     min-height: 80px;
 }
 
-/* Redefinición visual de inputs en tema oscuro espacial para formulario */
+/*ajustes para los text y text areas*/
 .tarjeta-formulario input[type="text"],
 .tarjeta-formulario textarea {
-    background-color: #0f111a !important;
-    color: #ffffff !important;
-    border: 1.5px solid #2d324d !important;
-    border-radius: 12px !important;
-    padding: 12px 16px !important;
-    font-size: 0.95rem !important;
-    outline: none !important;
-    box-shadow: none !important;
-    transition: border-color 0.2s, box-shadow 0.2s !important;
+    width: 100%;
+    flex-direction: column;
+    display: flex;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background-color: #0f111a ;
+    color: #ffffff ;
+    border: 1.5px solid #2d324d ;
+    border-radius: 12px ;
+    padding: 12px 16px ;
+    font-size: 0.95rem ;
+    outline: none ;
+    box-shadow: none ;
+    transition: border-color 0.2s, box-shadow 0.2s ;
 }
 
-/* Resplandor celeste (neón) al interactuar con los campos (focus) */
-.tarjeta-formulario input[type="text"]:focus,
-.tarjeta-formulario textarea:focus {
-    border-color: #00f2fe !important;
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3) !important;
-}
 
-/* Zona interactiva base para previsualización y carga de imagen (Input de tipo file) */
+/*Caja donde se previsualiza la iamgen*/
 .caja-subir-imagen {
     width: 100%;
     height: 250px;
-    border: 1.5px solid #000000;
+    border: 1px solid #445566 ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -624,24 +407,13 @@ input[type="text"]:focus, select:focus {
     background-color: #ffffff;
     margin-bottom: 15px;
     overflow: hidden;
+    background: #14181c ;
+    border-radius: 0px ;
+    color: #899aa9 ;
+    transition: none ;
 }
 
-/* Caja de previsualización adaptada al tema oscuro con bordes y fondo oscuro */
-.caja-subir-imagen {
-    background: #14181c !important;
-    border: 1px solid #445566 !important;
-    border-radius: 0px !important;
-    color: #899aa9 !important;
-    transition: none !important;
-}
-
-/* Efecto hover modificado para que la caja mantenga color oscuro al hacer hover */
-.caja-subir-imagen:hover {
-    border-color: #445566 !important;
-    background: #14181c !important;
-}
-
-/* Hace que el input transparente cubra todo el área de subida de imagen */
+/*preferencias en la caja al momento de poner una imagen*/
 .caja-subir-imagen input[type="file"] {
     position: absolute;
     top: 0;
@@ -653,7 +425,7 @@ input[type="text"]:focus, select:focus {
     z-index: 2;
 }
 
-/* Texto "+ Subir Imagen" temporal que aparece de fondo */
+/*preferencias del placeholder de la imagen*/
 .preview-placeholder {
     color: #666;
     font-weight: bold;
@@ -661,7 +433,7 @@ input[type="text"]:focus, select:focus {
     z-index: 1;
 }
 
-/* Dimensiones y posición de la imagen cuando el JS la renderiza luego de elegirla */
+/*ajustes cuando se elije una imagen*/
 .caja-subir-imagen img {
     position: absolute;
     top: 0;
@@ -673,18 +445,18 @@ input[type="text"]:focus, select:focus {
     z-index: 1;
 }
 
-/* Clase dinámica utilizada en JS para remover elementos del DOM de la vista */
+/*saca los elementos del dom de la visa de lusuario*/
 .oculto {
     display: none !important;
 }
 
-/* Espaciado del sistema de estrellas */
+/*espaciado de estrellas*/
 .grupo-calificacion {
     align-items: flex-start;
     margin-top: 10px;
 }
 
-/* Sistema base de flexbox que contiene los elementos span de cada estrella */
+/*contenedor de estrellas*/
 .estrellas-calificacion {
     display: flex;
     gap: 12px;
@@ -693,156 +465,66 @@ input[type="text"]:focus, select:focus {
     user-select: none;
 }
 
-/* Modificación de color en dark mode para las estrellas apagadas */
-.estrellas-calificacion {
-    color: #4a5568 !important;
-}
-
-/* Cada estrella independiente (por defecto gris/inactiva) */
+/*base de estrellas inactivas c/u*/
 .estrella-item {
     color: #ccc;
     transition: color 0.2s, transform 0.1s;
 }
 
-/* Estrella seleccionada con escala base */
-.estrella-item.activa {
-    color: #000000;
-    transform: scale(1.15);
-}
-
-/* Al seleccionar o pasar el ratón, las estrellas se pintan amarillo / dorado brillante con glow */
+/*Cambio de las estrellas al selecionarlas o pasarle el mouse*/
 .estrella-item:hover,
 .estrella-item.activa {
-    color: #ffc107 !important;
-    text-shadow: 0 0 8px rgba(255, 193, 7, 0.6) !important;
+    transform: scale(1.15);
+    color: #ffc107;
 }
 
-/* Flexbox contenedor base de píldoras / tags (las insertadas dinamicamente desde el JS) */
-.contenedor-tags {
+/*Contenedor de las etiquetas*/
+#contenedor-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
+    gap: 8px;
+    margin-top: 10px;
 }
 
-/* Estilo de la píldora individual de la tag base (blanco/negro) */
+/*estilo de cada etiqueta*/
 .tag-badge {
-    background-color: #e0e0e0;
-    color: #000000;
-    border: 1px solid #000000;
-    padding: 3px 8px;
-    border-radius: 12px;
+    background-color: #1f2436; 
+    color: #e2e8f0;
+    border: 1px solid #363c56;
+    border-radius: 10px;
+    padding: 6px 12px;
     font-size: 0.85rem;
-    font-weight: bold;
+    font-weight: 500;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    transition: border-color 0.2s, color 0.2s;
 }
 
-/* Equis (X) para eliminar la etiqueta (tag) desde el render original de tag-badge */
-.tag-badge .btn-borrar-tag {
-    cursor: pointer;
-    color: #ff0000;
+/*hover de cada etiqueta*/
+.tag-badge:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+/* 4. Estilo de la cruz (X) para eliminar */
+/* Usa la clase real del JS. Quita el fondo, ajusta el tamaño y quita los márgenes molestos. */
+.btn-borrar-tag {
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    font-size: 1.1rem;
     font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
 }
 
-/* 1er bloque modificado de estilos para etiquetas: redefinición de contenedor */
-#contenedor-tags, .contenedor-tags {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    margin-top: 10px !important;
-}
-
-/* Estilo píldora rosa oscuro / semitransparente para tema dark general (1ra sobreescritura) */
-.tag-item, .tag, #contenedor-tags span {
-    background: rgba(255, 0, 127, 0.12) !important;
-    color: #ff3399 !important;
-    border: 1px solid rgba(255, 0, 127, 0.35) !important;
-    border-radius: 20px !important;
-    padding: 6px 14px !important;
-    font-size: 0.85rem !important;
-    font-weight: 600 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.2s ease !important;
-}
-
-/* Hover de la píldora en tema pink brillante (1ra sobreescritura) */
-.tag-item:hover, .tag:hover, #contenedor-tags span:hover {
-    background: rgba(255, 0, 127, 0.22) !important;
-    border-color: #ff007f !important;
-    box-shadow: 0 0 10px rgba(255, 0, 127, 0.4) !important;
-    transform: translateY(-1px) !important;
-}
-
-/* Botón transparente integrado a la etiqueta rosa (1ra sobreescritura) */
-.tag-item button, .tag button, #contenedor-tags span button, #contenedor-tags .btn-cerrar {
-    background: transparent !important;
-    border: none !important;
-    color: #ff66b2 !important;
-    font-weight: bold !important;
-    font-size: 1rem !important;
-    line-height: 1 !important;
-    padding: 0 !important;
-    margin-left: 2px !important;
-    cursor: pointer !important;
-    transition: color 0.2s, transform 0.2s !important;
-}
-
-/* Hover en la 'X' para eliminar tag rosa (1ra sobreescritura) */
-.tag-item button:hover, .tag button:hover, #contenedor-tags span button:hover {
-    color: #ffffff !important;
-    transform: scale(1.3) !important;
-}
-
-/* 2do bloque modificado de estilos para etiquetas: Contenedor Matte oscuro (se duplica contenedor) */
-#contenedor-tags, .contenedor-tags {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    margin-top: 10px !important;
-}
-
-/* Píldora individual en gris oscuro mate con borde sutil que se sobreescribe al final */
-.tag-item, .tag, #contenedor-tags span, #contenedor-tags div {
-    background-color: #1f2436 !important;
-    color: #e2e8f0 !important;
-    border: 1px solid #363c56 !important;
-    border-radius: 8px !important;
-    padding: 6px 12px !important;
-    font-size: 0.85rem !important;
-    font-weight: 500 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.4) !important;
-}
-
-/* Efecto hover verde discreto sobre la tag oscura matte */
-.tag-item:hover, .tag:hover, #contenedor-tags span:hover {
-    border-color: #00e676 !important;
-    color: #ffffff !important;
-}
-
-/* Botón de cierre cruz integrado a la versión dark matte de tag */
-.tag-item button, .tag button, #contenedor-tags button, #contenedor-tags span span {
-    background: transparent !important;
-    border: none !important;
-    color: #a0aec0 !important;
-    font-size: 0.9rem !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-    transition: color 0.2s !important;
-}
-
-/* Botón equis en hover se vuelve rojo suave en la tag mate */
-.tag-item button:hover, .tag button:hover, #contenedor-tags button:hover {
-    color: #ff5252 !important; 
+/* 5. Hover específico para la "X" */
+/* Se pone roja al pasar el mouse por encima para indicar que se puede borrar */
+.btn-borrar-tag:hover {
+    color: #ff5252; 
 }
 
 /* Div inferior del formulario para contener botón publicar */
@@ -1009,7 +691,7 @@ body.modo-claro .tarjeta-titulo {
 }
 
 /* Barra de navegación clara, con fondo blanco y borde grisáceo */
-body.modo-claro .barra-navegacion {
+body.modo-claro .stl-header {
     background: #ffffff;
     border-bottom: 1px solid #e0e5ec;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);

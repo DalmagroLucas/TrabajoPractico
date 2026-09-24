@@ -615,7 +615,7 @@ function cargarPaginaInicio() {
                     </div>
                     <div class="tarjeta-contenido">
                         <h3 class="tarjeta-titulo">${juego.nombre}</h3>
-                        <p class="tarjeta-opinion">${juego.descripcion}</p>
+                        <p class="tarjeta-descripcion">${juego.descripcion}</p>
                         <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}"> Opinar </a>
                     </div>
                 `;
