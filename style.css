@@ -338,6 +338,30 @@
         }
 
 
+    .btn-eliminar-comentario {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background-color: rgb(255, 0, 0);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .btn-eliminar-comentario:hover {
+        background-color: #c0392b;
+        transform: scale(1.1);
+    }
     /* ---------- Formulario ---------- */
 
         /*Estilo general del formulario*/
