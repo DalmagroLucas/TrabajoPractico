@@ -17,7 +17,8 @@ No hay nada que instalar. No usa librerías.
 2. Estructura de carpetas
 
 ```
-<img width="182" height="512" alt="imagen" src="https://github.com/user-attachments/assets/6dc1f5a7-36c8-40e7-9612-60217bb8fd1e" />
+<img width="274" height="505" alt="imagen" src="https://github.com/user-attachments/assets/5fad312d-707d-4c74-b5c9-2276bd4388a2" />
+
 
 ```
 
