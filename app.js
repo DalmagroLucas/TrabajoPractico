@@ -311,8 +311,21 @@ function mostrarResenas() {
 
     //Creacion de "tarjetas" de cada uno de las reseñas
     resenasGuardadas.forEach(function(resena) {
-        const tarjeta = document.createElement('div'); //crea un div que vendria a ser cada tarjeta
-        tarjeta.classList.add('tarjeta-resena'); //le pone el estilo de tarjeta resena
+        const tarjeta = document.createElement('div');
+        tarjeta.classList.add('tarjeta-resena');
+        
+        const usuarioActivo = obtenerUsuarioLogueado();
+
+        const htmlComentarios = (resena.comentarios || []).map((c, index) => {
+            const esMio = usuarioActivo && usuarioActivo.usuario === c.usuario;
+            const btnBorrar = esMio 
+                ? `<span class="btn-borrar-comentario" data-index="${index}" style="color: #e53e3e; cursor: pointer; float: right; font-weight: bold; margin-left: 10px;" title="Borrar comentario">X</span>` 
+                : '';
+            
+            return `<div style="margin-bottom: 8px; font-size: 0.9em; word-break: break-word; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+                        <strong>${c.usuario}:</strong> ${c.texto} ${btnBorrar}
+                    </div>`;
+        }).join('');
 
         tarjeta.innerHTML = `
             <a href="resenaindividual.html?id=${resena.id}">
@@ -322,13 +335,77 @@ function mostrarResenas() {
             <div class="tarjeta-contenido">
                 <h3 class="tarjeta-titulo">${resena.titulo}</h3>
                 <h4 class="tarjeta-juego">${resena.juego}</h4>
-                <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                <div class="tarjeta-puntuacion">${resena.calificacion || 0 } / 5</div>
                 <p class="tarjeta-opinion">"${resena.opinion}"</p>
                 <div class="tarjeta-tags">${resena.tags}</div>
+
+                <div class="seccion-comentarios" style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">
+                    <h5 style="margin-bottom: 10px; color: #ccc;">Comentarios</h5>
+                    <div class="lista-comentarios" style="max-height: 100px; overflow-y: auto; margin-bottom: 10px; border-radius: 5px; background: rgba(0,0,0,0.2); padding: 5px;">
+                        ${htmlComentarios || '<span style="font-size:0.85em; color: #888;">No hay comentarios aún.</span>'}
+                    </div>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="text" class="input-comentario" placeholder="Añadir comentario..." style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #222; color: #fff;">
+                        <button class="btn-comentar" style="padding: 6px 12px; border-radius: 4px; border: none; background: #007bff; color: white; cursor: pointer;">Enviar</button>
+                    </div>
+                </div>
             </div>
             </a>
         `;
-        //se agrega cada tarjeta al contenedor padre para poder mostrar las tarjetas
+        
+        const btnEliminar = tarjeta.querySelector('.boton-eliminar');
+        btnEliminar.addEventListener('click', function() {
+            if (confirm(`¿Estás seguro de que deseas eliminar la reseña de "${resena.juego}"?`)) {
+                eliminarResena(resena.id);
+            }
+        });
+
+        const btnComentar = tarjeta.querySelector('.btn-comentar');
+        const inputComentario = tarjeta.querySelector('.input-comentario');
+
+        btnComentar.addEventListener('click', () => {
+            const texto = inputComentario.value.trim();
+            if (!texto) return; 
+
+            const usuario = obtenerUsuarioLogueado();
+            if (!usuario) {
+                alert('Debes iniciar sesión para comentar.');
+                window.location.href = 'inicio_sesion.html';
+                return;
+            }
+
+            let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+            const index = resenas.findIndex(r => r.id === resena.id);
+            
+            if (index !== -1) {
+                if (!resenas[index].comentarios) {
+                    resenas[index].comentarios = []; 
+                }
+                resenas[index].comentarios.push({ usuario: usuario.usuario, texto: texto });
+                localStorage.setItem('misResenas', JSON.stringify(resenas));
+                
+                mostrarResenas(); 
+            }
+        });
+
+        // LÓGICA PARA ELIMINAR EL COMENTARIO
+        const botonesBorrar = tarjeta.querySelectorAll('.btn-borrar-comentario');
+        botonesBorrar.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (confirm('¿Seguro que quieres borrar tu comentario?')) {
+                    const indexComentario = e.target.getAttribute('data-index');
+                    let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                    const indexResena = resenas.findIndex(r => r.id === resena.id);
+                    
+                    if (indexResena !== -1) {
+                        resenas[indexResena].comentarios.splice(indexComentario, 1); // Borra 1 elemento en esa posición
+                        localStorage.setItem('misResenas', JSON.stringify(resenas));
+                        mostrarResenas(); 
+                    }
+                }
+            });
+        });
+
         contenedor.appendChild(tarjeta);
     });
 }
@@ -802,9 +879,22 @@ function cargarPaginaFiltrar() {
             return;
         }
 
-        filtradas.forEach(resena => {
+    filtradas.forEach(resena => {
             const tarjeta = document.createElement('div');
             tarjeta.classList.add('tarjeta-resena');
+
+            const usuarioActivo = obtenerUsuarioLogueado();
+
+            const htmlComentarios = (resena.comentarios || []).map((c, index) => {
+                const esMio = usuarioActivo && usuarioActivo.usuario === c.usuario;
+                const btnBorrar = esMio 
+                    ? `<span class="btn-borrar-comentario" data-index="${index}" style="color: #e53e3e; cursor: pointer; float: right; font-weight: bold; margin-left: 10px;" title="Borrar comentario">X</span>` 
+                    : '';
+                
+                return `<div style="margin-bottom: 8px; font-size: 0.9em; word-break: break-word; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+                            <strong>${c.usuario}:</strong> ${c.texto} ${btnBorrar}
+                        </div>`;
+            }).join('');
 
             tarjeta.innerHTML = `
                 <a href="resenaindividual.html?id=${resena.id}">
@@ -820,6 +910,63 @@ function cargarPaginaFiltrar() {
                     </div>
                 </a>
             `;
+
+            const btnEliminar = tarjeta.querySelector('.boton-eliminar');
+            if (btnEliminar) {
+                btnEliminar.addEventListener('click', () => {
+                    if (confirm(`¿Eliminar la reseña "${resena.titulo}"?`)) {
+                        let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                        resenas = resenas.filter(r => r.id !== resena.id);
+                        localStorage.setItem('misResenas', JSON.stringify(resenas));
+                        aplicarFiltros();
+                    }
+                });
+            }
+
+            const btnComentar = tarjeta.querySelector('.btn-comentar');
+            const inputComentario = tarjeta.querySelector('.input-comentario');
+
+            btnComentar.addEventListener('click', () => {
+                const texto = inputComentario.value.trim();
+                if (!texto) return;
+
+                const usuario = obtenerUsuarioLogueado();
+                if (!usuario) {
+                    alert('Debes iniciar sesión para comentar.');
+                    window.location.href = 'inicio_sesion.html';
+                    return;
+                }
+
+                let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                const index = resenas.findIndex(r => r.id === resena.id);
+                
+                if (index !== -1) {
+                    if (!resenas[index].comentarios) resenas[index].comentarios = [];
+                    resenas[index].comentarios.push({ usuario: usuario.usuario, texto: texto });
+                    localStorage.setItem('misResenas', JSON.stringify(resenas));
+                    
+                    aplicarFiltros(); 
+                }
+            });
+
+            // LÓGICA PARA ELIMINAR EL COMENTARIO
+            const botonesBorrar = tarjeta.querySelectorAll('.btn-borrar-comentario');
+            botonesBorrar.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (confirm('¿Seguro que quieres borrar tu comentario?')) {
+                        const indexComentario = e.target.getAttribute('data-index');
+                        let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                        const indexResena = resenas.findIndex(r => r.id === resena.id);
+                        
+                        if (indexResena !== -1) {
+                            resenas[indexResena].comentarios.splice(indexComentario, 1);
+                            localStorage.setItem('misResenas', JSON.stringify(resenas));
+                            aplicarFiltros(); // Recarga la vista manteniendo los filtros
+                        }
+                    }
+                });
+            });
+
             contenedor.appendChild(tarjeta);
         });
     }
