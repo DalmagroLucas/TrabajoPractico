@@ -17,33 +17,22 @@ No hay nada que instalar. No usa librerías.
 2. Estructura de carpetas
 
 TrabajoPractico-main/
-
-
 ├── app.js        <- Todo el JavaScript
-
 ├── style.css     <- Todo el CSS
-
 ├── README.md
-
 ├── Img/          <- Fotos de los juegos
-
 ├── Json/
-
 │   ├── juegos.json    <- Los juegos (nombre, descripción, imagen)
-
 │   ├── tags.json      <- Los tags (géneros)
-
 │   └── usuarios.json  <- Los usuarios de prueba
-
 └── Pages/        <- TODOS los .html van acá
-
-    ├── inicio.html            ├── formulario.html
-    
-    ├── inicio_sesion.html     ├── resenaindividual.html
-    
-    ├── crear_usuario.html     ├── resenas.html
-    
-    └── perfil.html
+    ├── inicio.html            
+    ├── inicio_sesion.html     
+    ├── crear_usuario.html     
+    ├── formulario.html
+    ├── resenas.html
+    ├── resena_individual.html
+    └── tus_resenas.html
 
 
 
