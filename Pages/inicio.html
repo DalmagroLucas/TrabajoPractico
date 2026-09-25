@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENX - Inicio de sesión</title>
+    <title>GENX - Inicio</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <!-- Barra superior -->
+    <!--Barra superior-->
     <header class="stl-header">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -34,36 +34,13 @@
         </nav>
     </header>
 
-    <main class="login-contenedor">
-        <section class="login-panel">
-
-            <h1>Inicio de sesión</h1>
-            <form id="formulario-login">
-                <div class="form-group">
-                    <label for="usuario">Usuario:</label>
-                    <input
-                        id="usuario"
-                        name="usuario"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="contrasena">Contraseña:</label>
-                    <div class="contenedor-clave">
-                        <input type="password" id="contrasena" name="contrasena" required>
-                        <button type="button" id="btn-cambio-clave" class="ver-clave" data-target="contrasena">(0)</button>
-                    </div>
-                </div>
-
-                <p id="mensaje-login" class="mj-er"></p>
-
-                <button type="submit" class="boton-login">Iniciar sesión</button>
-            </form>
-        </section>
+    <!--Pagina de inicio-->
+    <main class="contenedor-principal mn-pg" >  
+        <h1 class="tt-pg">Todos los Juegos</h1>
+        <!--cada juego-->
+        <div id="contenedor-juegos" class="grid-tarjetas"></div>
     </main>
-    
-    <script src="/app.js"></script>
 
+    <script src="../app.js"></script>
 </body>
 </html>
