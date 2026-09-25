@@ -16,6 +16,7 @@ No hay nada que instalar. No usa librerías.
 
 2. Estructura de carpetas
 
+```
 TrabajoPractico-main/
 ├── app.js        <- Todo el JavaScript
 ├── style.css     <- Todo el CSS
@@ -33,7 +34,7 @@ TrabajoPractico-main/
     ├── resenas.html
     ├── resena_individual.html
     └── tus_resenas.html
-
+```
 
 
 3. Cómo abrir el proyecto
@@ -50,6 +51,7 @@ Solución: usar Live Server de VS Code.
 
 4. Páginas
 
+```
 | Qué hace |
 |
 | `inicio.html` | Catálogo de juegos. click en un juego → abre el formulario con el juego. 
@@ -59,18 +61,18 @@ Solución: usar Live Server de VS Code.
 | `tus_resenas.html` | Tus reseñas, con opción de borrarlas o editarlas. |
 | `inicio_sesion.html` | Iniciar sesión. |
 | `crear_usuario.html` | Registrarse (inicia sesión al instante). |
-
+```
 ---
 
 5. Usuarios de prueba
 
 Vienen en `Json/usuarios.json`:
-
+```
 | Usuario | Contraseña |
 | `gamer123` | `Clave1234` |
 | `pixelArt` | `Zelda2026` |
 | `reviewerX` | `MasterPass1` |
-
+```
 
 6. Cómo funciona `app.js`
 
