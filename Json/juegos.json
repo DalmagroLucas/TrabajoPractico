@@ -1,53 +1,43 @@
 [
   {
-    "nombre": "The Legend of Zelda: Breath of the Wild",
-    "descripcion": "Abrí una aventura de mundo abierto enorme y descubrí el reino de Hyrule a tu propio ritmo.",
-    "imagen": "../Img/tlozbotw.jpg"
+    "nombre": "Apex Legends",
+    "descripcion": "Battle royale frenético con leyendas que tienen habilidades y movilidad únicas.",
+    "imagen": "../Img/al.jpg"
   },
   {
-    "nombre": "The Legend of Zelda: Tears of the Kingdom",
-    "descripcion": "La secuela que amplía Hyrule con el poder de atravesar suelos y cielos llenos de misterios.",
-    "imagen": "../Img/tloztotk.jpg"
+    "nombre": "Baldur's Gate 3",
+    "descripcion": "Un RPG de mesa convertido en videojuego con libertad total y decisiones profundas.",
+    "imagen": "../Img/bg3.jpg"
   },
   {
-    "nombre": "Elden Ring",
-    "descripcion": "Un RPG de mundo abierto brutal y desafiante inspirado en la saga Souls creado por FromSoftware.",
-    "imagen": "../Img/er.jpg"
+    "nombre": "Black Myth: Wukong",
+    "descripcion": "Una aventura basada en la leyenda del Rey Mono con combates espectaculares y míticos.",
+    "imagen": "../Img/bmw.jpg"
   },
   {
-    "nombre": "God of War",
-    "descripcion": "Kratos y su hijo Atreus emprenden una emotiva aventura nórdica llena de dioses y monstruos.",
-    "imagen": "../Img/gow.jpg"
+    "nombre": "Bloodborne",
+    "descripcion": "Cazá bestias en la ciudad gótica de Yharnam con un combate ágil y sangriento.",
+    "imagen": "../Img/bb.jpg"
   },
   {
-    "nombre": "God of War Ragnarök",
-    "descripcion": "El final de la saga nórdica de Kratos, con un combate espectacular y una gran historia.",
-    "imagen": "../Img/gowr.jpg"
+    "nombre": "Call of Duty: Warzone",
+    "descripcion": "El battle royale del shooter más popular, con partidas tácticas a gran escala.",
+    "imagen": "../Img/codw.jpg"
   },
   {
-    "nombre": "Red Dead Redemption 2",
-    "descripcion": "Viví la vida de un forajido en el lejano Oeste con uno de los mundos más vivos del gaming.",
-    "imagen": "../Img/rdr2.jpg"
+    "nombre": "Celeste",
+    "descripcion": "Un plataformas preciso e intenso sobre superar montañas y miedos propios.",
+    "imagen": "../Img/celeste.jpg"
   },
   {
-    "nombre": "The Witcher 3: Wild Hunt",
-    "descripcion": "Geralt de Rivia busca a su hija adoptiva en un enorme mundo de fantasía lleno de decisiones.",
-    "imagen": "../Img/tw3.jpg"
+    "nombre": "Counter-Strike 2",
+    "descripcion": "El shooter táctico por excelencia, renovado con nuevas mecánicas y gráficos.",
+    "imagen": "../Img/cs2.jpg"
   },
   {
-    "nombre": "Hollow Knight",
-    "descripcion": "Un metroidvania oscuro y precioso ambientado en el reino subterráneo de los insectos.",
-    "imagen": "../Img/hk.jpg"
-  },
-  {
-    "nombre": "Minecraft",
-    "descripcion": "Un sandbox infinito donde construís, explorás y sobrevivís con bloques sin límites.",
-    "imagen": "../Img/mc.jpg"
-  },
-  {
-    "nombre": "Grand Theft Auto V",
-    "descripcion": "Tres criminales en Los Santos: robos, caos y un enorme mundo abierto por descubrir.",
-    "imagen": "../Img/gta5.jpg"
+    "nombre": "Cuphead",
+    "descripcion": "Un plataformas con estética de dibujos animados de los 30, bellísimo y muy difícil.",
+    "imagen": "../Img/cuphead.jpg"
   },
   {
     "nombre": "Cyberpunk 2077",
@@ -60,34 +50,39 @@
     "imagen": "../Img/ds3.jpg"
   },
   {
-    "nombre": "Bloodborne",
-    "descripcion": "Cazá bestias en la ciudad gótica de Yharnam con un combate ágil y sangriento.",
-    "imagen": "../Img/bb.jpg"
+    "nombre": "Dead Cells",
+    "descripcion": "Roguelike-metroidvania de acción trepidante con combates fluidos y muertes constantes.",
+    "imagen": "../Img/dc.jpg"
   },
   {
-    "nombre": "Sekiro: Shadows Die Twice",
-    "descripcion": "Convertite en un shinobi que resucita para vengarse dominando un combate de precisión.",
-    "imagen": "../Img/ssdt.jpg"
+    "nombre": "Death Stranding",
+    "descripcion": "La obra única de Kojima: cruzar un mundo aislado reconectando a la humanidad.",
+    "imagen": "../Img/ds.jpg"
   },
   {
-    "nombre": "Baldur's Gate 3",
-    "descripcion": "Un RPG de mesa convertido en videojuego con libertad total y decisiones profundas.",
-    "imagen": "../Img/bg3.jpg"
+    "nombre": "Disco Elysium",
+    "descripcion": "Un RPG de diálogos con una historia policial profunda y decisiones que importan.",
+    "imagen": "../Img/discoe.jpg"
   },
   {
-    "nombre": "Super Mario Odyssey",
-    "descripcion": "Mario viaja por reinos coloridos usando su gorra para capturar enemigos y resolver puzzles.",
-    "imagen": "../Img/smo.jpg"
+    "nombre": "Doom Eternal",
+    "descripcion": "El slayer de demonios más rápido y violento del shooter en primera persona.",
+    "imagen": "../Img/de.jpg"
   },
   {
-    "nombre": "Super Mario Bros. Wonder",
-    "descripcion": "La nueva aventura 2D de Mario con flores maravilla que cambian por completo los niveles.",
-    "imagen": "../Img/smbw.jpg"
+    "nombre": "Dota 2",
+    "descripcion": "El MOBA de mayor profundidad estratégica con más de cien héroes únicos.",
+    "imagen": "../Img/dota2.jpg"
   },
   {
-    "nombre": "Persona 5 Royal",
-    "descripcion": "Viví la doble vida de estudiantes que asaltan mentes corruptas con estilo y música única.",
-    "imagen": "../Img/p5r.jpg"
+    "nombre": "Elden Ring",
+    "descripcion": "Un RPG de mundo abierto brutal y desafiante inspirado en la saga Souls creado por FromSoftware.",
+    "imagen": "../Img/er.jpg"
+  },
+  {
+    "nombre": "Fallout 4",
+    "descripcion": "Sobreviví al yermo postapocalíptico reconstruyendo asentamientos y completando misiones.",
+    "imagen": "../Img/fo4.jpg"
   },
   {
     "nombre": "Final Fantasy VII Remake",
@@ -100,19 +95,29 @@
     "imagen": "../Img/ff16.jpg"
   },
   {
-    "nombre": "Resident Evil 4 Remake",
-    "descripcion": "Leon Kennedy rescata a la hija del presidente en una aldea llena de terror y acción.",
-    "imagen": "../Img/re4r.jpg"
+    "nombre": "Fortnite",
+    "descripcion": "El battle royale más famoso, con construcciones, skins y eventos constantes.",
+    "imagen": "../Img/fn.jpg"
   },
   {
-    "nombre": "Resident Evil Village",
-    "descripcion": "Sobreviví a un pueblo europeo maldito con vampiros, brujas y horrores inolvidables.",
-    "imagen": "../Img/rev.jpg"
+    "nombre": "Ghost of Tsushima",
+    "descripcion": "Un samurái defiende su isla de los invasores mongoles con honor o con sigilo.",
+    "imagen": "../Img/got.jpg"
   },
   {
-    "nombre": "Silent Hill 2",
-    "descripcion": "El remake del clásico de terror psicológico que redefinió el género en su momento.",
-    "imagen": "../Img/sh2.jpg"
+    "nombre": "God of War",
+    "descripcion": "Kratos y su hijo Atreus emprenden una emotiva aventura nórdica llena de dioses y monstruos.",
+    "imagen": "../Img/gow.jpg"
+  },
+  {
+    "nombre": "God of War Ragnarök",
+    "descripcion": "El final de la saga nórdica de Kratos, con un combate espectacular y una gran historia.",
+    "imagen": "../Img/gowr.jpg"
+  },
+  {
+    "nombre": "Grand Theft Auto V",
+    "descripcion": "Tres criminales en Los Santos: robos, caos y un enorme mundo abierto por descubrir.",
+    "imagen": "../Img/gta5.jpg"
   },
   {
     "nombre": "Hades",
@@ -125,49 +130,34 @@
     "imagen": "../Img/hades2.jpg"
   },
   {
-    "nombre": "Celeste",
-    "descripcion": "Un plataformas preciso e intenso sobre superar montañas y miedos propios.",
-    "imagen": "../Img/celeste.jpg"
-  },
-  {
-    "nombre": "Stardew Valley",
-    "descripcion": "Heredá una granja, cultivá, criá y conoce a la gente de un pueblo encantador.",
-    "imagen": "../Img/sv.jpg"
-  },
-  {
-    "nombre": "Terraria",
-    "descripcion": "Un sandbox 2D de exploración, construcción y combate con jefes y clases variadas.",
-    "imagen": "../Img/terraria.jpg"
-  },
-  {
-    "nombre": "Portal 2",
-    "descripcion": "Resolvé puzzles de portales con humor negro y una de las mejores campañas colaborativas.",
-    "imagen": "../Img/p2.jpg"
-  },
-  {
     "nombre": "Half-Life 2",
     "descripcion": "Gordon Freeman regresa para liderar la resistencia contra el imperio Combine.",
     "imagen": "../Img/hl2.jpg"
   },
   {
-    "nombre": "Doom Eternal",
-    "descripcion": "El slayer de demonios más rápido y violento del shooter en primera persona.",
-    "imagen": "../Img/de.jpg"
+    "nombre": "Helldivers 2",
+    "descripcion": "Defendé la Super-Tierra en un shooter cooperativo contra insectos y robots alienígenas.",
+    "imagen": "../Img/hd2.jpg"
   },
   {
-    "nombre": "Overwatch 2",
-    "descripcion": "Disparos de héroes por equipos con personajes únicos, movilidad y estrategia.",
-    "imagen": "../Img/ow2.jpg"
+    "nombre": "Hollow Knight",
+    "descripcion": "Un metroidvania oscuro y precioso ambientado en el reino subterráneo de los insectos.",
+    "imagen": "../Img/hk.jpg"
   },
   {
-    "nombre": "Counter-Strike 2",
-    "descripcion": "El shooter táctico por excelencia, renovado con nuevas mecánicas y gráficos.",
-    "imagen": "../Img/cs2.jpg"
+    "nombre": "Horizon Forbidden West",
+    "descripcion": "La secuela de Aloy en el lejano oeste, con máquinas nuevas y una amenaza global.",
+    "imagen": "../Img/hfw.jpg"
   },
   {
-    "nombre": "Valorant",
-    "descripcion": "Shooter táctico 5v5 donde precisión y habilidades de agentes definen cada ronda.",
-    "imagen": "../Img/val.jpg"
+    "nombre": "Horizon Zero Dawn",
+    "descripcion": "Aloy caza máquinas dinosaurio en un mundo postapocalíptico lleno de misterios.",
+    "imagen": "../Img/hzd.jpg"
+  },
+  {
+    "nombre": "It Takes Two",
+    "descripcion": "El cooperativo perfecto para jugar en pareja: una historia divertida con mecánicas variadas.",
+    "imagen": "../Img/itt.jpg"
   },
   {
     "nombre": "League of Legends",
@@ -175,44 +165,14 @@
     "imagen": "../Img/lol.jpg"
   },
   {
-    "nombre": "Dota 2",
-    "descripcion": "El MOBA de mayor profundidad estratégica con más de cien héroes únicos.",
-    "imagen": "../Img/dota2.jpg"
+    "nombre": "Left 4 Dead 2",
+    "descripcion": "Shooter cooperativo contra hordas de zombies con campañas rejugables sin fin.",
+    "imagen": "../Img/l4d2.jpg"
   },
   {
-    "nombre": "World of Warcraft",
-    "descripcion": "El MMO de fantasía más legendario: explorá Azeroth con millones de jugadores.",
-    "imagen": "../Img/wow.jpg"
-  },
-  {
-    "nombre": "Fortnite",
-    "descripcion": "El battle royale más famoso, con construcciones, skins y eventos constantes.",
-    "imagen": "../Img/fn.jpg"
-  },
-  {
-    "nombre": "Apex Legends",
-    "descripcion": "Battle royale frenético con leyendas que tienen habilidades y movilidad únicas.",
-    "imagen": "../Img/al.jpg"
-  },
-  {
-    "nombre": "Call of Duty: Warzone",
-    "descripcion": "El battle royale del shooter más popular, con partidas tácticas a gran escala.",
-    "imagen": "../Img/codw.jpg"
-  },
-  {
-    "nombre": "Fallout 4",
-    "descripcion": "Sobreviví al yermo postapocalíptico reconstruyendo asentamientos y completando misiones.",
-    "imagen": "../Img/fo4.jpg"
-  },
-  {
-    "nombre": "Skyrim (The Elder Scrolls V)",
-    "descripcion": "El RPG de fantasía más icónico, con dragones, gremios y un mundo gigante por explorar.",
-    "imagen": "../Img/tes5.jpg"
-  },
-  {
-    "nombre": "Monster Hunter: World",
-    "descripcion": "Cazá monstruos gigantes en ecosistemas vivos y forjá armas con sus restos.",
-    "imagen": "../Img/mhw.jpg"
+    "nombre": "Minecraft",
+    "descripcion": "Un sandbox infinito donde construís, explorás y sobrevivís con bloques sin límites.",
+    "imagen": "../Img/mc.jpg"
   },
   {
     "nombre": "Monster Hunter Rise",
@@ -220,14 +180,124 @@
     "imagen": "../Img/mhr.jpg"
   },
   {
-    "nombre": "Death Stranding",
-    "descripcion": "La obra única de Kojima: cruzar un mundo aislado reconectando a la humanidad.",
-    "imagen": "../Img/ds.jpg"
+    "nombre": "Monster Hunter: World",
+    "descripcion": "Cazá monstruos gigantes en ecosistemas vivos y forjá armas con sus restos.",
+    "imagen": "../Img/mhw.jpg"
   },
   {
-    "nombre": "Ghost of Tsushima",
-    "descripcion": "Un samurái defiende su isla de los invasores mongoles con honor o con sigilo.",
-    "imagen": "../Img/got.jpg"
+    "nombre": "No Man's Sky",
+    "descripcion": "Explorá un universo generado con miles de millones de planetas únicos por descubrir.",
+    "imagen": "../Img/nms.jpg"
+  },
+  {
+    "nombre": "Outer Wilds",
+    "descripcion": "Un misterio espacial de exploración donde descubrís los secretos de un sistema solar.",
+    "imagen": "../Img/owilds.jpg"
+  },
+  {
+    "nombre": "Overwatch 2",
+    "descripcion": "Disparos de héroes por equipos con personajes únicos, movilidad y estrategia.",
+    "imagen": "../Img/ow2.jpg"
+  },
+  {
+    "nombre": "Palworld",
+    "descripcion": "Capturá criaturas 'pals' y usalas para construir, combatir y sobrevivir.",
+    "imagen": "../Img/palworld.jpg"
+  },
+  {
+    "nombre": "Payday 2",
+    "descripcion": "Organizá robos a bancos y atracos imposibles junto a tu equipo de criminales.",
+    "imagen": "../Img/pd2.jpg"
+  },
+  {
+    "nombre": "Persona 5 Royal",
+    "descripcion": "Viví la doble vida de estudiantes que asaltan mentes corruptas con estilo y música única.",
+    "imagen": "../Img/p5r.jpg"
+  },
+  {
+    "nombre": "Portal 2",
+    "descripcion": "Resolvé puzzles de portales con humor negro y una de las mejores campañas colaborativas.",
+    "imagen": "../Img/p2.jpg"
+  },
+  {
+    "nombre": "Red Dead Redemption 2",
+    "descripcion": "Viví la vida de un forajido en el lejano Oeste con uno de los mundos más vivos del gaming.",
+    "imagen": "../Img/rdr2.jpg"
+  },
+  {
+    "nombre": "Resident Evil 4 Remake",
+    "descripcion": "Leon Kennedy rescata a la hija del presidente en una aldea llena de terror y acción.",
+    "imagen": "../Img/re4r.jpg"
+  },
+  {
+    "nombre": "Resident Evil Village",
+    "descripcion": "Sobreviví a un pueblo europeo maldito con vampiros, brujas y horrores inolvidables.",
+    "imagen": "../Img/rev.jpg"
+  },
+  {
+    "nombre": "Sea of Thieves",
+    "descripcion": "Piratas, tesoros y batallas navales en un mundo compartido lleno de aventura.",
+    "imagen": "../Img/sot.jpg"
+  },
+  {
+    "nombre": "Sekiro: Shadows Die Twice",
+    "descripcion": "Convertite en un shinobi que resucita para vengarse dominando un combate de precisión.",
+    "imagen": "../Img/ssdt.jpg"
+  },
+  {
+    "nombre": "Silent Hill 2",
+    "descripcion": "El remake del clásico de terror psicológico que redefinió el género en su momento.",
+    "imagen": "../Img/sh2.jpg"
+  },
+  {
+    "nombre": "Skyrim (The Elder Scrolls V)",
+    "descripcion": "El RPG de fantasía más icónico, con dragones, gremios y un mundo gigante por explorar.",
+    "imagen": "../Img/tes5.jpg"
+  },
+  {
+    "nombre": "Slay the Spire",
+    "descripcion": "Un roguelike de cartas donde cada partida es única con personajes y mazos distintos.",
+    "imagen": "../Img/sts.jpg"
+  },
+  {
+    "nombre": "Spider-Man 2",
+    "descripcion": "Peter y Miles unen fuerzas contra Venom y los peligros de una ciudad gigante.",
+    "imagen": "../Img/sm2.jpg"
+  },
+  {
+    "nombre": "Spider-Man Remastered",
+    "descripcion": "Balanceate por Nueva York luchando contra el crimen con una historia excelente.",
+    "imagen": "../Img/smr.jpg"
+  },
+  {
+    "nombre": "Stardew Valley",
+    "descripcion": "Heredá una granja, cultivá, criá y conoce a la gente de un pueblo encantador.",
+    "imagen": "../Img/sv.jpg"
+  },
+  {
+    "nombre": "Starfield",
+    "descripcion": "El RPG espacial de Bethesda: explorá, comerciá y formá tu propia flota en la galaxia.",
+    "imagen": "../Img/starfield.jpg"
+  },
+  {
+    "nombre": "Subnautica",
+    "descripcion": "Sobreviví bajo el agua explorando un planeta oceánico misterioso y precioso.",
+    "imagen": "../Img/subnautica.jpg"
+  },
+  {
+    "nombre": "Super Mario Bros. Wonder",
+    "descripcion": "La nueva aventura 2D de Mario con flores maravilla que cambian por completo los niveles.",
+    "imagen": "../Img/smbw.jpg"
+  },
+  {
+    "nombre": "Super Mario Odyssey",
+    "descripcion": "Mario viaja por reinos coloridos usando su gorra para capturar enemigos y resolver puzzles.",
+    "imagen": "../Img/smo.jpg"
+  },
+  {
+    "nombre": "Terraria",
+    "descripcion": "Un sandbox 2D de exploración, construcción y combate con jefes y clases variadas.",
+    "imagen": "../Img/terraria.jpg"
   },
   {
     "nombre": "The Last of Us Part I",
@@ -240,29 +310,19 @@
     "imagen": "../Img/tlou2.jpg"
   },
   {
-    "nombre": "Horizon Zero Dawn",
-    "descripcion": "Aloy caza máquinas dinosaurio en un mundo postapocalíptico lleno de misterios.",
-    "imagen": "../Img/hzd.jpg"
+    "nombre": "The Legend of Zelda: Breath of the Wild",
+    "descripcion": "Abrí una aventura de mundo abierto enorme y descubrí el reino de Hyrule a tu propio ritmo.",
+    "imagen": "../Img/tlozbotw.jpg"
   },
   {
-    "nombre": "Horizon Forbidden West",
-    "descripcion": "La secuela de Aloy en el lejano oeste, con máquinas nuevas y una amenaza global.",
-    "imagen": "../Img/hfw.jpg"
+    "nombre": "The Legend of Zelda: Tears of the Kingdom",
+    "descripcion": "La secuela que amplía Hyrule con el poder de atravesar suelos y cielos llenos de misterios.",
+    "imagen": "../Img/tloztotk.jpg"
   },
   {
-    "nombre": "Spider-Man Remastered",
-    "descripcion": "Balanceate por Nueva York luchando contra el crimen con una historia excelente.",
-    "imagen": "../Img/smr.jpg"
-  },
-  {
-    "nombre": "Spider-Man 2",
-    "descripcion": "Peter y Miles unen fuerzas contra Venom y los peligros de una ciudad gigante.",
-    "imagen": "../Img/sm2.jpg"
-  },
-  {
-    "nombre": "Cuphead",
-    "descripcion": "Un plataformas con estética de dibujos animados de los 30, bellísimo y muy difícil.",
-    "imagen": "../Img/cuphead.jpg"
+    "nombre": "The Witcher 3: Wild Hunt",
+    "descripcion": "Geralt de Rivia busca a su hija adoptiva en un enorme mundo de fantasía lleno de decisiones.",
+    "imagen": "../Img/tw3.jpg"
   },
   {
     "nombre": "Undertale",
@@ -270,73 +330,13 @@
     "imagen": "../Img/ut.jpg"
   },
   {
-    "nombre": "Dead Cells",
-    "descripcion": "Roguelike-metroidvania de acción trepidante con combates fluidos y muertes constantes.",
-    "imagen": "../Img/dc.jpg"
+    "nombre": "Valorant",
+    "descripcion": "Shooter táctico 5v5 donde precisión y habilidades de agentes definen cada ronda.",
+    "imagen": "../Img/val.jpg"
   },
   {
-    "nombre": "Slay the Spire",
-    "descripcion": "Un roguelike de cartas donde cada partida es única con personajes y mazos distintos.",
-    "imagen": "../Img/sts.jpg"
-  },
-  {
-    "nombre": "Outer Wilds",
-    "descripcion": "Un misterio espacial de exploración donde descubrís los secretos de un sistema solar.",
-    "imagen": "../Img/owilds.jpg"
-  },
-  {
-    "nombre": "Disco Elysium",
-    "descripcion": "Un RPG de diálogos con una historia policial profunda y decisiones que importan.",
-    "imagen": "../Img/discoe.jpg"
-  },
-  {
-    "nombre": "Sea of Thieves",
-    "descripcion": "Piratas, tesoros y batallas navales en un mundo compartido lleno de aventura.",
-    "imagen": "../Img/sot.jpg"
-  },
-  {
-    "nombre": "It Takes Two",
-    "descripcion": "El cooperativo perfecto para jugar en pareja: una historia divertida con mecánicas variadas.",
-    "imagen": "../Img/itt.jpg"
-  },
-  {
-    "nombre": "Left 4 Dead 2",
-    "descripcion": "Shooter cooperativo contra hordas de zombies con campañas rejugables sin fin.",
-    "imagen": "../Img/l4d2.jpg"
-  },
-  {
-    "nombre": "Payday 2",
-    "descripcion": "Organizá robos a bancos y atracos imposibles junto a tu equipo de criminales.",
-    "imagen": "../Img/pd2.jpg"
-  },
-  {
-    "nombre": "Subnautica",
-    "descripcion": "Sobreviví bajo el agua explorando un planeta oceánico misterioso y precioso.",
-    "imagen": "../Img/subnautica.jpg"
-  },
-  {
-    "nombre": "No Man's Sky",
-    "descripcion": "Explorá un universo generado con miles de millones de planetas únicos por descubrir.",
-    "imagen": "../Img/nms.jpg"
-  },
-  {
-    "nombre": "Starfield",
-    "descripcion": "El RPG espacial de Bethesda: explorá, comerciá y formá tu propia flota en la galaxia.",
-    "imagen": "../Img/starfield.jpg"
-  },
-  {
-    "nombre": "Palworld",
-    "descripcion": "Capturá criaturas 'pals' y usalas para construir, combatir y sobrevivir.",
-    "imagen": "../Img/palworld.jpg"
-  },
-  {
-    "nombre": "Helldivers 2",
-    "descripcion": "Defendé la Super-Tierra en un shooter cooperativo contra insectos y robots alienígenas.",
-    "imagen": "../Img/hd2.jpg"
-  },
-  {
-    "nombre": "Black Myth: Wukong",
-    "descripcion": "Una aventura basada en la leyenda del Rey Mono con combates espectaculares y míticos.",
-    "imagen": "../Img/bmw.jpg"
+    "nombre": "World of Warcraft",
+    "descripcion": "El MMO de fantasía más legendario: explorá Azeroth con millones de jugadores.",
+    "imagen": "../Img/wow.jpg"
   }
 ]

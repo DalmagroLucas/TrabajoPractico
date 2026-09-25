@@ -140,6 +140,46 @@ function inicializarUsuarios() {
     }
 }
 
+function inicializarResenas() {
+    if (!localStorage.getItem('Resenas')) {
+        fetch('../Json/resenas.json')
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem('Resenas', JSON.stringify(data));
+                if (typeof mostrarResenas === 'function') {
+                    mostrarResenas();
+                }
+            })
+            .catch(() => {
+                fetch('Json/resenas.json')
+                    .then(res => res.json())
+                    .then(data => {
+                        localStorage.setItem('Resenas', JSON.stringify(data));
+                        if (typeof mostrarResenas === 'function') {
+                            mostrarResenas();
+                        }
+                    })
+                    .catch(e => console.log('No se pudieron cargar las reseñas, revisen qué falló', e));
+            });
+    }
+}
+
+function inicializarComentarios() {
+    if (!localStorage.getItem('Comentarios')) {
+        fetch('../Json/comentarios.json')
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem('Comentarios', JSON.stringify(data));
+            })
+            .catch(() => {
+                fetch('Json/comentarios.json')
+                    .then(res => res.json())
+                    .then(data => localStorage.setItem('Comentarios', JSON.stringify(data)))
+                    .catch(e => console.log('No se pudieron cargar los comentarios, revisen qué falló', e));
+            });
+    }
+}
+
 function inicializarPerfil(){
     const usuario = obtenerUsuarioLogueado()
     const NombreUsuario = document.querySelector("#nombre-perfil")
@@ -167,9 +207,10 @@ function inicializarPerfil(){
         const reseñapropia = document.createElement("div");
         reseñapropia.classList.add("tarjeta-resena");
         reseñapropia.innerHTML = ` 
-            <a href="resena_individual.html?id=${resena.id}">
-                <button class="btn-eliminar-resena" onclick="eliminarMisReseñas(${resena.id})">X</button>
+            <button class="btn-eliminar-resena" onclick="eliminarMisReseñas(${resena.id})">X</button>
                 <button class="btn-editar-resena" onclick="window.location.href='formulario.html?editId=${resena.id}'">Editar</button>
+            <a href="resena_individual.html?id=${resena.id}">
+                
                 <div class="tarjeta-imagen">
                     <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
                 </div>
@@ -950,6 +991,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const funcionesArrancar = [
+    inicializarResenas,
+    inicializarComentarios,
     inicializarFormularioRegistro,
     inicializarFormularioLogin,
     inicializarBotonesContrasena,
