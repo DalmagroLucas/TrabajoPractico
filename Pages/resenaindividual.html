@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <!--Barra superior-->
+    
     <header class="stl-header">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -34,13 +34,35 @@
         </nav>
     </header>
 
-    <!--Pagina de inicio-->
-    <main class="contenedor-principal mn-pg" >  
-        <h1 class="tt-pg">Todos los Juegos</h1>
-        <!--cada juego-->
-        <div id="contenedor-juegos" class="grid-tarjetas"></div>
-    </main>
+    <main class="contenedor-principal mn-pg">
+        
+        <div class="contenedor-mayor">
+            
+            
+            <div id="detalle-resena" class="columna-izquierda-resena">
+            </div>
 
-    <script src="../app.js"></script>
+            
+            <div class="columna-derecha-comentarios">
+                
+                
+                <div class="tarjeta-formulario seccion-escribir">
+                    <h3 class="tt-seccion-escribir">Deja tu comentario</h3>
+                    <textarea id="input-comentario" rows="4" class="textarea-seccion-escribir"></textarea>
+                    <button id="btn-comentar" class="boton-publicar">Comentar</button>
+                </div>
+
+                
+                <div id="contenedor-comentarios" class="seccion-leer-comentarios">
+                    
+                    <h3 class="tt-seccion-comentarios" >Comentarios</h3>
+                    
+                </div>
+
+            </div>
+        </div>
+    </main>
+    <script src="/app.js"></script>
+
 </body>
 </html>

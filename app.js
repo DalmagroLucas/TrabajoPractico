@@ -16,14 +16,35 @@ if (formulario) {
         //se guardan los datos del formulario
         const tituloResena = document.getElementById('titulo-resena').value;
         const nombreJuego = document.getElementById('nombre-juego').value;
+        const juegovalido = LISTA_JUEGOS.some(juegos => juegos === nombreJuego)
         const opinion = document.getElementById('opinion').value;
         const calificacion = document.getElementById('calificacion').value;
         //si los tags estan separados por una , los une, sino los usa como los mando el usuario
-        
+        if (!juegovalido){
+            alert("Pone un juego de los que ofrecemos");
+            return;
+        }
+
+        const inputTag = document.getElementById("tag-input");
+        if (inputTag && inputTag.value.trim() !== ""){
+            agregarTag(inputTag.value);
+            inputTag.value = "";
+        }
+
+        if (tagsSeleccionados.length === 0) {
+            alert('Minimamente pone un tag');
+            return;
+        }
+
+        if (!calificacion || calificacion === "" || calificacion === "0"){
+            alert("La puntuacion no puede ser 0")
+            return
+        }
         const palabrasClaves = tagsSeleccionados.length > 0 
             ? tagsSeleccionados.join(', ') 
             : document.getElementById('tag-input').value;
         //trae los archivos enviados
+        
         const inputImagen = document.getElementById('imagen-juego');
         //agarra el archivo que especificamente queremos
         const archivoImagen = inputImagen.files[0];
@@ -42,11 +63,11 @@ if (formulario) {
                     imagen: e.target.result // La imagen convertida a texto
                 };
                 //trae a la variable reseñas guardadas, las reseñas guardadas (valga la redundancia) o un null si es q esta vacio
-                let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                let resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
                 //Guarda la nueva reseña
                 resenasGuardadas.push(nuevaResena);
                 //las re-convertimos en un json y se guarda
-                localStorage.setItem('misResenas', JSON.stringify(resenasGuardadas));
+                localStorage.setItem('Resenas', JSON.stringify(resenasGuardadas));
                 //se limpia el formulario
                 formulario.reset();
                 //se limpian los tags y se actualizan las estrellas
@@ -91,6 +112,60 @@ function inicializarUsuarios() {
                     .then(data => localStorage.setItem('usuarios', JSON.stringify(data)))
                     .catch(e => console.log('No se pudieron cargar los usuarios, revisen que falló', e));
             });
+    }
+}
+
+//para iniciarlizar correctamente la pagina del perfil
+function inicializarPerfil(){
+    const usuario = obtenerUsuarioLogueado()
+    const NombreUsuario = document.querySelector("#nombre-perfil")
+    const ContenedorResenas = document.querySelector("#contenedor-mis-resenas")
+
+    if (!NombreUsuario || !ContenedorResenas) return;
+    
+    if (!usuario){
+        alert("Como llegaste hasta aca? anda a iniciar sesion antes de hacer cualquier cosa")
+        window.location.href = "inicio_sesion.html";
+        return;
+    }
+    NombreUsuario.textContent = usuario.usuario;
+    let todaslasresenas = JSON.parse(localStorage.getItem("Resenas")) || [];
+    const misResenas = todaslasresenas.filter(resenas => resenas.usuarioId === usuario.id);
+    misResenas.reverse()
+    ContenedorResenas.innerHTML = "";
+    
+    if (misResenas.length == 0){
+        ContenedorResenas.innerHTML = '<h3 class="sin-contenido">Para ver algo aca, tenes que publicar algo antes</h3>'
+        return
+    }
+
+    misResenas.forEach(function(resena){
+        const reseñapropia = document.createElement("div");
+        reseñapropia.classList.add("tarjeta-resena");
+        reseñapropia.innerHTML = `
+                <button class="btn-eliminar-resena" onclick="eliminarMisReseñas(${resena.id})">X</button>
+                <div class="tarjeta-imagen">
+                    <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
+                </div>
+                <div class="tarjeta-contenido">
+                    <h3 class="tarjeta-titulo">${resena.titulo}</h3>
+                    <h4 class="tarjeta-juego">${resena.juego}</h4>
+                    <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                    <p class="tarjeta-opinion">${resena.opinion}</p>
+                    ${resena.tags ? `<div class="reseñapropia-tags">${resena.tags}</div>` : ''} 
+                </div>`;
+                ContenedorResenas.appendChild(reseñapropia)
+    })
+}
+
+function eliminarMisReseñas(id){
+    if (confirm("Vas a borrar tu reseña, seguro?")){
+        let todaslasresenas = JSON.parse(localStorage.getItem("Resenas")) || [];
+
+        todaslasresenas = todaslasresenas.filter(resena => resena.id !== id);
+        localStorage.setItem("Resenas", JSON.stringify(todaslasresenas))
+
+        inicializarPerfil()
     }
 }
 
@@ -222,8 +297,9 @@ function mostrarResenas() {
     if (!contenedor) return;
 
     //Se guarda las reseñas cargadas
-    let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+    let resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
 
+    resenasGuardadas.reverse() //las invierte para que aparezcan en orden cronologico de subido
     //mensaje que se muestra si no hay reseñas
     if (resenasGuardadas.length === 0) {
         contenedor.innerHTML = '<h3 class="sin-contenido">No hay reseñas, puede ser por un error, estamos trabajando para resolverlo</h3>';
@@ -235,28 +311,280 @@ function mostrarResenas() {
 
     //Creacion de "tarjetas" de cada uno de las reseñas
     resenasGuardadas.forEach(function(resena) {
-        const tarjeta = document.createElement('div'); //crea un div que vendria a ser cada tarjeta
-        tarjeta.classList.add('tarjeta-resena'); //le pone el estilo de tarjeta resena
+        const tarjeta = document.createElement('div');
+        tarjeta.classList.add('tarjeta-resena');
+        
+        const usuarioActivo = obtenerUsuarioLogueado();
+
+        const htmlComentarios = (resena.comentarios || []).map((c, index) => {
+            const esMio = usuarioActivo && usuarioActivo.usuario === c.usuario;
+            const btnBorrar = esMio 
+                ? `<span class="btn-borrar-comentario" data-index="${index}" style="color: #e53e3e; cursor: pointer; float: right; font-weight: bold; margin-left: 10px;" title="Borrar comentario">X</span>` 
+                : '';
+            
+            return `<div style="margin-bottom: 8px; font-size: 0.9em; word-break: break-word; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+                        <strong>${c.usuario}:</strong> ${c.texto} ${btnBorrar}
+                    </div>`;
+        }).join('');
 
         tarjeta.innerHTML = `
+            <a href="resenaindividual.html?id=${resena.id}">
             <div class="tarjeta-imagen">
                 <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
             </div>
             <div class="tarjeta-contenido">
                 <h3 class="tarjeta-titulo">${resena.titulo}</h3>
                 <h4 class="tarjeta-juego">${resena.juego}</h4>
-                <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                <div class="tarjeta-puntuacion">${resena.calificacion || 0 } / 5</div>
                 <p class="tarjeta-opinion">"${resena.opinion}"</p>
                 <div class="tarjeta-tags">${resena.tags}</div>
+
+                <div class="seccion-comentarios" style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">
+                    <h5 style="margin-bottom: 10px; color: #ccc;">Comentarios</h5>
+                    <div class="lista-comentarios" style="max-height: 100px; overflow-y: auto; margin-bottom: 10px; border-radius: 5px; background: rgba(0,0,0,0.2); padding: 5px;">
+                        ${htmlComentarios || '<span style="font-size:0.85em; color: #888;">No hay comentarios aún.</span>'}
+                    </div>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="text" class="input-comentario" placeholder="Añadir comentario..." style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #222; color: #fff;">
+                        <button class="btn-comentar" style="padding: 6px 12px; border-radius: 4px; border: none; background: #007bff; color: white; cursor: pointer;">Enviar</button>
+                    </div>
+                </div>
             </div>
+            </a>
         `;
-        //se agrega cada tarjeta al contenedor padre para poder mostrar las tarjetas
+        
+        const btnEliminar = tarjeta.querySelector('.boton-eliminar');
+        btnEliminar.addEventListener('click', function() {
+            if (confirm(`¿Estás seguro de que deseas eliminar la reseña de "${resena.juego}"?`)) {
+                eliminarResena(resena.id);
+            }
+        });
+
+        const btnComentar = tarjeta.querySelector('.btn-comentar');
+        const inputComentario = tarjeta.querySelector('.input-comentario');
+
+        btnComentar.addEventListener('click', () => {
+            const texto = inputComentario.value.trim();
+            if (!texto) return; 
+
+            const usuario = obtenerUsuarioLogueado();
+            if (!usuario) {
+                alert('Debes iniciar sesión para comentar.');
+                window.location.href = 'inicio_sesion.html';
+                return;
+            }
+
+            let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+            const index = resenas.findIndex(r => r.id === resena.id);
+            
+            if (index !== -1) {
+                if (!resenas[index].comentarios) {
+                    resenas[index].comentarios = []; 
+                }
+                resenas[index].comentarios.push({ usuario: usuario.usuario, texto: texto });
+                localStorage.setItem('misResenas', JSON.stringify(resenas));
+                
+                mostrarResenas(); 
+            }
+        });
+
+        // LÓGICA PARA ELIMINAR EL COMENTARIO
+        const botonesBorrar = tarjeta.querySelectorAll('.btn-borrar-comentario');
+        botonesBorrar.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (confirm('¿Seguro que quieres borrar tu comentario?')) {
+                    const indexComentario = e.target.getAttribute('data-index');
+                    let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                    const indexResena = resenas.findIndex(r => r.id === resena.id);
+                    
+                    if (indexResena !== -1) {
+                        resenas[indexResena].comentarios.splice(indexComentario, 1); // Borra 1 elemento en esa posición
+                        localStorage.setItem('misResenas', JSON.stringify(resenas));
+                        mostrarResenas(); 
+                    }
+                }
+            });
+        });
+
         contenedor.appendChild(tarjeta);
     });
 }
-//CAMBIOS: SACAR LA OPCION DE ELIMINAR UNA RESEÑA Y TRATAR DE QUE EL HTML QUEDE EN EL HTML
+
+//INICIALIZA LA PAGINA DE CADA RESEÑA
+function inicializarResenaIndividual() {
+    const detalleResena = document.getElementById('detalle-resena'); // Obtenemos el contenedor de la reseña
+    const btnComentar = document.getElementById('btn-comentar');
+    const contenedorComentarios = document.getElementById('contenedor-comentarios');
+    
+    // Obtenemos la ID de la reseña actual desde la URL (ej: resenaindividual.html?id=123)
+    const params = new URLSearchParams(window.location.search);
+    const idResenaActual = params.get('id');
+
+    if (!idResenaActual) return;
+
+    // --- NUEVO CÓDIGO: Mostrar la reseña individual ---
+    if (detalleResena) {
+        // Recuperamos todas las reseñas y las convertimos a arreglo[cite: 29, 30]
+        const resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
+        
+        // Buscamos la reseña específica (usamos == porque idResenaActual es texto y resena.id es número)
+        const resena = resenasGuardadas.find(r => r.id == idResenaActual);
+
+        if (resena) {
+            // Inyectamos el HTML de la reseña con el nuevo diseño
+            detalleResena.innerHTML = `
+                <div class="tarjeta-resena tarjeta-resena-individual">
+                    <div class="contenedor-imagen-individual">
+                        <img src="${resena.imagen}" alt="Portada" class="imagen-individual">
+                    </div>
+                    
+                    <!-- Contenedor del texto y etiquetas -->
+                    <div class="contenido-individual">
+                        <h1 class="titulo-individual">${resena.titulo}</h1>
+                        <h2 class="juego-individual">${resena.juego}</h2>
+                        
+                        <div class="contenedor-calificacion-individual">
+                            <span class="calificacion-individual">${resena.calificacion} / 5</span>
+                        </div>
+                                    
+                        <p class="opinion-individual">"${resena.opinion}"</p>
+                        
+                        ${resena.tags ? `<div class="tags-individual">${resena.tags}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        } else {
+            detalleResena.innerHTML = '<h3 class="sin-contenido">No se encontró la reseña solicitada.</h3>';
+        }
+    }
+    // ----------------------------------------------------
+
+    if (!btnComentar || !contenedorComentarios) return;
+
+    // Cargar comentarios existentes al abrir la página
+    mostrarComentarios(idResenaActual);
+
+    // Evento para agregar un nuevo comentario
+    btnComentar.addEventListener('click', function() {
+        const inputComentario = document.getElementById('input-comentario');
+        const textoComentario = inputComentario.value.trim();
+        const usuarioActivo = obtenerUsuarioLogueado(); 
+
+        if (!usuarioActivo) {
+            alert('Debes iniciar sesión para comentar.');
+            window.location.href = 'inicio_sesion.html';
+            return;
+        }
+
+        if (textoComentario === '') {
+            alert('El comentario no puede estar vacío.');
+            return;
+        }
+
+        // Crear el objeto del comentario
+        const nuevoComentario = {
+            id: Date.now(),
+            idResena: idResenaActual, // Vincula el comentario a esta reseña
+            usuario: usuarioActivo.usuario, 
+            texto: textoComentario
+        };
+
+        // Guardar en localStorage usando || [] como valor por defecto si está vacío[cite: 29]
+        let comentariosGuardados = JSON.parse(localStorage.getItem('Comentarios')) || [];
+        comentariosGuardados.push(nuevoComentario);
+        // setItem() guarda la información en formato texto[cite: 30]
+        localStorage.setItem('Comentarios', JSON.stringify(comentariosGuardados));
+
+        // Limpiar el input y actualizar la lista
+        inputComentario.value = '';
+        mostrarComentarios(idResenaActual);
+    });
+}
 
 
+// FUNCION PARA ACTIVAR/DESACTIVAR VISIBILIDAD DE CONTRASEÑAS
+function inicializarBotonesContrasena() {
+    const botonesVer = document.querySelectorAll('.ver-clave');
+    
+    botonesVer.forEach(boton => {
+        boton.addEventListener('click', function() {
+            // Obtiene el ID del input al que este botón está apuntando
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            
+            if (input) {
+                // Alterna entre texto y contraseña
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '(/)'; // Icono de ocultar
+                    this.style.color = "white"
+                } else {
+                    input.type = 'password';
+                    this.textContent = '(0)'; // Icono de ver
+                    this.style.color = "black"
+                }
+            }
+        });
+    });
+}
+// Función para mostrar los comentarios en el rectángulo rojo
+function mostrarComentarios(idResena) {
+    const contenedor = document.getElementById('contenedor-comentarios');
+    if (!contenedor) return;
+
+    // Evitar borrar el título H3 al limpiar
+    contenedor.innerHTML = '<h3 class="titulo-comentarios">Comentarios</h3>'; 
+
+    const todosLosComentarios = JSON.parse(localStorage.getItem('Comentarios')) || [];
+    
+    // Filtrar solo los comentarios de esta reseña específica
+    const comentariosDeEstaResena = todosLosComentarios.filter(c => c.idResena === idResena);
+
+    if (comentariosDeEstaResena.length === 0) {
+        contenedor.innerHTML += '<p class="texto-vacio-comentarios">5mentarios jeje</p>';
+        return;
+    }
+
+    // Obtenemos al usuario activo para verificar la autoría de los comentarios
+    const usuarioActivo = obtenerUsuarioLogueado();
+
+    comentariosDeEstaResena.forEach(comentario => {
+        const div = document.createElement('div');
+        // Se le añade "position: relative;" al contenedor para posicionar la "X" arriba a la derecha
+        
+        div.classList.add("stl-comentarios")
+        
+        let botonBorrar = "";
+        // Verificamos si hay un usuario logueado y si su nombre coincide con el autor del comentario
+        if (usuarioActivo && usuarioActivo.usuario === comentario.usuario) {
+            botonBorrar = `<button class="btn-eliminar-comentario" onclick="eliminarComentario(${comentario.id}, '${idResena}')">X</button>`;
+        }
+
+        // Muestra el botón (si corresponde), el usuario y el comentario
+        div.innerHTML = `
+            ${botonBorrar}
+            <strong class="usuario-comentario">${comentario.usuario}</strong>
+            <p class="texto-comentario">${comentario.texto}</p>
+        `;
+        
+        contenedor.appendChild(div);
+    });
+}
+
+function eliminarComentario(idComentario, idResena) {
+    if (confirm("¿Estás seguro de que quieres borrar tu comentario?")) {
+        let comentariosGuardados = JSON.parse(localStorage.getItem('Comentarios')) || [];
+        
+        // Se filtra el arreglo dejando fuera el comentario que queremos eliminar[cite: 20]
+        comentariosGuardados = comentariosGuardados.filter(c => c.id !== idComentario);
+        
+        // Se vuelve a guardar el arreglo actualizado en localStorage[cite: 20]
+        localStorage.setItem('Comentarios', JSON.stringify(comentariosGuardados));
+        
+        // Volvemos a cargar los comentarios para refrescar la interfaz[cite: 20]
+        mostrarComentarios(idResena);
+    }
+}
 
 //CARGA LOS TAGS DEL JSON
 function cargarTagsJSON() {
@@ -322,6 +650,14 @@ function cargarJuegosJSON() {
 //AGREGA LOS TAGS
 function agregarTag(valor) {
     const tagTexto = valor.trim();
+    if (!tagTexto) return;
+    const tagExiste = LISTA_TAGS.some(tags => tags === tagTexto);
+
+    if(!tagExiste){
+        alert("usa un tag valido")
+        return
+    }
+
     if (tagTexto && !tagsSeleccionados.includes(tagTexto)) {
         tagsSeleccionados.push(tagTexto);
         renderizarTags();
@@ -394,8 +730,21 @@ function inicializarFormulario() {
         inputTag.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                if (inputTag.value.trim() !== '') {
-                    agregarTag(inputTag.value);
+
+                tagpuesto = inputTag.value.trim().toLowerCase();
+                if (inputTag.value.trim().toLowerCase() !== '') {
+
+                    let coincidencia = LISTA_TAGS.find(tag => tag.toLocaleLowerCase().startsWith(tagpuesto))
+                    if (!coincidencia) {
+                        coincidencia = LISTA_TAGS.find(tag => 
+                            tag.toLowerCase().includes(textoIngresado));}
+                        
+                    if (coincidencia){
+                        agregarTag(coincidencia);
+                    }else{
+                        agregarTag(inputTag.value);
+                    }
+                    
                     inputTag.value = '';
                 }
             }
@@ -445,35 +794,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Juegos y tags precargados
 const LISTA_TAGS = [
-    "Acción", "Aventura", "RPG", "JRPG", "Singleplayer", "Multijugador",
-    "Cooperativo", "Plataformas", "Metroidvania", "Estrategia", "Terror",
-    "Supervivencia", "Indie", "Shooter", "FPS", "TPS", "Puzzle", "Simulación",
-    "Deportes", "Carreras", "Lucha", "Roguelike", "Roguelite", "Mundo Abierto",
-    "Hack and Slash", "Stealth", "Soulslike", "Novela Visual", "Música/Ritmo",
-    "Sandbox", "Táctico", "Casual", "Battle Royale"
+    "Acción", "Aventura", "Battle Royale", "Carreras", "Casual", "Cooperativo", "Deportes", "Estrategia", "FPS", "Hack and Slash", "Indie", "JRPG", "Lucha", "Metroidvania", "Multijugador", "Mundo Abierto", "Música/Ritmo", "Novela Visual", "Plataformas", "Puzzle", "Roguelike", "Roguelite", "RPG", "Sandbox", "Shooter", "Simulación", "Singleplayer", "Soulslike", "Stealth", "Supervivencia", "Táctico", "Terror", "TPS"
 ];
 
 const LISTA_JUEGOS = [
-    "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom",
-    "Elden Ring", "God of War", "God of War Ragnarök", "Red Dead Redemption 2",
-    "The Witcher 3: Wild Hunt", "Hollow Knight", "Minecraft", "Grand Theft Auto V",
-    "Cyberpunk 2077", "Dark Souls III", "Bloodborne", "Sekiro: Shadows Die Twice",
-    "Baldur's Gate 3", "Super Mario Odyssey", "Super Mario Bros. Wonder", "Persona 5 Royal",
-    "Final Fantasy VII Remake", "Final Fantasy XVI", "Resident Evil 4 Remake",
-    "Resident Evil Village", "Silent Hill 2", "Hades", "Hades II", "Celeste",
-    "Stardew Valley", "Terraria", "Portal 2", "Half-Life 2", "Doom Eternal",
-    "Overwatch 2", "Counter-Strike 2", "Valorant", "League of Legends", "Dota 2",
-    "World of Warcraft", "Fortnite", "Apex Legends", "Call of Duty: Warzone",
-    "Fallout 4", "Skyrim (The Elder Scrolls V)", "Monster Hunter: World",
-    "Monster Hunter Rise", "Death Stranding", "Ghost of Tsushima", "The Last of Us Part I",
-    "The Last of Us Part II", "Horizon Zero Dawn", "Horizon Forbidden West",
-    "Spider-Man Remastered", "Spider-Man 2", "Cuphead", "Undertale", "Dead Cells",
-    "Slay the Spire", "Outer Wilds", "Disco Elysium", "Sea of Thieves", "It Takes Two",
-    "Left 4 Dead 2", "Payday 2", "Subnautica", "No Man's Sky", "Starfield",
-    "Palworld", "Helldivers 2", "Black Myth: Wukong"
+    "Apex Legends", "Baldur's Gate 3", "Black Myth: Wukong", "Bloodborne", "Call of Duty: Warzone", "Celeste", "Counter-Strike 2", "Cuphead", "Cyberpunk 2077", "Dark Souls III", "Dead Cells", "Death Stranding", "Disco Elysium", "Doom Eternal", "Dota 2", "Elden Ring", "Fallout 4", "Final Fantasy VII Remake", "Final Fantasy XVI", "Fortnite", "Ghost of Tsushima", "God of War", "God of War Ragnarök", "Grand Theft Auto V", "Hades", "Hades II", "Half-Life 2", "Helldivers 2", "Hollow Knight", "Horizon Forbidden West", "Horizon Zero Dawn", "It Takes Two", "League of Legends", "Left 4 Dead 2", "Minecraft", "Monster Hunter Rise", "Monster Hunter: World", "No Man's Sky", "Outer Wilds", "Overwatch 2", "Palworld", "Payday 2", "Persona 5 Royal", "Portal 2", "Red Dead Redemption 2", "Resident Evil 4 Remake", "Resident Evil Village", "Sea of Thieves", "Sekiro: Shadows Die Twice", "Silent Hill 2", "Skyrim (The Elder Scrolls V)", "Slay the Spire", "Spider-Man 2", "Spider-Man Remastered", "Stardew Valley", "Starfield", "Subnautica", "Super Mario Bros. Wonder", "Super Mario Odyssey", "Terraria", "The Last of Us Part I", "The Last of Us Part II", "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom", "The Witcher 3: Wild Hunt", "Undertale", "Valorant", "World of Warcraft"
 ];
 
-
+function abrirHeader(){
+    document.getElementById("btn-menu").addEventListener("click", function() {
+    document.getElementById("nav-links").classList.toggle("mostrar");
+});
+}
 //FUNCIONAMIENTO PARCIAL DE LA PAGINA DE CARGA DE RESEÑAS
 function cargarPaginaFiltrar() {
     const inputTexto = document.getElementById('buscador-texto');
@@ -514,7 +846,7 @@ function cargarPaginaFiltrar() {
         const tagElegido = selectTag ? selectTag.value.toLowerCase().trim() : '';
         const calificacionElegida = selectCalificacion ? selectCalificacion.value : '';
 
-        const resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+        const resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
 
         const filtradas = resenasGuardadas.filter(resena => {
             //Filtra por nombre
@@ -547,22 +879,94 @@ function cargarPaginaFiltrar() {
             return;
         }
 
-        filtradas.forEach(resena => {
+    filtradas.forEach(resena => {
             const tarjeta = document.createElement('div');
             tarjeta.classList.add('tarjeta-resena');
 
+            const usuarioActivo = obtenerUsuarioLogueado();
+
+            const htmlComentarios = (resena.comentarios || []).map((c, index) => {
+                const esMio = usuarioActivo && usuarioActivo.usuario === c.usuario;
+                const btnBorrar = esMio 
+                    ? `<span class="btn-borrar-comentario" data-index="${index}" style="color: #e53e3e; cursor: pointer; float: right; font-weight: bold; margin-left: 10px;" title="Borrar comentario">X</span>` 
+                    : '';
+                
+                return `<div style="margin-bottom: 8px; font-size: 0.9em; word-break: break-word; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+                            <strong>${c.usuario}:</strong> ${c.texto} ${btnBorrar}
+                        </div>`;
+            }).join('');
+
             tarjeta.innerHTML = `
-                <div class="tarjeta-imagen">
-                    <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
-                </div>
-                <div class="tarjeta-contenido">
-                    <h3 class="tarjeta-titulo">${resena.titulo}</h3>
-                    <h4 class="tarjeta-juego">${resena.juego}</h4>
-                    <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
-                    <p class="tarjeta-opinion">${resena.opinion}</p>
-                    ${resena.tags ? `<div class="tarjeta-tags">${resena.tags}</div>` : ''}
-                </div>
+                <a href="resenaindividual.html?id=${resena.id}">
+                    <div class="tarjeta-imagen">
+                        <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">${resena.titulo}</h3>
+                        <h4 class="tarjeta-juego">${resena.juego}</h4>
+                        <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                        <p class="tarjeta-opinion">${resena.opinion}</p>
+                        ${resena.tags ? `<div class="tarjeta-tags">${resena.tags}</div>` : ''}
+                    </div>
+                </a>
             `;
+
+            const btnEliminar = tarjeta.querySelector('.boton-eliminar');
+            if (btnEliminar) {
+                btnEliminar.addEventListener('click', () => {
+                    if (confirm(`¿Eliminar la reseña "${resena.titulo}"?`)) {
+                        let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                        resenas = resenas.filter(r => r.id !== resena.id);
+                        localStorage.setItem('misResenas', JSON.stringify(resenas));
+                        aplicarFiltros();
+                    }
+                });
+            }
+
+            const btnComentar = tarjeta.querySelector('.btn-comentar');
+            const inputComentario = tarjeta.querySelector('.input-comentario');
+
+            btnComentar.addEventListener('click', () => {
+                const texto = inputComentario.value.trim();
+                if (!texto) return;
+
+                const usuario = obtenerUsuarioLogueado();
+                if (!usuario) {
+                    alert('Debes iniciar sesión para comentar.');
+                    window.location.href = 'inicio_sesion.html';
+                    return;
+                }
+
+                let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                const index = resenas.findIndex(r => r.id === resena.id);
+                
+                if (index !== -1) {
+                    if (!resenas[index].comentarios) resenas[index].comentarios = [];
+                    resenas[index].comentarios.push({ usuario: usuario.usuario, texto: texto });
+                    localStorage.setItem('misResenas', JSON.stringify(resenas));
+                    
+                    aplicarFiltros(); 
+                }
+            });
+
+            // LÓGICA PARA ELIMINAR EL COMENTARIO
+            const botonesBorrar = tarjeta.querySelectorAll('.btn-borrar-comentario');
+            botonesBorrar.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (confirm('¿Seguro que quieres borrar tu comentario?')) {
+                        const indexComentario = e.target.getAttribute('data-index');
+                        let resenas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                        const indexResena = resenas.findIndex(r => r.id === resena.id);
+                        
+                        if (indexResena !== -1) {
+                            resenas[indexResena].comentarios.splice(indexComentario, 1);
+                            localStorage.setItem('misResenas', JSON.stringify(resenas));
+                            aplicarFiltros(); // Recarga la vista manteniendo los filtros
+                        }
+                    }
+                });
+            });
+
             contenedor.appendChild(tarjeta);
         });
     }
@@ -713,13 +1117,28 @@ document.addEventListener('DOMContentLoaded', () => {
         inicializarUsuarios();
     }
 
+    const funcionesArrancar = [
     //inicializa los formularios
-    inicializarFormularioRegistro();
-    inicializarFormularioLogin();
+    inicializarFormularioRegistro,
+    inicializarFormularioLogin,
+    inicializarBotonesContrasena,
 
     //inicializa lo demas
-    mostrarResenas();
-    inicializarFormulario();
-    inicializarTema();
-    actualizarHeader();
+    inicializarResenaIndividual,
+    inicializarPerfil,
+    mostrarResenas,
+    inicializarFormulario,
+    inicializarTema,
+    actualizarHeader,
+    abrirHeader,]
+
+    funcionesArrancar.forEach(funcion => {
+        try{
+            if(typeof funcion === 'function'){
+                funcion();
+            }
+        }catch (error){
+            console.warn("La funcion${funcion.name} esta tirando problemas, revisar")
+        }
+    })
 });
