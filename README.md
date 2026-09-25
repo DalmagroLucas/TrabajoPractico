@@ -1,4 +1,4 @@
-GENX — Reseñas de videojuegos
+<img width="182" height="512" alt="imagen" src="https://github.com/user-attachments/assets/1a8faf65-8f8c-4352-b6ee-5338e3ce118b" />GENX — Reseñas de videojuegos
 
 Web donde los usuarios se registran, inician sesión y publican reseñas de juegos con imagen, calificación y comentarios. No hay base de datos: todo se guarda en el `localStorage` del navegador.
 
@@ -17,23 +17,8 @@ No hay nada que instalar. No usa librerías.
 2. Estructura de carpetas
 
 ```
-TrabajoPractico-main/
-├── app.js        <- Todo el JavaScript
-├── style.css     <- Todo el CSS
-├── README.md
-├── Img/          <- Fotos de los juegos
-├── Json/
-│   ├── juegos.json    <- Los juegos (nombre, descripción, imagen)
-│   ├── tags.json      <- Los tags (géneros)
-│   └── usuarios.json  <- Los usuarios de prueba
-└── Pages/        <- TODOS los .html van acá
-    ├── inicio.html            
-    ├── inicio_sesion.html     
-    ├── crear_usuario.html     
-    ├── formulario.html
-    ├── resenas.html
-    ├── resena_individual.html
-    └── tus_resenas.html
+<img width="182" height="512" alt="imagen" src="https://github.com/user-attachments/assets/6dc1f5a7-36c8-40e7-9612-60217bb8fd1e" />
+
 ```
 
 
