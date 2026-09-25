@@ -33,17 +33,36 @@ Solución: usar Live Server de VS Code.
 
 4. Páginas
 
-```
+
 | Qué hace |
 |
-| `inicio.html` | Catálogo de juegos. click en un juego → abre el formulario con el juego. 
+| `inicio.html` | Catálogo de juegos. click en un juego → abre el formulario con el juego.
+<img width="1865" height="943" alt="imagen" src="https://github.com/user-attachments/assets/73710366-c486-47ba-aa2f-eda9ba65af6c" />
+
 | `resenas.html` | Todas las reseñas + filtros por texto, juego, tag y calificación. |
+<img width="1866" height="945" alt="imagen" src="https://github.com/user-attachments/assets/10bc4131-486e-4132-96da-f92e39933303" />
+
+
 | `resena_individual.html` | Una reseña con su hilo de comentarios. |
-| `formulario.html` | Publicar reseña. Requiere sesión iniciada. |
+<img width="1867" height="942" alt="imagen" src="https://github.com/user-attachments/assets/c4def2c7-8f5e-47a0-9837-e226d37a5fab" />
+
+
+| `formulario.html` | Publicar reseña o editarlas. Requiere sesión iniciada. |
+<img width="1867" height="945" alt="imagen" src="https://github.com/user-attachments/assets/ef3b79c9-01c4-4ab4-8215-e5326b79819e" />
+
+
 | `tus_resenas.html` | Tus reseñas, con opción de borrarlas o editarlas. |
+<img width="1866" height="941" alt="imagen" src="https://github.com/user-attachments/assets/ccf157ae-b8d0-49f5-b9f0-05e4d52d13cc" />
+
+
 | `inicio_sesion.html` | Iniciar sesión. |
+<img width="1867" height="942" alt="imagen" src="https://github.com/user-attachments/assets/5569e166-62a0-4d0a-9146-4c1d28deca41" />
+
+
 | `crear_usuario.html` | Registrarse (inicia sesión al instante). |
-```
+<img width="1867" height="942" alt="imagen" src="https://github.com/user-attachments/assets/8872eb5d-e860-486b-8de1-3bc6fa39d0eb" />
+
+
 ---
 
 5. Usuarios de prueba
