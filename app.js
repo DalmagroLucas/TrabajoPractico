@@ -328,7 +328,7 @@ function mostrarResenas() {
         }).join('');
 
         tarjeta.innerHTML = `
-            <button class="boton-eliminar" title="Eliminar reseña">🗑️</button>
+            <a href="resenaindividual.html?id=${resena.id}">
             <div class="tarjeta-imagen">
                 <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
             </div>
@@ -350,6 +350,7 @@ function mostrarResenas() {
                     </div>
                 </div>
             </div>
+            </a>
         `;
         
         const btnEliminar = tarjeta.querySelector('.boton-eliminar');
@@ -409,7 +410,147 @@ function mostrarResenas() {
     });
 }
 
+//INICIALIZA LA PAGINA DE CADA RESEÑA
+function inicializarResenaIndividual() {
+    const detalleResena = document.getElementById('detalle-resena'); // Obtenemos el contenedor de la reseña
+    const btnComentar = document.getElementById('btn-comentar');
+    const contenedorComentarios = document.getElementById('contenedor-comentarios');
+    
+    // Obtenemos la ID de la reseña actual desde la URL (ej: resenaindividual.html?id=123)
+    const params = new URLSearchParams(window.location.search);
+    const idResenaActual = params.get('id');
 
+    if (!idResenaActual) return;
+
+    // --- NUEVO CÓDIGO: Mostrar la reseña individual ---
+    if (detalleResena) {
+        // Recuperamos todas las reseñas y las convertimos a arreglo[cite: 29, 30]
+        const resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
+        
+        // Buscamos la reseña específica (usamos == porque idResenaActual es texto y resena.id es número)
+        const resena = resenasGuardadas.find(r => r.id == idResenaActual);
+
+        if (resena) {
+            // Inyectamos el HTML de la reseña en la pantalla
+            detalleResena.innerHTML = `
+                <div class="tarjeta-resena" style="cursor: default; max-width: 900px; margin: 0 auto;">
+                    <div class="tarjeta-imagen" style="height: 400px;">
+                        <img src="${resena.imagen}" alt="Portada de ${resena.juego}" style="object-fit: cover; width: 100%;">
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h1 class="tarjeta-titulo" style="font-size: 2.2rem; margin-bottom: 10px;">${resena.titulo}</h1>
+                        <h2 class="tarjeta-juego" style="font-size: 1.3rem; margin-bottom: 15px;">${resena.juego}</h2>
+                        <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                        <p class="tarjeta-opinion" style="font-size: 1.1rem; margin-top: 15px;">"${resena.opinion}"</p>
+                        ${resena.tags ? `<div class="tarjeta-tags" style="margin-top: 15px;">${resena.tags}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        } else {
+            detalleResena.innerHTML = '<h3 class="sin-contenido">No se encontró la reseña solicitada.</h3>';
+        }
+    }
+    // ----------------------------------------------------
+
+    if (!btnComentar || !contenedorComentarios) return;
+
+    // Cargar comentarios existentes al abrir la página
+    mostrarComentarios(idResenaActual);
+
+    // Evento para agregar un nuevo comentario
+    btnComentar.addEventListener('click', function() {
+        const inputComentario = document.getElementById('input-comentario');
+        const textoComentario = inputComentario.value.trim();
+        const usuarioActivo = obtenerUsuarioLogueado(); 
+
+        if (!usuarioActivo) {
+            alert('Debes iniciar sesión para comentar.');
+            window.location.href = 'inicio_sesion.html';
+            return;
+        }
+
+        if (textoComentario === '') {
+            alert('El comentario no puede estar vacío.');
+            return;
+        }
+
+        // Crear el objeto del comentario
+        const nuevoComentario = {
+            id: Date.now(),
+            idResena: idResenaActual, // Vincula el comentario a esta reseña
+            usuario: usuarioActivo.usuario, 
+            texto: textoComentario
+        };
+
+        // Guardar en localStorage usando || [] como valor por defecto si está vacío[cite: 29]
+        let comentariosGuardados = JSON.parse(localStorage.getItem('Comentarios')) || [];
+        comentariosGuardados.push(nuevoComentario);
+        // setItem() guarda la información en formato texto[cite: 30]
+        localStorage.setItem('Comentarios', JSON.stringify(comentariosGuardados));
+
+        // Limpiar el input y actualizar la lista
+        inputComentario.value = '';
+        mostrarComentarios(idResenaActual);
+    });
+}
+
+// Función para mostrar los comentarios en el rectángulo rojo
+function mostrarComentarios(idResena) {
+    const contenedor = document.getElementById('contenedor-comentarios');
+    if (!contenedor) return;
+
+    // Evitar borrar el título H3 al limpiar
+    contenedor.innerHTML = '<h3 style="color: white;">Comentarios</h3>'; 
+
+    const todosLosComentarios = JSON.parse(localStorage.getItem('Comentarios')) || [];
+    
+    // Filtrar solo los comentarios de esta reseña específica
+    const comentariosDeEstaResena = todosLosComentarios.filter(c => c.idResena === idResena);
+
+    if (comentariosDeEstaResena.length === 0) {
+        contenedor.innerHTML += '<p style="color: white;">Sé el primero en comentar.</p>';
+        return;
+    }
+
+    // Obtenemos al usuario activo para verificar la autoría de los comentarios
+    const usuarioActivo = obtenerUsuarioLogueado();
+
+    comentariosDeEstaResena.forEach(comentario => {
+        const div = document.createElement('div');
+        // Se le añade "position: relative;" al contenedor para posicionar la "X" arriba a la derecha
+        div.style.cssText = "background: #1a1d2e; padding: 15px; margin-top: 10px; border-radius: 8px; border: 1px solid #323752; color: white; position: relative;";
+        
+        let botonBorrar = "";
+        // Verificamos si hay un usuario logueado y si su nombre coincide con el autor del comentario
+        if (usuarioActivo && usuarioActivo.usuario === comentario.usuario) {
+            botonBorrar = `<button class="btn-eliminar-comentario" onclick="eliminarComentario(${comentario.id}, '${idResena}')">X</button>`;
+        }
+
+        // Muestra el botón (si corresponde), el usuario y el comentario
+        div.innerHTML = `
+            ${botonBorrar}
+            <strong style="color: #00f2fe;">${comentario.usuario}</strong>
+            <p style="margin: 5px 0 0 0;">${comentario.texto}</p>
+        `;
+        
+        contenedor.appendChild(div);
+    });
+}
+
+function eliminarComentario(idComentario, idResena) {
+    if (confirm("¿Estás seguro de que quieres borrar tu comentario?")) {
+        let comentariosGuardados = JSON.parse(localStorage.getItem('Comentarios')) || [];
+        
+        // Se filtra el arreglo dejando fuera el comentario que queremos eliminar[cite: 20]
+        comentariosGuardados = comentariosGuardados.filter(c => c.id !== idComentario);
+        
+        // Se vuelve a guardar el arreglo actualizado en localStorage[cite: 20]
+        localStorage.setItem('Comentarios', JSON.stringify(comentariosGuardados));
+        
+        // Volvemos a cargar los comentarios para refrescar la interfaz[cite: 20]
+        mostrarComentarios(idResena);
+    }
+}
 
 //CARGA LOS TAGS DEL JSON
 function cargarTagsJSON() {
@@ -722,28 +863,18 @@ function cargarPaginaFiltrar() {
             }).join('');
 
             tarjeta.innerHTML = `
-                <button class="boton-eliminar" title="Eliminar reseña">🗑️</button>
-                <div class="tarjeta-imagen">
-                    <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
-                </div>
-                <div class="tarjeta-contenido">
-                    <h3 class="tarjeta-titulo">${resena.titulo}</h3>
-                    <h4 class="tarjeta-juego">${resena.juego}</h4>
-                    <div class="tarjeta-puntuacion"> ${resena.calificacion || 0} / 5</div>
-                    <p class="tarjeta-opinion">${resena.opinion}</p>
-                    ${resena.tags ? `<div class="tarjeta-tags"> ${resena.tags}</div>` : ''}
-                    
-                    <div class="seccion-comentarios" style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">
-                        <h5 style="margin-bottom: 10px; color: #ccc;">Comentarios</h5>
-                        <div class="lista-comentarios" style="max-height: 100px; overflow-y: auto; margin-bottom: 10px; border-radius: 5px; background: rgba(0,0,0,0.2); padding: 5px;">
-                            ${htmlComentarios || '<span style="font-size:0.85em; color: #888;">No hay comentarios aún.</span>'}
-                        </div>
-                        <div style="display: flex; gap: 5px;">
-                            <input type="text" class="input-comentario" placeholder="Añadir comentario..." style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #222; color: #fff;">
-                            <button class="btn-comentar" style="padding: 6px 12px; border-radius: 4px; border: none; background: #007bff; color: white; cursor: pointer;">Enviar</button>
-                        </div>
+                <a href="resenaindividual.html?id=${resena.id}">
+                    <div class="tarjeta-imagen">
+                        <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
                     </div>
-                </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">${resena.titulo}</h3>
+                        <h4 class="tarjeta-juego">${resena.juego}</h4>
+                        <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                        <p class="tarjeta-opinion">${resena.opinion}</p>
+                        ${resena.tags ? `<div class="tarjeta-tags">${resena.tags}</div>` : ''}
+                    </div>
+                </a>
             `;
 
             const btnEliminar = tarjeta.querySelector('.boton-eliminar');
@@ -952,89 +1083,27 @@ document.addEventListener('DOMContentLoaded', () => {
         inicializarUsuarios();
     }
 
+    const funcionesArrancar = [
     //inicializa los formularios
-    inicializarFormularioRegistro();
-    inicializarFormularioLogin();
+    inicializarFormularioRegistro,
+    inicializarFormularioLogin,
 
     //inicializa lo demas
-    
-    inicializarPerfil();
-    mostrarResenas();
-    inicializarFormulario();
-    inicializarTema();
-    actualizarHeader();
-    abrirHeader();
-});
+    inicializarResenaIndividual,
+    inicializarPerfil,
+    mostrarResenas,
+    inicializarFormulario,
+    inicializarTema,
+    actualizarHeader,
+    abrirHeader,]
 
-
-const inputContrasena = document.getElementById('contrasena');
-const btnVerContrasena = document.getElementById('btn-ver-contrasena');
-
-if (inputContrasena && btnVerContrasena) {
-    btnVerContrasena.addEventListener('click', function() {
-        if (inputContrasena.type === 'password') {
-            inputContrasena.type = 'text';
-            btnVerContrasena.textContent = '🔒';
-        } else {
-            inputContrasena.type = 'password';
-            btnVerContrasena.textContent = '👁️';
+    funcionesArrancar.forEach(funcion => {
+        try{
+            if(typeof funcion === 'function'){
+                funcion();
+            }
+        }catch (error){
+            console.warn("La funcion${funcion.name} esta tirando problemas, revisar")
         }
-    });
-}
-
-const inputRegContrasena = document.getElementById('reg-contrasena');
-const btnVerRegContrasena = document.getElementById('btn-ver-reg-contrasena');
-
-if (inputRegContrasena && btnVerRegContrasena) {
-    btnVerRegContrasena.addEventListener('click', function() {
-        if (inputRegContrasena.type === 'password') {
-            inputRegContrasena.type = 'text';
-            btnVerRegContrasena.textContent = '🔒';
-        } else {
-            inputRegContrasena.type = 'password';
-            btnVerRegContrasena.textContent = '👁️';
-        }
-    });
-}
-
-
-const inputRegConfirmar = document.getElementById('reg-confirmar-contrasena');
-const btnVerRegConfirmar = document.getElementById('btn-ver-reg-confirmar');
-
-if (inputRegConfirmar && btnVerRegConfirmar) {
-    btnVerRegConfirmar.addEventListener('click', function() {
-        if (inputRegConfirmar.type === 'password') {
-            inputRegConfirmar.type = 'text';
-            btnVerRegConfirmar.textContent = '🔒';
-        } else {
-            inputRegConfirmar.type = 'password';
-            btnVerRegConfirmar.textContent = '👁️';
-        }
-    });
-}
-
-
-//se encarga de que el juego de las paginas funcione correctamente
-document.addEventListener('DOMContentLoaded', () => {
-    //carga los usuarios precargados
-    const botonLogOut = document.getElementById("btn-logout")   
-    if (botonLogOut) {
-        botonLogOut.addEventListener("click", cerrarSesion);
-    } 
-    if (typeof inicializarUsuarios === 'function') {
-        inicializarUsuarios();
-    }
-
-    //inicializa los formularios
-    inicializarFormularioRegistro();
-    inicializarFormularioLogin();
-
-    //inicializa lo demas
-    
-    inicializarPerfil();
-    mostrarResenas();
-    inicializarFormulario();
-    inicializarTema();
-    actualizarHeader();
-    abrirHeader();
+    })
 });
