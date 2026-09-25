@@ -16,14 +16,35 @@ if (formulario) {
         //se guardan los datos del formulario
         const tituloResena = document.getElementById('titulo-resena').value;
         const nombreJuego = document.getElementById('nombre-juego').value;
+        const juegovalido = LISTA_JUEGOS.some(juegos => juegos === nombreJuego)
         const opinion = document.getElementById('opinion').value;
         const calificacion = document.getElementById('calificacion').value;
         //si los tags estan separados por una , los une, sino los usa como los mando el usuario
-        
+        if (!juegovalido){
+            alert("Pone un juego de los que ofrecemos");
+            return;
+        }
+
+        const inputTag = document.getElementById("tag-input");
+        if (inputTag && inputTag.value.trim() !== ""){
+            agregarTag(inputTag.value);
+            inputTag.value = "";
+        }
+
+        if (tagsSeleccionados.length === 0) {
+            alert('Minimamente pone un tag');
+            return;
+        }
+
+        if (!calificacion || calificacion === "" || calificacion === "0"){
+            alert("La puntuacion no puede ser 0")
+            return
+        }
         const palabrasClaves = tagsSeleccionados.length > 0 
             ? tagsSeleccionados.join(', ') 
             : document.getElementById('tag-input').value;
         //trae los archivos enviados
+        
         const inputImagen = document.getElementById('imagen-juego');
         //agarra el archivo que especificamente queremos
         const archivoImagen = inputImagen.files[0];
@@ -42,11 +63,11 @@ if (formulario) {
                     imagen: e.target.result // La imagen convertida a texto
                 };
                 //trae a la variable reseñas guardadas, las reseñas guardadas (valga la redundancia) o un null si es q esta vacio
-                let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+                let resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
                 //Guarda la nueva reseña
                 resenasGuardadas.push(nuevaResena);
                 //las re-convertimos en un json y se guarda
-                localStorage.setItem('misResenas', JSON.stringify(resenasGuardadas));
+                localStorage.setItem('Resenas', JSON.stringify(resenasGuardadas));
                 //se limpia el formulario
                 formulario.reset();
                 //se limpian los tags y se actualizan las estrellas
@@ -91,6 +112,60 @@ function inicializarUsuarios() {
                     .then(data => localStorage.setItem('usuarios', JSON.stringify(data)))
                     .catch(e => console.log('No se pudieron cargar los usuarios, revisen que falló', e));
             });
+    }
+}
+
+//para iniciarlizar correctamente la pagina del perfil
+function inicializarPerfil(){
+    const usuario = obtenerUsuarioLogueado()
+    const NombreUsuario = document.querySelector("#nombre-perfil")
+    const ContenedorResenas = document.querySelector("#contenedor-mis-resenas")
+
+    if (!NombreUsuario || !ContenedorResenas) return;
+    
+    if (!usuario){
+        alert("Como llegaste hasta aca? anda a iniciar sesion antes de hacer cualquier cosa")
+        window.location.href = "inicio_sesion.html";
+        return;
+    }
+    NombreUsuario.textContent = usuario.usuario;
+    let todaslasresenas = JSON.parse(localStorage.getItem("Resenas")) || [];
+    const misResenas = todaslasresenas.filter(resenas => resenas.usuarioId === usuario.id);
+    misResenas.reverse()
+    ContenedorResenas.innerHTML = "";
+    
+    if (misResenas.length == 0){
+        ContenedorResenas.innerHTML = '<h3 class="sin-contenido">Para ver algo aca, tenes que publicar algo antes</h3>'
+        return
+    }
+
+    misResenas.forEach(function(resena){
+        const reseñapropia = document.createElement("div");
+        reseñapropia.classList.add("tarjeta-resena");
+        reseñapropia.innerHTML = `
+                <button class="btn-eliminar-resena" onclick="eliminarMisReseñas(${resena.id})">X</button>
+                <div class="tarjeta-imagen">
+                    <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
+                </div>
+                <div class="tarjeta-contenido">
+                    <h3 class="tarjeta-titulo">${resena.titulo}</h3>
+                    <h4 class="tarjeta-juego">${resena.juego}</h4>
+                    <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
+                    <p class="tarjeta-opinion">${resena.opinion}</p>
+                    ${resena.tags ? `<div class="reseñapropia-tags">${resena.tags}</div>` : ''} 
+                </div>`;
+                ContenedorResenas.appendChild(reseñapropia)
+    })
+}
+
+function eliminarMisReseñas(id){
+    if (confirm("Vas a borrar tu reseña, seguro?")){
+        let todaslasresenas = JSON.parse(localStorage.getItem("Resenas")) || [];
+
+        todaslasresenas = todaslasresenas.filter(resena => resena.id !== id);
+        localStorage.setItem("Resenas", JSON.stringify(todaslasresenas))
+
+        inicializarPerfil()
     }
 }
 
@@ -222,8 +297,9 @@ function mostrarResenas() {
     if (!contenedor) return;
 
     //Se guarda las reseñas cargadas
-    let resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+    let resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
 
+    resenasGuardadas.reverse() //las invierte para que aparezcan en orden cronologico de subido
     //mensaje que se muestra si no hay reseñas
     if (resenasGuardadas.length === 0) {
         contenedor.innerHTML = '<h3 class="sin-contenido">No hay reseñas, puede ser por un error, estamos trabajando para resolverlo</h3>';
@@ -254,7 +330,6 @@ function mostrarResenas() {
         contenedor.appendChild(tarjeta);
     });
 }
-//CAMBIOS: SACAR LA OPCION DE ELIMINAR UNA RESEÑA Y TRATAR DE QUE EL HTML QUEDE EN EL HTML
 
 
 
@@ -322,6 +397,14 @@ function cargarJuegosJSON() {
 //AGREGA LOS TAGS
 function agregarTag(valor) {
     const tagTexto = valor.trim();
+    if (!tagTexto) return;
+    const tagExiste = LISTA_TAGS.some(tags => tags === tagTexto);
+
+    if(!tagExiste){
+        alert("usa un tag valido")
+        return
+    }
+
     if (tagTexto && !tagsSeleccionados.includes(tagTexto)) {
         tagsSeleccionados.push(tagTexto);
         renderizarTags();
@@ -394,8 +477,21 @@ function inicializarFormulario() {
         inputTag.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                if (inputTag.value.trim() !== '') {
-                    agregarTag(inputTag.value);
+
+                tagpuesto = inputTag.value.trim().toLowerCase();
+                if (inputTag.value.trim().toLowerCase() !== '') {
+
+                    let coincidencia = LISTA_TAGS.find(tag => tag.toLocaleLowerCase().startsWith(tagpuesto))
+                    if (!coincidencia) {
+                        coincidencia = LISTA_TAGS.find(tag => 
+                            tag.toLowerCase().includes(textoIngresado));}
+                        
+                    if (coincidencia){
+                        agregarTag(coincidencia);
+                    }else{
+                        agregarTag(inputTag.value);
+                    }
+                    
                     inputTag.value = '';
                 }
             }
@@ -445,35 +541,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Juegos y tags precargados
 const LISTA_TAGS = [
-    "Acción", "Aventura", "RPG", "JRPG", "Singleplayer", "Multijugador",
-    "Cooperativo", "Plataformas", "Metroidvania", "Estrategia", "Terror",
-    "Supervivencia", "Indie", "Shooter", "FPS", "TPS", "Puzzle", "Simulación",
-    "Deportes", "Carreras", "Lucha", "Roguelike", "Roguelite", "Mundo Abierto",
-    "Hack and Slash", "Stealth", "Soulslike", "Novela Visual", "Música/Ritmo",
-    "Sandbox", "Táctico", "Casual", "Battle Royale"
+    "Acción", "Aventura", "Battle Royale", "Carreras", "Casual", "Cooperativo", "Deportes", "Estrategia", "FPS", "Hack and Slash", "Indie", "JRPG", "Lucha", "Metroidvania", "Multijugador", "Mundo Abierto", "Música/Ritmo", "Novela Visual", "Plataformas", "Puzzle", "Roguelike", "Roguelite", "RPG", "Sandbox", "Shooter", "Simulación", "Singleplayer", "Soulslike", "Stealth", "Supervivencia", "Táctico", "Terror", "TPS"
 ];
 
 const LISTA_JUEGOS = [
-    "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom",
-    "Elden Ring", "God of War", "God of War Ragnarök", "Red Dead Redemption 2",
-    "The Witcher 3: Wild Hunt", "Hollow Knight", "Minecraft", "Grand Theft Auto V",
-    "Cyberpunk 2077", "Dark Souls III", "Bloodborne", "Sekiro: Shadows Die Twice",
-    "Baldur's Gate 3", "Super Mario Odyssey", "Super Mario Bros. Wonder", "Persona 5 Royal",
-    "Final Fantasy VII Remake", "Final Fantasy XVI", "Resident Evil 4 Remake",
-    "Resident Evil Village", "Silent Hill 2", "Hades", "Hades II", "Celeste",
-    "Stardew Valley", "Terraria", "Portal 2", "Half-Life 2", "Doom Eternal",
-    "Overwatch 2", "Counter-Strike 2", "Valorant", "League of Legends", "Dota 2",
-    "World of Warcraft", "Fortnite", "Apex Legends", "Call of Duty: Warzone",
-    "Fallout 4", "Skyrim (The Elder Scrolls V)", "Monster Hunter: World",
-    "Monster Hunter Rise", "Death Stranding", "Ghost of Tsushima", "The Last of Us Part I",
-    "The Last of Us Part II", "Horizon Zero Dawn", "Horizon Forbidden West",
-    "Spider-Man Remastered", "Spider-Man 2", "Cuphead", "Undertale", "Dead Cells",
-    "Slay the Spire", "Outer Wilds", "Disco Elysium", "Sea of Thieves", "It Takes Two",
-    "Left 4 Dead 2", "Payday 2", "Subnautica", "No Man's Sky", "Starfield",
-    "Palworld", "Helldivers 2", "Black Myth: Wukong"
+    "Apex Legends", "Baldur's Gate 3", "Black Myth: Wukong", "Bloodborne", "Call of Duty: Warzone", "Celeste", "Counter-Strike 2", "Cuphead", "Cyberpunk 2077", "Dark Souls III", "Dead Cells", "Death Stranding", "Disco Elysium", "Doom Eternal", "Dota 2", "Elden Ring", "Fallout 4", "Final Fantasy VII Remake", "Final Fantasy XVI", "Fortnite", "Ghost of Tsushima", "God of War", "God of War Ragnarök", "Grand Theft Auto V", "Hades", "Hades II", "Half-Life 2", "Helldivers 2", "Hollow Knight", "Horizon Forbidden West", "Horizon Zero Dawn", "It Takes Two", "League of Legends", "Left 4 Dead 2", "Minecraft", "Monster Hunter Rise", "Monster Hunter: World", "No Man's Sky", "Outer Wilds", "Overwatch 2", "Palworld", "Payday 2", "Persona 5 Royal", "Portal 2", "Red Dead Redemption 2", "Resident Evil 4 Remake", "Resident Evil Village", "Sea of Thieves", "Sekiro: Shadows Die Twice", "Silent Hill 2", "Skyrim (The Elder Scrolls V)", "Slay the Spire", "Spider-Man 2", "Spider-Man Remastered", "Stardew Valley", "Starfield", "Subnautica", "Super Mario Bros. Wonder", "Super Mario Odyssey", "Terraria", "The Last of Us Part I", "The Last of Us Part II", "The Legend of Zelda: Breath of the Wild", "The Legend of Zelda: Tears of the Kingdom", "The Witcher 3: Wild Hunt", "Undertale", "Valorant", "World of Warcraft"
 ];
 
-
+function abrirHeader(){
+    document.getElementById("btn-menu").addEventListener("click", function() {
+    document.getElementById("nav-links").classList.toggle("mostrar");
+});
+}
 //FUNCIONAMIENTO PARCIAL DE LA PAGINA DE CARGA DE RESEÑAS
 function cargarPaginaFiltrar() {
     const inputTexto = document.getElementById('buscador-texto');
@@ -514,7 +593,7 @@ function cargarPaginaFiltrar() {
         const tagElegido = selectTag ? selectTag.value.toLowerCase().trim() : '';
         const calificacionElegida = selectCalificacion ? selectCalificacion.value : '';
 
-        const resenasGuardadas = JSON.parse(localStorage.getItem('misResenas')) || [];
+        const resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
 
         const filtradas = resenasGuardadas.filter(resena => {
             //Filtra por nombre
@@ -718,8 +797,11 @@ document.addEventListener('DOMContentLoaded', () => {
     inicializarFormularioLogin();
 
     //inicializa lo demas
+    
+    inicializarPerfil();
     mostrarResenas();
     inicializarFormulario();
     inicializarTema();
     actualizarHeader();
+    abrirHeader();
 });

@@ -92,6 +92,15 @@
             transform: scale(1.05);
         }
 
+
+        .btn-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 2rem;
+            cursor: pointer;
+        }
     /* ---------- Inicio ---------- */
 
         /*Lo que se muestra si no hay reseñas o juegos en la pantalla de INICIO y RESEÑAS */
@@ -605,25 +614,45 @@
         }
 
 
-        /*adaptacion para las pantallas*/
-        @media (max-width: 600px) {
-            .login-panel .form-group {
-                display: block;
-            }
-
-            .login-panel label {
-                margin-bottom: 8px;
-                text-align: left;
-            }
-        }
-
-
         .login-panel a {
             color: rgb(158, 158, 158);
         }
+
+    /* ---------- perfil ---------- */
+        
+        .btn-eliminar-resena {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgb(255, 0, 0);
+            color: white;
+            border: none;
+            border-radius: 50%; /* Para hacerlo redondo si usas la "X" */
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .btn-eliminar-resena:hover {
+            background-color: #c0392b;
+        }
+
+
     /* MODO CLARO */
 
     /* ---------- Inicio ---------- */
+
+
+
+        body.modo-claro .btn-menu {
+            color: #111827;
+        }
 
         /*fondo en modo claro*/
         body.modo-claro {
@@ -819,3 +848,89 @@
         body.modo-claro .login-panel a {
             color: rgb(0, 0, 0);
         }
+
+/* ---------- Media Queries (Responsive Extra) ---------- */
+/* Dispositivos medianos (768px en adelante) */
+@media only screen and (min-width: 768px) {
+    .grid-tarjetas {
+        gap: 25px; /* Aumenta levemente el espacio entre tarjetas */
+    }
+}
+
+/* Dispositivos grandes (992px en adelante) */
+@media only screen and (min-width: 992px) {
+    .mn-pg {
+        max-width: 1200px; /* Expande el contenedor para aprovechar la pantalla */
+    }
+    
+    .tarjeta-formulario {
+        max-width: 900px; 
+    }
+}
+
+/* Dispositivos extra pequeños (600px o menos) */
+/* Adaptación unificada para pantallas móviles (680px o menos) */
+@media (max-width: 680px) {
+    /* 1. Forzamos el header a mantenerse en un solo renglón */
+    .stl-header {
+        display: flex;
+        flex-direction: row !important; /* Fuerza la fila horizontal */
+        justify-content: space-between; /* Logo a la izquierda, botón a la derecha */
+        align-items: center;
+        flex-wrap: wrap; /* Permite que el contenedor de enlaces caiga abajo */
+        padding: 15px 20px;
+    }
+
+    /* 2. Mostramos el botón hamburguesa */
+    .btn-menu {
+        display: block;
+    }
+
+    /* 3. Ocultamos los enlaces por defecto y los preparamos para columna */
+    .nav-links {
+        display: none; 
+        width: 100%; /* Obliga a los enlaces a ocupar un renglón nuevo al abrirse */
+        flex-direction: column; 
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    /* Clase que JS agregará para mostrar el menú */
+    .nav-links.mostrar {
+        display: flex;
+    }
+
+    .nav-links a {
+        margin-left: 0;
+        font-size: 1.2rem;
+    }
+
+    /* Ajustes generales de formulario y filtros que ya tenías */
+    .filas-formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .login-panel .form-group {
+        display: block;
+    }
+
+    .login-panel label {
+        margin-bottom: 8px;
+        text-align: left;
+    }
+
+    #barra-filtros {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #buscador-texto, 
+    #filtro-juego, 
+    #filtro-tag, 
+    #filtro-calificacion, 
+    #btn-limpiar {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
