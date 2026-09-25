@@ -30,16 +30,6 @@ if (formulario) {
             agregarTag(inputTag.value);
             inputTag.value = "";
         }
-
-        if (tagsSeleccionados.length === 0) {
-            alert('Minimamente pone un tag');
-            return;
-        }
-
-        if (!calificacion || calificacion === "" || calificacion === "0"){
-            alert("La puntuacion no puede ser 0")
-            return
-        }
         const palabrasClaves = tagsSeleccionados.length > 0 
             ? tagsSeleccionados.join(', ') 
             : document.getElementById('tag-input').value;
@@ -48,48 +38,99 @@ if (formulario) {
         const inputImagen = document.getElementById('imagen-juego');
         //agarra el archivo que especificamente queremos
         const archivoImagen = inputImagen.files[0];
-        if (archivoImagen) {//solamente se ejecuta si hay imagen
-            const lector = new FileReader(); //funcion para leer archivos
-            lector.onload = function(e) { //esta funcion tiene una demora
-                //Creamos la nueva reseña con todos los datos ingresados
-                const nuevaResena = {
-                    id: Date.now(), //La id de la reseña va a ser la fecha de realizacion
+
+        const paramsEdit = new URLSearchParams(window.location.search);
+        const editId = paramsEdit.get('editId');
+
+        if (tituloResena.trim() === "") {
+            alert("El titulo es obligatoria");
+            return;
+        }
+
+        if (nombreJuego.trim() === "") {
+            alert("El juego es obligatoria");
+            return;
+        }
+
+        const imgPrecargada = inputImagen.dataset.imagenPreCargada
+        if (!archivoImagen && !editId && !imgPrecargada) {
+            alert("La imagen es obligatoria");
+            return;
+        }
+        
+        if (opinion.trim() === "") {
+            alert("La opinion es obligatoria");
+            return;
+        }
+
+        if (!calificacion || calificacion === "" || calificacion === "0"){
+            alert("La puntuacion no puede ser 0")
+            return
+        }
+
+        if (tagsSeleccionados.length === 0) {
+            alert('Minimamente pone un tag');
+            return;
+        }
+        let resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
+
+        const procesarGuardado = (imagenBase64) => {
+            if (editId) {
+                // MODO EDICIÓN
+                const indice = resenasGuardadas.findIndex(r => r.id == editId);
+                if (indice !== -1) {
+                    resenasGuardadas[indice].titulo = tituloResena;
+                    resenasGuardadas[indice].juego = nombreJuego;
+                    resenasGuardadas[indice].opinion = opinion;
+                    resenasGuardadas[indice].calificacion = calificacion;
+                    resenasGuardadas[indice].tags = palabrasClaves;
+                    if (imagenBase64) resenasGuardadas[indice].imagen = imagenBase64;
+                }
+                alert("La reseña se actualizo")}
+                else{
+                    const nuevaResena = {
+                    id: Date.now(), 
                     usuarioId: usuarioActivo.id,
                     titulo: tituloResena,
                     juego: nombreJuego,
                     opinion: opinion,
                     calificacion: calificacion,
                     tags: palabrasClaves,
-                    imagen: e.target.result // La imagen convertida a texto
-                };
-                //trae a la variable reseñas guardadas, las reseñas guardadas (valga la redundancia) o un null si es q esta vacio
-                let resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
-                //Guarda la nueva reseña
-                resenasGuardadas.push(nuevaResena);
-                //las re-convertimos en un json y se guarda
-                localStorage.setItem('Resenas', JSON.stringify(resenasGuardadas));
-                //se limpia el formulario
-                formulario.reset();
-                //se limpian los tags y se actualizan las estrellas
-                tagsSeleccionados = [];
-                renderizarTags();
-                actualizarEstrellasCalificacion(5);
-                
-                // Reseteamos la vista previa de la imagen
-                const previewImg = document.getElementById('imagen-preview');
-                const placeholder = document.getElementById('preview-placeholder');
-                if (previewImg && placeholder) {
-                    previewImg.src = '';
-                    previewImg.classList.add('oculto');
-                    placeholder.classList.remove('oculto');
+                    imagen: imagenBase64 
+                    };
+                    resenasGuardadas.push(nuevaResena);
+                    alert('Reseña subida');
                 }
-                alert('Reseña subida');
-                window.location.href = 'resenas.html';
-            };
+                localStorage.setItem('Resenas', JSON.stringify(resenasGuardadas));
+                
+        formulario.reset();
+            tagsSeleccionados = [];
+            renderizarTags();
+            actualizarEstrellasCalificacion(5);
+            
+            const previewImg = document.getElementById('imagen-preview');
+            const placeholder = document.getElementById('preview-placeholder');
+            if (previewImg && placeholder) {
+                previewImg.src = '';
+                previewImg.classList.add('oculto');
+                placeholder.classList.remove('oculto');
+            }
+            
+            window.location.href = 'resenas.html';
+        };
 
-            // Leemos el archivo para disparar el lector.onload
+        // Verificamos si subió una nueva imagen o si está editando manteniendo la anterior
+        if (archivoImagen) {
+            const lector = new FileReader(); 
+            lector.onload = function(e) { 
+                procesarGuardado(e.target.result);
+            };
             lector.readAsDataURL(archivoImagen);
-        } 
+        } else if (editId) {
+            procesarGuardado(null);
+        } else if (imgPrecargada){
+            procesarGuardado(imgPrecargada)
+        }
     });
 }
 
@@ -142,8 +183,10 @@ function inicializarPerfil(){
     misResenas.forEach(function(resena){
         const reseñapropia = document.createElement("div");
         reseñapropia.classList.add("tarjeta-resena");
-        reseñapropia.innerHTML = `
+        reseñapropia.innerHTML = ` 
+            <a href="resena_individual.html?id=${resena.id}">
                 <button class="btn-eliminar-resena" onclick="eliminarMisReseñas(${resena.id})">X</button>
+                <button class="btn-editar-resena" onclick="window.location.href='formulario.html?editId=${resena.id}'">Editar</button>
                 <div class="tarjeta-imagen">
                     <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
                 </div>
@@ -153,7 +196,8 @@ function inicializarPerfil(){
                     <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
                     <p class="tarjeta-opinion">${resena.opinion}</p>
                     ${resena.tags ? `<div class="reseñapropia-tags">${resena.tags}</div>` : ''} 
-                </div>`;
+                </div></a>`;
+            
                 ContenedorResenas.appendChild(reseñapropia)
     })
 }
@@ -315,7 +359,7 @@ function mostrarResenas() {
         tarjeta.classList.add('tarjeta-resena'); //le pone el estilo de tarjeta resena
 
         tarjeta.innerHTML = `
-            <a href="resenaindividual.html?id=${resena.id}">
+            <a href="resena_individual.html?id=${resena.id}">
             <div class="tarjeta-imagen">
                 <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
             </div>
@@ -339,7 +383,7 @@ function inicializarResenaIndividual() {
     const btnComentar = document.getElementById('btn-comentar');
     const contenedorComentarios = document.getElementById('contenedor-comentarios');
     
-    // Obtenemos la ID de la reseña actual desde la URL (ej: resenaindividual.html?id=123)
+    // Obtenemos la ID de la reseña actual desde la URL (ej: resena_individual.html?id=123)
     const params = new URLSearchParams(window.location.search);
     const idResenaActual = params.get('id');
 
@@ -631,12 +675,28 @@ function inicializarFormulario() {
 
     const paramsInicio = new URLSearchParams(window.location.search);
     const juegoDesdeInicio = paramsInicio.get('juego');
+    const imgDesdeInicio = paramsInicio.get("img")
     if (juegoDesdeInicio) {
         const inputNombreJuego = document.getElementById('nombre-juego');
         if (inputNombreJuego) inputNombreJuego.value = juegoDesdeInicio;
     }
+    if (imgDesdeInicio){
+        const previewImg = document.getElementById('imagen-preview');
+        const placeholder = document.getElementById('preview-placeholder');
+        const inputImagen = document.getElementById('imagen-juego');
 
-    
+        if (previewImg && placeholder && inputImagen) {
+            previewImg.src = imgDesdeInicio;
+            previewImg.classList.remove('oculto');
+            placeholder.classList.add('oculto');
+            
+            // Le quitamos el required porque ya hay imagen
+            inputImagen.removeAttribute('required');
+            // Guardamos la ruta en el input de forma temporal para mandarla al submit
+            inputImagen.dataset.imagenPreCargada = imgDesdeInicio; 
+        }
+    }
+
     actualizarEstrellasCalificacion(0);
 
     const inputTag = document.getElementById('tag-input');
@@ -654,13 +714,13 @@ function inicializarFormulario() {
             if (e.key === 'Enter') {
                 e.preventDefault();
 
-                tagpuesto = inputTag.value.trim().toLowerCase();
-                if (inputTag.value.trim().toLowerCase() !== '') {
-
-                    let coincidencia = LISTA_TAGS.find(tag => tag.toLocaleLowerCase().startsWith(tagpuesto))
+                const tagpuesto = inputTag.value.trim().toLowerCase();
+                if (tagpuesto !== '') {
+                    let coincidencia = LISTA_TAGS.find(tag => tag.toLowerCase().startsWith(tagpuesto));
                     if (!coincidencia) {
                         coincidencia = LISTA_TAGS.find(tag => 
-                            tag.toLowerCase().includes(textoIngresado));}
+                            tag.toLowerCase().includes(tagpuesto));
+                    }
                         
                     if (coincidencia){
                         agregarTag(coincidencia);
@@ -703,6 +763,43 @@ function inicializarFormulario() {
                 reader.readAsDataURL(file);
             }
         });
+    }
+    
+    // --- LÓGICA DE EDICIÓN: PRE-CARGAR DATOS ---
+    const paramsURL = new URLSearchParams(window.location.search);
+    const editId = paramsURL.get('editId');
+    if (editId) {
+        const resenasGuardadas = JSON.parse(localStorage.getItem('Resenas')) || [];
+        const resenaAEditar = resenasGuardadas.find(r => r.id == editId);
+        
+        if (resenaAEditar) {
+            document.getElementById('titulo-resena').value = resenaAEditar.titulo;
+            document.getElementById('nombre-juego').value = resenaAEditar.juego;
+            document.getElementById('opinion').value = resenaAEditar.opinion;
+            
+            // Poner la calificación previa
+            actualizarEstrellasCalificacion(resenaAEditar.calificacion);
+            
+            // Cargar tags
+            if (resenaAEditar.tags) {
+                const tagsArray = resenaAEditar.tags.split(', ');
+                tagsArray.forEach(tag => agregarTag(tag));
+            }
+            
+            // Mostrar la imagen que ya tenía cargada
+            if (resenaAEditar.imagen && previewImg && placeholder && inputImagen) {
+                previewImg.src = resenaAEditar.imagen;
+                previewImg.classList.remove('oculto');
+                placeholder.classList.add('oculto');
+                
+                // Quitamos el required porque la imagen ya existe
+                inputImagen.removeAttribute('required');
+            }
+            
+            // Cambiar el texto del botón
+            const btnPublicar = document.querySelector('.boton-publicar');
+            if (btnPublicar) btnPublicar.textContent = 'Guardar Cambios';
+        }
     }
 }
 
@@ -807,7 +904,7 @@ function cargarPaginaFiltrar() {
             tarjeta.classList.add('tarjeta-resena');
 
             tarjeta.innerHTML = `
-                <a href="resenaindividual.html?id=${resena.id}">
+                <a href="resena_individual.html?id=${resena.id}">
                     <div class="tarjeta-imagen">
                         <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
                     </div>
@@ -868,14 +965,16 @@ function cargarPaginaInicio() {
                 tarjeta.classList.add('tarjeta-resena');
 
                 tarjeta.innerHTML = `
+                <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}&img=${encodeURIComponent(juego.imagen)}">
                     <div class="tarjeta-imagen">
                         <img src="${juego.imagen}" alt="Portada de ${juego.nombre}">
                     </div>
                     <div class="tarjeta-contenido">
                         <h3 class="tarjeta-titulo">${juego.nombre}</h3>
                         <p class="tarjeta-descripcion">${juego.descripcion}</p>
-                        <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}"> Opinar </a>
+                        <a class="boton-enlace" href="formulario.html?juego=${encodeURIComponent(juego.nombre)}&img=${encodeURIComponent(juego.imagen)}"></a>
                     </div>
+                </a>
                 `;
 
                 //Por si no hay imagen, mostramos la de respaldo

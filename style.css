@@ -163,6 +163,11 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
+        .tarjeta-resena a{
+            text-decoration: none;
+            color: inherit;
+        }
+
         /*el contenedor de la imagen de las tarjetas*/
         .tarjeta-imagen {
             width: 100%;
@@ -216,7 +221,7 @@
             padding: 0 ;
             border: none ;
             border-radius: 0 ;
-            text-decoration: underline ;
+            text-decoration: none ;
             text-transform: none ;
             transition: none ;
             font-size: 0.9rem ;
@@ -238,7 +243,7 @@
             width: 100%; 
             max-width: 1000px; 
             margin-bottom: 40px; 
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
 
         /*filtro por titulo*/
@@ -523,7 +528,7 @@
             padding: 35px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             width: 100%;
-            max-width: 750px;
+            box-sizing: border-box;
         }
 
         /*Estilo de los textos del formulario y los labels en general*/
@@ -846,6 +851,25 @@
 
         .btn-eliminar-resena:hover {
             background-color: #c0392b;
+        }
+
+        .btn-editar-resena {
+            position: absolute;
+            top: 10px;
+            right: 50px; 
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .btn-editar-resena:hover {
+            background-color: #2980b9;
         }
 
 
