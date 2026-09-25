@@ -1,4 +1,4 @@
-<img width="182" height="512" alt="imagen" src="https://github.com/user-attachments/assets/1a8faf65-8f8c-4352-b6ee-5338e3ce118b" />GENX — Reseñas de videojuegos
+GENX — Reseñas de videojuegos
 
 Web donde los usuarios se registran, inician sesión y publican reseñas de juegos con imagen, calificación y comentarios. No hay base de datos: todo se guarda en el `localStorage` del navegador.
 
@@ -16,11 +16,7 @@ No hay nada que instalar. No usa librerías.
 
 2. Estructura de carpetas
 
-```
 <img width="274" height="505" alt="imagen" src="https://github.com/user-attachments/assets/5fad312d-707d-4c74-b5c9-2276bd4388a2" />
-
-
-```
 
 
 3. Cómo abrir el proyecto
