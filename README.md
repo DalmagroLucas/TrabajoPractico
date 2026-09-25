@@ -10,7 +10,7 @@ HTML (estructura) ·
 CSS (diseño y modo claro/oscuro) ·
 JavaScript (toda la lógica) ·
 JSON (datos precargados) ·
-localStorage (datos del usuario) .
+localStorage (todos los datos) .
 
 No hay nada que instalar. No usa librerías.
 
