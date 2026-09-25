@@ -1,5 +1,5 @@
 GENX — Reseñas de videojuegos
-`Dalmagro Lucas` - `Frati Guillermo` - `Miceli Tiziano` - `Pereyra Briscil`
+<br>`Dalmagro Lucas` - `Frati Guillermo` - `Miceli Tiziano` - `Pereyra Briscil`
 
 Web donde los usuarios se registran, inician sesión y publican reseñas de juegos con imagen, calificación y comentarios. No hay base de datos: todo se guarda en el `localStorage` del navegador.
 
