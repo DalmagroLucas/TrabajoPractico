@@ -234,14 +234,12 @@ function mostrarResenas() {
     contenedor.innerHTML = '';
 
     //Creacion de "tarjetas" de cada uno de las reseñas
-resenasGuardadas.forEach(function(resena) {
+    resenasGuardadas.forEach(function(resena) {
         const tarjeta = document.createElement('div');
         tarjeta.classList.add('tarjeta-resena');
         
-        // Obtenemos el usuario para saber si le mostramos el botón de borrar
         const usuarioActivo = obtenerUsuarioLogueado();
 
-        // Generar el HTML de los comentarios previos con la cruz de eliminar si es su comentario
         const htmlComentarios = (resena.comentarios || []).map((c, index) => {
             const esMio = usuarioActivo && usuarioActivo.usuario === c.usuario;
             const btnBorrar = esMio 
@@ -627,7 +625,7 @@ function cargarPaginaFiltrar() {
             return;
         }
 
-filtradas.forEach(resena => {
+    filtradas.forEach(resena => {
             const tarjeta = document.createElement('div');
             tarjeta.classList.add('tarjeta-resena');
 
@@ -647,14 +645,14 @@ filtradas.forEach(resena => {
             tarjeta.innerHTML = `
                 <button class="boton-eliminar" title="Eliminar reseña">🗑️</button>
                 <div class="tarjeta-imagen">
-                    <img src="${resena.imagen || '../placeholder.png'}" alt="Portada de ${resena.juego}">
+                    <img src="${resena.imagen}" alt="Portada de ${resena.juego}">
                 </div>
                 <div class="tarjeta-contenido">
                     <h3 class="tarjeta-titulo">${resena.titulo}</h3>
                     <h4 class="tarjeta-juego">${resena.juego}</h4>
-                    <div class="tarjeta-puntuacion">★ ${resena.calificacion || 0} / 5</div>
+                    <div class="tarjeta-puntuacion"> ${resena.calificacion || 0} / 5</div>
                     <p class="tarjeta-opinion">${resena.opinion}</p>
-                    ${resena.tags ? `<div class="tarjeta-tags">🏷️ ${resena.tags}</div>` : ''}
+                    ${resena.tags ? `<div class="tarjeta-tags"> ${resena.tags}</div>` : ''}
                     
                     <div class="seccion-comentarios" style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">
                         <h5 style="margin-bottom: 10px; color: #ccc;">Comentarios</h5>
