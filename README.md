@@ -49,11 +49,11 @@ Solución: usar Live Server de VS Code.
 
 | Qué hace |
 |
-| `inicio.html` | Catálogo de juegos. Botón Opinar → abre el formulario con el juego. 
+| `inicio.html` | Catálogo de juegos. click en un juego → abre el formulario con el juego. 
 | `resenas.html` | Todas las reseñas + filtros por texto, juego, tag y calificación. |
-| `resenaindividual.html` | Una reseña con su hilo de comentarios. |
+| `resena_individual.html` | Una reseña con su hilo de comentarios. |
 | `formulario.html` | Publicar reseña. Requiere sesión iniciada. |
-| `perfil.html` | Tus reseñas, con opción de borrarlas. |
+| `tus_resenas.html` | Tus reseñas, con opción de borrarlas o editarlas. |
 | `inicio_sesion.html` | Iniciar sesión. |
 | `crear_usuario.html` | Registrarse (inicia sesión al instante). |
 
