@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1700000000001,
+    "usuarioId": 1,
+    "titulo": "Una obra maestra indiscutible",
+    "juego": "The Legend of Zelda: Breath of the Wild",
+    "opinion": "Increíble la libertad que te da este juego. Podés ir directamente al jefe final apenas terminas el tutorial si querés. El diseño de Hyrule es espectacular.",
+    "calificacion": "5",
+    "tags": "Aventura, Mundo Abierto, RPG",
+    "imagen": "../Img/tlozbotw.jpg"
+  },
+  {
+    "id": 1700000000002,
+    "usuarioId": 2,
+    "titulo": "Muy bueno, pero frustrante a veces",
+    "juego": "Elden Ring",
+    "opinion": "El diseño del mundo es genial, pero la dificultad de algunos jefes me sacó de quicio. Aún así, la sensación de victoria no tiene precio.",
+    "calificacion": "4",
+    "tags": "Acción, RPG, Soulslike",
+    "imagen": "../Img/er.jpg"
+  },
+  {
+    "id": 1700000000003,
+    "usuarioId": 3,
+    "titulo": "El mejor roguelike que jugué",
+    "juego": "Hades",
+    "opinion": "La jugabilidad es frenética, la historia avanza incluso cuando perdés, y el arte es hermoso. Un juego perfecto en su género.",
+    "calificacion": "5",
+    "tags": "Acción, Roguelike, Indie",
+    "imagen": "../Img/hades.jpg"
+  }
+]
