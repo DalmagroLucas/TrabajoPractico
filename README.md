@@ -21,10 +21,6 @@ No hay nada que instalar. No usa librerías.
 
 3. Cómo abrir el proyecto
 
-La página de Inicio lee `Json/juegos.json` con `fetch()`. Los navegadores bloquean `fetch()` si abrís el archivo con doble clic, y la página queda vacía.
-
-Solución: usar Live Server de VS Code.
-
 1. Abrí la carpeta `TrabajoPractico-main` en VS Code.
 2. Instalá la extensión Live Server.
 3. En el explorador, entrá a Pages.
