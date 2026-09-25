@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!--Barra superior-->
     <header class="stl-header">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -21,43 +20,32 @@
             <a href="inicio.html">Inicio</a>
             <a href="resenas.html">Reseñas</a>
 
-            <!--Solo se muestra si esta logueado-->
-            
             <a href="tus_resenas.html" class="link-login">Tus reseñas</a>
             <button id="btn-logout" class="boton-tema">Cerrar Sesión</button>
 
-            <!--Solo se muestra si no esta logueado-->
             <a href="crear_usuario.html" class="link-nologin">Registrate</a>
             <a href="inicio_sesion.html" class="link-nologin">Inicia Sesion</a>
 
-            <!--Se muestra en cualquier caso, igual que losa dso de arriba-->
             <button id="boton-tema" class="boton-tema" title="Cambiar a modo claro/oscuro">Claro</button>
         </nav>
     </header>
 
-    <!--pagina principal de reseña-->
     <main class="contenedor-principal mn-pg" >
         
-        <!--titulo de reseña-->
         <h1 class="tt-pg">Ver las ultimas reseñas</h1>
 
-        <!--contenedor de filtros-->
         <div class="contenedor-filtros" id="barra-filtros">
-            <!--filtro por titulo de reseña-->
             <input 
                 type="text" 
                 id="buscador-texto" 
                 placeholder="titulo de reseña" >
-            <!--filtro por juego-->
             <select id="filtro-juego">
                 <option value="">Todos los juegos</option>
             </select>
-            <!--filtro por tags-->
             <select id="filtro-tag">
                 <option value="">Todos los tags</option>
             </select>
 
-            <!--filtro por estreñas-->
             <select id="filtro-calificacion">
                 <option value="">Todas las estrellas</option>
                 <option value="5">★ 5 - Excelente</option>
@@ -67,13 +55,11 @@
                 <option value="1">★ 1 - Mala</option>
             </select>
 
-            <!-- boton que limpia los filtros -->
             <button id="btn-limpiar">
                 Limpiar
             </button>
         </div>
 
-        <!-- contenedor de cada reseña-->
         <div id="contenedor-resenas" class="grid-tarjetas"></div>
     </main>
     

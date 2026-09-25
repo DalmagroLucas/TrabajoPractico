@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GENX - Crear Reseña</title>
-    <!-- CAMBIO REALIZADO: Se ajustó la ruta al CSS saliendo de /Pages/ con ../style.css -->
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <!-- Barra superior -->
     <header class="stl-header">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -21,29 +19,22 @@
             <a href="inicio.html">Inicio</a>
             <a href="resenas.html">Reseñas</a>
 
-            <!--Solo se muestra si esta logueado-->
-            
             <a href="tus_resenas.html" class="link-login">Tus reseñas</a>
             <button id="btn-logout" class="boton-tema">Cerrar Sesión</button>
 
-            <!--Solo se muestra si no esta logueado-->
             <a href="crear_usuario.html" class="link-nologin">Registrate</a>
             <a href="inicio_sesion.html" class="link-nologin">Inicia Sesion</a>
 
-            <!--Se muestra en cualquier caso, igual que losa dso de arriba-->
             <button id="boton-tema" class="boton-tema" title="Cambiar a modo claro/oscuro">Claro</button>
         </nav>
     </header>
 
-    <!--Pagina para crear una reseña-->
     <main class="contenedor-principal">
         <div class="tarjeta-formulario">
             <form id="formulario-juego" novalidate>
                 <div class="filas-formulario">
-                    <!-- COLUMNA IZQUIERDA: Caja de Imagen y Tags -->
                     <div class="columna-izquierda">
                         
-                        <!-- CAMBIO REALIZADO: Estructura corregida para que la imagen se aprecie sin bloqueos -->
                         <div class="caja-subir-imagen" id="caja-imagen">
                             <input type="file" id="imagen-juego" name="imagen-juego" accept="image/*" required>
                             <div class="preview-placeholder" id="preview-placeholder">
@@ -61,7 +52,6 @@
 
                     </div>
 
-                    <!-- COLUMNA DERECHA: Reseña, Juego, Opinión y Estrellas -->
                     <div class="columna-derecha">
                         
                         <div class="grupo-form">
@@ -80,7 +70,6 @@
                             <textarea id="opinion" name="opinion" rows="4" required></textarea>
                         </div>
 
-                        <!-- CAMBIO REALIZADO: Calificación por Estrellas (★ ★ ★ ★ ★) que se rellenan con un clic -->
                         <div class="grupo-form grupo-calificacion">
                             <label>Calificación</label>
                             <div class="estrellas-calificacion" id="estrellas-calificacion">
@@ -90,7 +79,6 @@
                                 <span class="estrella-item" data-valor="4">★</span>
                                 <span class="estrella-item" data-valor="5">★</span>
                             </div>
-                            <!-- value="" para que inicie sin estrellas marcadas -->
                             <input type="hidden" id="calificacion" name="calificacion" value="" required>
                         </div>
 
@@ -106,7 +94,6 @@
         </div>
     </main>
 
-    <!-- CAMBIO REALIZADO: Se ajustó la ruta al archivo app.js saliendo de /Pages/ con ../app.js -->
     <script src="../app.js"></script>
 </body>
 </html>
