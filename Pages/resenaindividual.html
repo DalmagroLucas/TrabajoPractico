@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <!--Barra superior-->
+    
     <header class="stl-header">
         <div class="logo-contenedor">
             <span class="logo-icono">🎮</span>
@@ -35,21 +35,34 @@
     </header>
 
     <main class="contenedor-principal mn-pg">
-        <div id="detalle-resena" style="margin-bottom: 30px;">
-        </div>
-        <div class="tarjeta-formulario" style="margin-bottom: 20px;">
-            <h3 style="color: white;">Deja tu comentario</h3>
-            <textarea id="input-comentario" rows="4" placeholder="Escribe tu comentario aquí..." style="width: 100%; border-radius: 8px; padding: 10px;"></textarea>
-            <button id="btn-comentar" class="boton-publicar" style="margin-top: 10px;">Comentar</button>
-        </div>
+        
+        <div class="contenedor-mayor">
+            
+            
+            <div id="detalle-resena" class="columna-izquierda-resena">
+            </div>
 
-        <!-- Rectángulo rojo: Resto de los comentarios -->
-        <div id="contenedor-comentarios" style="background-color: #ff0000; padding: 20px; border-radius: 10px; min-height: 100px;">
-            <h3 style="color: white;">Comentarios</h3>
-            <!-- Los comentarios se insertarán aquí -->
+            
+            <div class="columna-derecha-comentarios">
+                
+                
+                <div class="tarjeta-formulario seccion-escribir">
+                    <h3 class="tt-seccion-escribir">Deja tu comentario</h3>
+                    <textarea id="input-comentario" rows="4" class="textarea-seccion-escribir"></textarea>
+                    <button id="btn-comentar" class="boton-publicar">Comentar</button>
+                </div>
+
+                
+                <div id="contenedor-comentarios" class="seccion-leer-comentarios">
+                    
+                    <h3 class="tt-seccion-comentarios" >Comentarios</h3>
+                    
+                </div>
+
+            </div>
         </div>
     </main>
     <script src="/app.js"></script>
-    
+
 </body>
 </html>

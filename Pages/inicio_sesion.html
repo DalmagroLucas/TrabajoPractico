@@ -50,12 +50,10 @@
 
                 <div class="form-group">
                     <label for="contrasena">Contraseña:</label>
-                    <input 
-                        type="password"
-                        id="contrasena"
-                        name="contrasena"
-                        required
-                    >
+                    <div class="contenedor-clave">
+                        <input type="password" id="contrasena" name="contrasena" required>
+                        <button type="button" id="btn-cambio-clave" class="ver-clave" data-target="contrasena">(0)</button>
+                    </div>
                 </div>
 
                 <p id="mensaje-login" class="mj-er"></p>

@@ -354,18 +354,25 @@ function inicializarResenaIndividual() {
         const resena = resenasGuardadas.find(r => r.id == idResenaActual);
 
         if (resena) {
-            // Inyectamos el HTML de la reseña en la pantalla
+            // Inyectamos el HTML de la reseña con el nuevo diseño
             detalleResena.innerHTML = `
-                <div class="tarjeta-resena" style="cursor: default; max-width: 900px; margin: 0 auto;">
-                    <div class="tarjeta-imagen" style="height: 400px;">
-                        <img src="${resena.imagen}" alt="Portada de ${resena.juego}" style="object-fit: cover; width: 100%;">
+                <div class="tarjeta-resena tarjeta-resena-individual">
+                    <div class="contenedor-imagen-individual">
+                        <img src="${resena.imagen}" alt="Portada" class="imagen-individual">
                     </div>
-                    <div class="tarjeta-contenido">
-                        <h1 class="tarjeta-titulo" style="font-size: 2.2rem; margin-bottom: 10px;">${resena.titulo}</h1>
-                        <h2 class="tarjeta-juego" style="font-size: 1.3rem; margin-bottom: 15px;">${resena.juego}</h2>
-                        <div class="tarjeta-puntuacion">${resena.calificacion} / 5</div>
-                        <p class="tarjeta-opinion" style="font-size: 1.1rem; margin-top: 15px;">"${resena.opinion}"</p>
-                        ${resena.tags ? `<div class="tarjeta-tags" style="margin-top: 15px;">${resena.tags}</div>` : ''}
+                    
+                    <!-- Contenedor del texto y etiquetas -->
+                    <div class="contenido-individual">
+                        <h1 class="titulo-individual">${resena.titulo}</h1>
+                        <h2 class="juego-individual">${resena.juego}</h2>
+                        
+                        <div class="contenedor-calificacion-individual">
+                            <span class="calificacion-individual">${resena.calificacion} / 5</span>
+                        </div>
+                                    
+                        <p class="opinion-individual">"${resena.opinion}"</p>
+                        
+                        ${resena.tags ? `<div class="tags-individual">${resena.tags}</div>` : ''}
                     </div>
                 </div>
             `;
@@ -417,13 +424,39 @@ function inicializarResenaIndividual() {
     });
 }
 
+
+// FUNCION PARA ACTIVAR/DESACTIVAR VISIBILIDAD DE CONTRASEÑAS
+function inicializarBotonesContrasena() {
+    const botonesVer = document.querySelectorAll('.ver-clave');
+    
+    botonesVer.forEach(boton => {
+        boton.addEventListener('click', function() {
+            // Obtiene el ID del input al que este botón está apuntando
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            
+            if (input) {
+                // Alterna entre texto y contraseña
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '(/)'; // Icono de ocultar
+                    this.style.color = "white"
+                } else {
+                    input.type = 'password';
+                    this.textContent = '(0)'; // Icono de ver
+                    this.style.color = "black"
+                }
+            }
+        });
+    });
+}
 // Función para mostrar los comentarios en el rectángulo rojo
 function mostrarComentarios(idResena) {
     const contenedor = document.getElementById('contenedor-comentarios');
     if (!contenedor) return;
 
     // Evitar borrar el título H3 al limpiar
-    contenedor.innerHTML = '<h3 style="color: white;">Comentarios</h3>'; 
+    contenedor.innerHTML = '<h3 class="titulo-comentarios">Comentarios</h3>'; 
 
     const todosLosComentarios = JSON.parse(localStorage.getItem('Comentarios')) || [];
     
@@ -431,7 +464,7 @@ function mostrarComentarios(idResena) {
     const comentariosDeEstaResena = todosLosComentarios.filter(c => c.idResena === idResena);
 
     if (comentariosDeEstaResena.length === 0) {
-        contenedor.innerHTML += '<p style="color: white;">Sé el primero en comentar.</p>';
+        contenedor.innerHTML += '<p class="texto-vacio-comentarios">5mentarios jeje</p>';
         return;
     }
 
@@ -441,7 +474,8 @@ function mostrarComentarios(idResena) {
     comentariosDeEstaResena.forEach(comentario => {
         const div = document.createElement('div');
         // Se le añade "position: relative;" al contenedor para posicionar la "X" arriba a la derecha
-        div.style.cssText = "background: #1a1d2e; padding: 15px; margin-top: 10px; border-radius: 8px; border: 1px solid #323752; color: white; position: relative;";
+        
+        div.classList.add("stl-comentarios")
         
         let botonBorrar = "";
         // Verificamos si hay un usuario logueado y si su nombre coincide con el autor del comentario
@@ -452,8 +486,8 @@ function mostrarComentarios(idResena) {
         // Muestra el botón (si corresponde), el usuario y el comentario
         div.innerHTML = `
             ${botonBorrar}
-            <strong style="color: #00f2fe;">${comentario.usuario}</strong>
-            <p style="margin: 5px 0 0 0;">${comentario.texto}</p>
+            <strong class="usuario-comentario">${comentario.usuario}</strong>
+            <p class="texto-comentario">${comentario.texto}</p>
         `;
         
         contenedor.appendChild(div);
@@ -940,6 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //inicializa los formularios
     inicializarFormularioRegistro,
     inicializarFormularioLogin,
+    inicializarBotonesContrasena,
 
     //inicializa lo demas
     inicializarResenaIndividual,
