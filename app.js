@@ -778,7 +778,7 @@ function cargarPaginaFiltrar() {
 
         const filtradas = resenasGuardadas.filter(resena => {
             const coincideTexto = textoBusqueda === '' || 
-                (resena.titulo || '').toLowerCase().includes(textoBusqueda);
+                (resena.titulo || '').toLowerCase().split(' ').includes(textoBusqueda);
 
             const coincideJuego = juegoElegido === '' || 
                 (resena.juego || '').toLowerCase().includes(juegoElegido);
