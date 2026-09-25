@@ -58,7 +58,7 @@ Vienen en `Json/usuarios.json`:
 
 6. Cómo funciona `app.js`
 
-Todo está en un solo archivo. Las funciones se llaman `inicializarAlgo()` y se ejecutan solas al abrir la página, desde la lista `funcionesArrancar` (al final de `app.js`).
+Todo está en un solo archivo. Las funciones se llaman `inicializar_________()` y se ejecutan solas al abrir la página, desde la lista `funcionesArrancar` (al final de `app.js`).
 
 Cada función primero pregunta si el elemento que necesita existe, y si no, no hace nada. Por eso la misma función sirve para varias páginas:
 
